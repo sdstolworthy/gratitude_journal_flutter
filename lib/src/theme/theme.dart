@@ -45,6 +45,6 @@ ThemeData gratefulTheme(ThemeData appTheme) {
               color: Colors.black,
             ),
             body1: GoogleFonts.montserrat()
-                .copyWith(color: Colors.white, fontSize: 16)),
+                .copyWith(color: Colors.black, fontSize: 16)),
       );
 }

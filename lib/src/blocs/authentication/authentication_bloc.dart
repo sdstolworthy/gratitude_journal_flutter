@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:grateful/src/repositories/user/userRepository.dart';
+import 'package:grateful/src/repositories/user/user_repository.dart';
 import './bloc.dart';
 
 class AuthenticationBloc

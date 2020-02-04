@@ -39,7 +39,7 @@ class AboutApp extends StatelessWidget {
               style: theme.primaryTextTheme.body1),
           TextSpan(
               text: 'AliciaWilkin.com',
-              style: theme.accentTextTheme.body1,
+              style: theme.primaryTextTheme.body1,
               recognizer: TapGestureRecognizer()
                 ..onTap = _launchUrl('https://aliciawilkin.com'))
         ]),

@@ -162,6 +162,12 @@ class AppLocalizations {
         name: 'feedbackHint',
         desc: 'Hint text for user in the feedback form textfield');
   }
+
+  String get writeAReview {
+    return Intl.message("Write a Review",
+        name: 'writeAReview',
+        desc: 'Drawer item asking a user to write a review');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

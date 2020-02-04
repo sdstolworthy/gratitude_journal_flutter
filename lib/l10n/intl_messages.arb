@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-02-04T10:03:05.309473",
+  "@@last_modified": "2020-02-04T11:45:21.285543",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -141,6 +141,12 @@
   "feedbackHint": "Let us know what you think",
   "@feedbackHint": {
     "description": "Hint text for user in the feedback form textfield",
+    "type": "text",
+    "placeholders": {}
+  },
+  "writeAReview": "Write a Review",
+  "@writeAReview": {
+    "description": "Drawer item asking a user to write a review",
     "type": "text",
     "placeholders": {}
   }

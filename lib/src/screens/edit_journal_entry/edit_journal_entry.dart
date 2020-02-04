@@ -315,7 +315,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
             onRemove: (ImageHandlerBloc bloc) {
               setState(() {
                 bloc.close();
-                this._imageHandlerBlocs.remove(bloc);
+                this._imageHandlerBlocs.remove(_bloc);
               });
             },
           ));

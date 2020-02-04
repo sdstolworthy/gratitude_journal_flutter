@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
-import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
-import 'package:grateful/src/repositories/analytics/AnalyticsRepository.dart';
+import 'package:grateful/src/repositories/journal_entry/journal_entry_repository.dart';
+import 'package:grateful/src/repositories/analytics/analytics_repository.dart';
 import './bloc.dart';
 
 class EditJournalEntryBloc

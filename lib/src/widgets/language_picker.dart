@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/localization/bloc.dart';
 import 'package:grateful/src/blocs/localization/localization_bloc.dart';
-import 'package:grateful/src/repositories/analytics/AnalyticsRepository.dart';
+import 'package:grateful/src/repositories/analytics/analytics_repository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

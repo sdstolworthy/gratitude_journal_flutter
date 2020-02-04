@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
-import 'package:grateful/src/repositories/user/userRepository.dart';
+import 'package:grateful/src/repositories/user/user_repository.dart';
 import 'package:meta/meta.dart';
 import './bloc.dart';
 

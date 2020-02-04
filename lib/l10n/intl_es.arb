@@ -144,5 +144,11 @@
     "description": "Hint text for user in the feedback form textfield",
     "type": "text",
     "placeholders": {}
+  },
+  "writeAReview": "Escribir una reseña",
+  "@writeAReview": {
+    "description": "Drawer item asking a user to write a review",
+    "type": "text",
+    "placeholders": {}
   }
 }

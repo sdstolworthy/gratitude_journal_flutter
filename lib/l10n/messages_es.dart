@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUp" : MessageLookupByLibrary.simpleMessage("Registrarte"),
     "signupCTA" : MessageLookupByLibrary.simpleMessage("Un gusto conocerte."),
     "thanksForYourFeedback" : MessageLookupByLibrary.simpleMessage("¡Gracias por tus comentarios!"),
-    "welcomeCTA" : MessageLookupByLibrary.simpleMessage("Bienvenidos.")
+    "welcomeCTA" : MessageLookupByLibrary.simpleMessage("Bienvenidos."),
+    "writeAReview" : MessageLookupByLibrary.simpleMessage("Escribir una reseña")
   };
 }

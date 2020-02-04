@@ -1,3 +1,4 @@
+import 'package:app_review/app_review.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
 import 'package:grateful/src/config/config.dart';
@@ -56,6 +57,14 @@ class AppDrawer extends StatelessWidget {
                   leading: Icon(Icons.feedback, color: theme.iconTheme.color),
                   title: Text(localizations.leaveFeedback,
                       style: theme.primaryTextTheme.body1)),
+              ListTile(
+                leading: Icon(Icons.star, color: theme.iconTheme.color),
+                title: Text(localizations.writeAReview,
+                    style: theme.primaryTextTheme.body1),
+                onTap: () {
+                  AppReview.writeReview.then((value) => print(value));
+                },
+              ),
               ListTile(
                 leading: Icon(Icons.vpn_key, color: theme.iconTheme.color),
                 title: Text(

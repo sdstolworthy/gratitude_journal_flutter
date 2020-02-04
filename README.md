@@ -20,4 +20,8 @@ This tells flutter to run the app using `lib/main_development.dart` as the entry
 Likewise, to build the android app, run `flutter build apk -t lib/main_development.dart --flavor development`.
 
 #### Build flavors
-There are two build flavors described for grateful: `development` and `production`. For android, these build flavors' unique resources are specified in `android/app/src/${build_flavor}`. Any file unique to the build flavor should be defined in that directory.
+
+There are two build flavors described for grateful: `development` and `production`. For Android, these build flavors' unique resources are specified in `android/app/src/${build_flavor}`. Any file unique to the build flavor should be defined in that directory.
+
+For iOS, the build flavors are defined in XCode. Specific Google Service configurations must be placed in the `ios/config/${BUILD_ENVIRONMENT}` folder.
+These resources should also be manually added to XCode by dragging them into the project under the `Runner` folder in the XCode project.

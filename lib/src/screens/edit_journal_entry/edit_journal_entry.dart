@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
 import 'package:grateful/src/blocs/image_handler/bloc.dart';
-import 'package:grateful/src/blocs/journal_entry_feed/item_bloc.dart';
+import 'package:grateful/src/blocs/journal_feed/journal_feed_bloc.dart';
 import 'package:grateful/src/blocs/page_view/bloc.dart';
 import 'package:grateful/src/config/environment.dart';
 import 'package:grateful/src/models/journal_entry.dart';

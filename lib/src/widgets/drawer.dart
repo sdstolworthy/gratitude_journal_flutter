@@ -33,10 +33,6 @@ class AppDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: LanguagePicker(),
-                leading: Icon(Icons.language, color: theme.iconTheme.color),
-              ),
-              ListTile(
                 title: Text(localizations.shareGrateful,
                     style: theme.primaryTextTheme.body1),
                 leading: Icon(
@@ -64,6 +60,11 @@ class AppDrawer extends StatelessWidget {
                 onTap: () {
                   AppReview.writeReview.then((value) => print(value));
                 },
+              ),
+              Expanded(child: Container()),
+              ListTile(
+                title: LanguagePicker(),
+                leading: Icon(Icons.language, color: theme.iconTheme.color),
               ),
               ListTile(
                 leading: Icon(Icons.vpn_key, color: theme.iconTheme.color),

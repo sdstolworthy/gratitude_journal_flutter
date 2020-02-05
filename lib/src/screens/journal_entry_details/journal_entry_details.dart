@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
-import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
+import 'package:grateful/src/blocs/journal_feed/bloc.dart';
 import 'package:grateful/src/config/config.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/models/photograph.dart';

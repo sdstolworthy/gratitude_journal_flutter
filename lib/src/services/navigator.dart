@@ -15,7 +15,7 @@ class _RootNavigationService {
 
   Future<dynamic> returnToLogin() async {
     await navigatorKey.currentState
-        .pushReplacementNamed(FlutterAppRoutes.welcomeScreen);
+        .pushNamedAndRemoveUntil(FlutterAppRoutes.welcomeScreen, (_) => false);
   }
 
   Future<dynamic> goBack() async {

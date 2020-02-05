@@ -10,7 +10,6 @@ class AppBlocProviders extends StatelessWidget {
   AppBlocProviders({this.child});
   final AuthenticationBloc authBloc = AuthenticationBloc(new UserRepository());
   Widget build(BuildContext _) {
-    authBloc.add(AppStarted());
     return BlocProvider(
         create: (context) => authBloc,
         child: Builder(builder: (subAuthenticationContext) {

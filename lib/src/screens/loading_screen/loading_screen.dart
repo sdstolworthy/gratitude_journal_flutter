@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
 import 'package:grateful/src/screens/loading_screen/loading_tasks/load_cloud_messenger.dart';
 import 'package:grateful/src/screens/loading_screen/loading_tasks/load_journal_feed.dart';
+import 'package:grateful/src/screens/loading_screen/loading_tasks/load_notifications.dart';
 import 'package:grateful/src/screens/loading_screen/loading_tasks/loading_task.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
@@ -19,7 +20,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   List<LoadingTask> postAuthenticationHooks = [];
 
   build(context) {
-    preAuthenticationHooks = [InitializeCloudMessaging()];
+    preAuthenticationHooks = [InitializeCloudMessaging(), LoadNotifications()];
     postAuthenticationHooks = [LoadJournalFeed(context)];
     BlocProvider.of<AuthenticationBloc>(context).add(AppStarted());
     final List<Future<dynamic>> preAuthenticationHookFutures =

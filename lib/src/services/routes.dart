@@ -6,6 +6,7 @@ import 'package:grateful/src/screens/feedback_form/feedback_form.dart';
 import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
 import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
 import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
+import 'package:grateful/src/screens/loading_screen/loading_screen.dart';
 import 'package:grateful/src/screens/login/login.dart';
 import 'package:grateful/src/screens/welcome/welcome.dart';
 import 'package:grateful/src/theme/theme.dart';
@@ -71,9 +72,10 @@ class Router {
         return _pageRoute(AboutApp(), FlutterAppRoutes.aboutApp);
       case FlutterAppRoutes.feedback:
         final FeedbackFormArgs feedbackFormArgs = settings.arguments;
-        return _pageRoute(FeedbackForm(feedbackFormArgs), FlutterAppRoutes.feedback);
+        return _pageRoute(
+            FeedbackForm(feedbackFormArgs), FlutterAppRoutes.feedback);
       default:
-        return _pageRoute(WelcomeScreen(), FlutterAppRoutes.welcomeScreen);
+        return _pageRoute(LoadingScreen(), FlutterAppRoutes.welcomeScreen);
     }
   }
 }

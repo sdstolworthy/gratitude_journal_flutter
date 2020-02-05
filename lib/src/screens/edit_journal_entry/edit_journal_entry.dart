@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
@@ -12,10 +11,8 @@ import 'package:grateful/src/models/journal_entry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/models/photograph.dart';
 import 'package:grateful/src/repositories/analytics/analytics_repository.dart';
-import 'package:grateful/src/repositories/cloud_messaging/cloud_messaging_repository.dart';
 import 'package:grateful/src/repositories/files/file_repository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
-import 'package:grateful/src/services/messaging.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 import 'package:grateful/src/widgets/date_select_button.dart';
 import 'package:grateful/src/widgets/image_uploader.dart';
@@ -56,7 +53,6 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   bool isEdit;
 
   EditJournalEntryBloc _editJournalEntryBloc;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   List<ImageHandlerBloc> _imageHandlerBlocs = [];
   JournalEntry _journalEntry;
   final TextEditingController _journalEntryController = TextEditingController();
@@ -80,22 +76,6 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     super.initState();
     _journalEntryController.value =
         TextEditingValue(text: _journalEntry.body ?? '');
-    try {
-      _firebaseMessaging.configure(
-          onMessage: (message) async {
-            print(message);
-          },
-          onBackgroundMessage: backgroundMessageHandler,
-          onLaunch: (m) async {
-            print(m);
-          },
-          onResume: (m) async {
-            print(m);
-          });
-    } catch (e) {
-      print(
-          'Failed to configure Firebase Cloud Messaging. Are you using the iOS simulator?');
-    }
   }
 
   _initializePhotographs(JournalEntry journalEntry) {
@@ -122,8 +102,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   build(c) {
     super.build(c);
-    _firebaseMessaging.requestNotificationPermissions();
-    _firebaseMessaging.getToken().then(CloudMessagingRepository().setId);
+
     return _renderFullScreenGradientScrollView(
       child: Builder(builder: (context) {
         return Column(

@@ -74,6 +74,7 @@ class AppDrawer extends StatelessWidget {
                 onTap: () {
                   BlocProvider.of<AuthenticationBloc>(context)
                       .add(Unauthenticate());
+                  rootNavigationService.returnToLogin();
                 },
               ),
             ],

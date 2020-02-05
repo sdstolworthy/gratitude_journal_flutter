@@ -20,49 +20,28 @@ class FlutterApp extends StatelessWidget {
     final FirebaseAnalytics analytics = FirebaseAnalytics()
       ..logEvent(name: 'opened_app');
     return AppBlocProviders(child: Builder(builder: (outerContext) {
-      return BlocListener<AuthenticationBloc, AuthenticationState>(
-        condition: (prev, curr) {
-          if (prev is Uninitialized && curr is Authenticated) {
-            return true;
-          }
-          if (prev is Authenticated && curr is Unauthenticated) {
-            return true;
-          }
-          return false;
-        },
-        listener: (context, AuthenticationState state) {
-          if (state is Authenticated) {
-            _journalFeedBloc.add(FetchFeed());
-
-            rootNavigationService
-                .pushReplacementNamed(FlutterAppRoutes.journalPageView);
-          } else if (state is Unauthenticated) {
-            rootNavigationService.returnToLogin();
-          }
-        },
-        child: BlocBuilder(
-            bloc: BlocProvider.of<LocalizationBloc>(outerContext),
-            builder: (context, LocalizationState state) {
-              return BlocProvider<JournalFeedBloc>(
-                  create: (_) => _journalFeedBloc,
-                  child: MaterialApp(
-                    localizationsDelegates: [
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate,
-                      AppLocalizations.delegate
-                    ],
-                    locale: state.locale,
-                    supportedLocales: AppLocalizations.availableLocalizations
-                        .map((item) => Locale(item.languageCode)),
-                    onGenerateRoute: Router.generatedRoute,
-                    navigatorObservers: [
-                      FirebaseAnalyticsObserver(analytics: analytics)
-                    ],
-                    navigatorKey: rootNavigationService.navigatorKey,
-                  ));
-            }),
-      );
+      return BlocBuilder(
+          bloc: BlocProvider.of<LocalizationBloc>(outerContext),
+          builder: (context, LocalizationState state) {
+            return BlocProvider<JournalFeedBloc>(
+                create: (_) => _journalFeedBloc,
+                child: MaterialApp(
+                  localizationsDelegates: [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                    AppLocalizations.delegate
+                  ],
+                  locale: state.locale,
+                  supportedLocales: AppLocalizations.availableLocalizations
+                      .map((item) => Locale(item.languageCode)),
+                  onGenerateRoute: Router.generatedRoute,
+                  navigatorObservers: [
+                    FirebaseAnalyticsObserver(analytics: analytics)
+                  ],
+                  navigatorKey: rootNavigationService.navigatorKey,
+                ));
+          });
     }));
   }
 }

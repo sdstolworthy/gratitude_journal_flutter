@@ -24,7 +24,7 @@ class AppDrawer extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 title: Text(
-                  "Preferences",
+                  localizations.preferences,
                   style: theme.primaryTextTheme.body1,
                 ),
                 leading: Icon(Icons.settings, color: theme.iconTheme.color),

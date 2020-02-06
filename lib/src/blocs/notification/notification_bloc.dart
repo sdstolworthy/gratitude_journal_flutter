@@ -1,9 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:grateful/src/blocs/user_preference/user_preference_bloc.dart';
-import 'package:grateful/src/models/preferences/daily_notification.dart';
-import 'package:grateful/src/models/preferences/user_preference.dart';
 import 'package:grateful/src/repositories/user_preferences/user_preference_repository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/notifications/notification_service.dart';
@@ -16,8 +13,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   AppLocalizations appLocalizations;
 
   NotificationService notificationService;
-
-  UserPreferenceBloc userPreferenceBloc;
 
   NotificationBloc(
       {@required AppLocalizations appLocalizations,
@@ -52,10 +47,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             title: 'What are you grateful for today?',
           ),
           channelInformation: dailyJournalingReminder);
-      final UserPreferenceSettings settings = new UserPreferenceSettings(
-          dailyJournalReminderSettings: DailyJournalReminderSettings(
-              isEnabled: true, notificationTime: event.time));
-      userPreferenceBloc.add(UpdateUserPreference(settings));
     }
   }
 }

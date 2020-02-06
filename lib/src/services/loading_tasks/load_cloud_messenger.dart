@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:grateful/src/repositories/cloud_messaging/cloud_messaging_repository.dart';
-import 'package:grateful/src/screens/loading_screen/loading_tasks/loading_task.dart';
+import 'package:grateful/src/services/loading_tasks/loading_task.dart';
 import 'package:grateful/src/services/messaging.dart';
 
 class InitializeCloudMessaging extends LoadingTask {

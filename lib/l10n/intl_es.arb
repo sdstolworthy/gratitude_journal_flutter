@@ -61,7 +61,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "gratefulPrompt": "¿Qué agredeces hoy?",
+  "gratefulPrompt": "¿Qué agradeces hoy?",
   "@gratefulPrompt": {
     "description": "Grateful input prompt on edit journal entry page",
     "type": "text",
@@ -148,6 +148,42 @@
   "writeAReview": "Escribir una reseña",
   "@writeAReview": {
     "description": "Drawer item asking a user to write a review",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dailyJournalReminderBody": "Tómate un momento para pensar en lo que agradeces hoy.",
+  "@dailyJournalReminderBody": {
+    "description": "Body for daily journaling reminder notification",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dailyJournalReminderTitle": "Qué agradeces hoy?",
+  "@dailyJournalReminderTitle": {
+    "description": "Title for daily journaling reminder notification",
+    "type": "text",
+    "placeholders": {}
+  },
+  "preferences": "Ajustes",
+  "@preferences": {
+    "description": "User Preferences",
+    "type": "text",
+    "placeholders": {}
+  },
+  "getADailyReminder": "Recibir un recordatorio diario para escribir",
+  "@getADailyReminder": {
+    "description": "Settings entry where a user can choose to see a daily reminder to journal",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseATime": "Escoger una hora",
+  "@chooseATime": {
+    "description": "Default button text for the reminder time when no reminder time has been selected",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reminderTime": "Hora de recordatorio",
+  "@reminderTime": {
+    "description": "Settings entry where a user selects what time to see a reminder",
     "type": "text",
     "placeholders": {}
   }

@@ -6,7 +6,6 @@ import 'package:grateful/src/screens/feedback_form/feedback_form.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
-import 'package:grateful/src/widgets/language_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share/share.dart';
 
@@ -22,6 +21,16 @@ class AppDrawer extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: <Widget>[
+              ListTile(
+                title: Text(
+                  localizations.preferences,
+                  style: theme.primaryTextTheme.body1,
+                ),
+                leading: Icon(Icons.settings, color: theme.iconTheme.color),
+                onTap: () {
+                  rootNavigationService.navigateTo(FlutterAppRoutes.settings);
+                },
+              ),
               ListTile(
                 title: Text(
                   localizations.aboutGratefulButtonText,
@@ -62,10 +71,6 @@ class AppDrawer extends StatelessWidget {
                 },
               ),
               Expanded(child: Container()),
-              ListTile(
-                title: LanguagePicker(),
-                leading: Icon(Icons.language, color: theme.iconTheme.color),
-              ),
               ListTile(
                 leading: Icon(Icons.vpn_key, color: theme.iconTheme.color),
                 title: Text(

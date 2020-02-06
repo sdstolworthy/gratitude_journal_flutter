@@ -8,6 +8,7 @@ import 'package:grateful/src/screens/journal_entry_details/journal_entry_details
 import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
 import 'package:grateful/src/screens/loading_screen/loading_screen.dart';
 import 'package:grateful/src/screens/login/login.dart';
+import 'package:grateful/src/screens/settings/settings_screen.dart';
 import 'package:grateful/src/screens/welcome/welcome.dart';
 import 'package:grateful/src/theme/theme.dart';
 
@@ -23,6 +24,7 @@ class FlutterAppRoutes {
   static const String loginScreen = 'loginScreen';
   static const String signupScreen = 'signupScreen';
   static const String feedback = 'feedback';
+  static const String settings = 'settings';
 }
 
 typedef Route CurriedRouter(RouteSettings settings);
@@ -70,6 +72,8 @@ class Router {
         return _pageRoute(WelcomeScreen(), FlutterAppRoutes.welcomeScreen);
       case FlutterAppRoutes.aboutApp:
         return _pageRoute(AboutApp(), FlutterAppRoutes.aboutApp);
+      case FlutterAppRoutes.settings:
+        return _pageRoute(SettingsScreen(), FlutterAppRoutes.settings);
       case FlutterAppRoutes.feedback:
         final FeedbackFormArgs feedbackFormArgs = settings.arguments;
         return _pageRoute(

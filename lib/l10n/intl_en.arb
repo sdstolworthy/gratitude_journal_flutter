@@ -150,5 +150,41 @@
     "description": "Drawer item asking a user to write a review",
     "type": "text",
     "placeholders": {}
+  },
+  "dailyJournalReminderBody": "Take some time to write down what you're thankful for",
+  "@dailyJournalReminderBody": {
+    "description": "Body for daily journaling reminder notification",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dailyJournalReminderTitle": "What are you grateful for today?",
+  "@dailyJournalReminderTitle": {
+    "description": "Title for daily journaling reminder notification",
+    "type": "text",
+    "placeholders": {}
+  },
+  "preferences": "Preferences",
+  "@preferences": {
+    "description": "User Preferences",
+    "type": "text",
+    "placeholders": {}
+  },
+  "getADailyReminder": "Get a Daily Journaling Reminder",
+  "@getADailyReminder": {
+    "description": "Settings entry where a user can choose to see a daily reminder to journal",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseATime": "Select a Time",
+  "@chooseATime": {
+    "description": "Default button text for the reminder time when no reminder time has been selected",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reminderTime": "Reminder Time",
+  "@reminderTime": {
+    "description": "Settings entry where a user selects what time to see a reminder",
+    "type": "text",
+    "placeholders": {}
   }
 }

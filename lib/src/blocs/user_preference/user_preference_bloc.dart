@@ -25,8 +25,8 @@ class UserPreferenceBloc
       final settings = await preferenceRepository.getUserSettings();
       yield UserPreferencesFetched(settings);
     } else if (event is UpdateUserPreference) {
-      final settings = await preferenceRepository
-          .updateUserSettings(event.userPreferenceSettings);
+      final settings =
+          await preferenceRepository.updateUserPreference(event.userPreference);
       yield UserPreferencesFetched(settings);
     }
   }

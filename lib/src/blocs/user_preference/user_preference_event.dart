@@ -5,7 +5,8 @@ abstract class UserPreferenceEvent {}
 
 class FetchUserPreferences extends UserPreferenceEvent {}
 
-class UpdateUserPreference extends UserPreferenceEvent {
-  final UserPreferenceSettings userPreferenceSettings;
-  UpdateUserPreference(this.userPreferenceSettings);
+class UpdateUserPreference<T extends UserPreference>
+    extends UserPreferenceEvent {
+  final T userPreference;
+  UpdateUserPreference(this.userPreference);
 }

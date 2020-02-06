@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
 import 'package:grateful/src/blocs/login_screen/bloc.dart';
+import 'package:grateful/src/services/loading_tasks/loading_task.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
@@ -53,6 +54,7 @@ class _LoginScreen extends State<LoginScreen> {
         return false;
       },
       listener: (context, state) {
+        getPostAuthenticationHooks(context).forEach((hook) => hook.execute());
         rootNavigationService.pushNamedAndRemoveUntil(
             FlutterAppRoutes.journalPageView, (route) => false);
       },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/notification/notification_bloc.dart';
 import 'package:grateful/src/blocs/user_preference/user_preference_bloc.dart';
+import 'package:grateful/src/models/preferences/daily_notification.dart';
 import 'package:grateful/src/models/preferences/user_preference.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/notifications/notification_service.dart';
@@ -47,9 +48,10 @@ class _NotificationSettingsWidgetState
                         },
                         value: isUserPreferencesFetched
                             ? (userPreferenceState as UserPreferencesFetched)
-                                .userPreferenceSettings
-                                .dailyJournalReminderSettings
-                                .isEnabled
+                                    .userPreferenceSettings
+                                    ?.dailyJournalReminderSettings
+                                    ?.isEnabled ??
+                                false
                             : false,
                       )),
                   ListTile(
@@ -68,9 +70,10 @@ class _NotificationSettingsWidgetState
                         child: Text(
                             userPreferenceState is UserPreferencesFetched
                                 ? userPreferenceState
-                                    .userPreferenceSettings
-                                    .dailyJournalReminderSettings
-                                    .readableReminderTime
+                                        .userPreferenceSettings
+                                        ?.dailyJournalReminderSettings
+                                        ?.readableReminderTime ??
+                                    'Select a Time'
                                 : 'Select a Time',
                             style: theme.primaryTextTheme.body1),
                       ))
@@ -93,19 +96,19 @@ class _NotificationSettingsWidgetState
           userPreferenceBloc.state is UserPreferencesFetched
               ? (userPreferenceBloc.state as UserPreferencesFetched)
                       .userPreferenceSettings
-                      .dailyJournalReminderSettings
-                      .notificationTime ??
+                      ?.dailyJournalReminderSettings
+                      ?.notificationTime ??
                   DateTime.now()
               : DateTime.now()));
     } else {
       notificationBloc.add(CancelDailyJournalReminderNotification());
     }
-    userPreferenceBloc.add(UpdateUserPreference(new UserPreferenceSettings(
-        dailyJournalReminderSettings:
-            (userPreferenceBloc.state as UserPreferencesFetched)
-                .userPreferenceSettings
-                .dailyJournalReminderSettings
-                .copyWith(isEnabled: isEnabled))));
+    userPreferenceBloc.add(UpdateUserPreference<DailyJournalReminderSettings>(
+        (userPreferenceBloc.state as UserPreferencesFetched)
+                ?.userPreferenceSettings
+                ?.dailyJournalReminderSettings
+                ?.copyWith(isEnabled: isEnabled) ??
+            DailyJournalReminderSettings(isEnabled: isEnabled)));
   }
 
   void setNotificationTime(BuildContext context) async {
@@ -141,7 +144,7 @@ class _NotificationSettingsWidgetState
           dailyReminderSettings.notificationTime));
     }
 
-    userPreferenceBloc.add(UpdateUserPreference(UserPreferenceSettings(
-        dailyJournalReminderSettings: dailyReminderSettings)));
+    userPreferenceBloc.add(UpdateUserPreference<DailyJournalReminderSettings>(
+        dailyReminderSettings));
   }
 }

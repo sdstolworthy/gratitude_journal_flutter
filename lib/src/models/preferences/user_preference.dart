@@ -4,8 +4,8 @@ import 'package:grateful/src/models/preferences/daily_notification.dart';
 import 'package:grateful/src/models/preferences/language_settings.dart';
 
 class UserPreferenceSettings {
-  final DailyJournalReminderSettings dailyJournalReminderSettings;
-  final UserLanguageSettings userLanguageSettings;
+  DailyJournalReminderSettings dailyJournalReminderSettings;
+  UserLanguageSettings userLanguageSettings;
   UserPreferenceSettings({
     this.dailyJournalReminderSettings,
     this.userLanguageSettings,
@@ -33,10 +33,14 @@ class UserPreferenceSettings {
     if (map == null) return null;
 
     return UserPreferenceSettings(
-      dailyJournalReminderSettings: DailyJournalReminderSettings.fromMap(
-          Map<String, dynamic>.from(map['dailyJournalReminderSettings'])),
-      userLanguageSettings:
-          UserLanguageSettings.fromMap(map['userLanguageSettings']),
+      dailyJournalReminderSettings: map['dailyJournalReminderSettings'] != null
+          ? DailyJournalReminderSettings.fromMap(
+              Map<String, dynamic>.from(map['dailyJournalReminderSettings']))
+          : null,
+      userLanguageSettings: map['userLanguageSettings'] != null
+          ? UserLanguageSettings.fromMap(
+              Map<String, dynamic>.from(map['userLanguageSettings']))
+          : null,
     );
   }
 
@@ -63,4 +67,6 @@ class UserPreferenceSettings {
       dailyJournalReminderSettings.hashCode ^ userLanguageSettings.hashCode;
 }
 
-abstract class UserPreference {}
+abstract class UserPreference {
+  Map<String, dynamic> toMap();
+}

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
-import 'package:grateful/src/screens/loading_screen/loading_tasks/load_cloud_messenger.dart';
-import 'package:grateful/src/screens/loading_screen/loading_tasks/load_journal_feed.dart';
-import 'package:grateful/src/screens/loading_screen/loading_tasks/load_notifications.dart';
-import 'package:grateful/src/screens/loading_screen/loading_tasks/load_user_preferences.dart';
-import 'package:grateful/src/screens/loading_screen/loading_tasks/loading_task.dart';
+import 'package:grateful/src/services/loading_tasks/loading_task.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/logo_hero.dart';
@@ -16,19 +12,10 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  List<LoadingTask> preAuthenticationHooks = [];
-
-  List<LoadingTask> postAuthenticationHooks = [];
-
   build(context) {
-    preAuthenticationHooks = [InitializeCloudMessaging(), LoadNotifications()];
-    postAuthenticationHooks = [
-      LoadJournalFeed(context),
-      LoadUserPreferences(context)
-    ];
     BlocProvider.of<AuthenticationBloc>(context).add(AppStarted());
     final List<Future<dynamic>> preAuthenticationHookFutures =
-        preAuthenticationHooks.map((hook) => hook.execute()).toList();
+        getPreAuthenticationHooks().map((hook) => hook.execute()).toList();
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       bloc: BlocProvider.of<AuthenticationBloc>(context),
       condition: (prev, curr) {
@@ -38,7 +25,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         try {
           if (state is Authenticated) {
             Future.wait(<Future<dynamic>>[
-              ...postAuthenticationHooks
+              ...getPostAuthenticationHooks(context)
                   .map<Future<dynamic>>((hook) => hook.execute()),
               ...preAuthenticationHookFutures
             ]).then((_) {

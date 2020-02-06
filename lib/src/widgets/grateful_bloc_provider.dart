@@ -12,16 +12,18 @@ class AppBlocProviders extends StatelessWidget {
   AppBlocProviders({this.child});
   final AuthenticationBloc authBloc = AuthenticationBloc(new UserRepository());
   Widget build(BuildContext _) {
+    final UserPreferenceBloc userPreferenceBloc =
+        UserPreferenceBloc(preferenceRepository: UserPreferenceRepository());
     return BlocProvider(
         create: (context) => authBloc,
         child: Builder(builder: (subAuthenticationContext) {
           return MultiBlocProvider(providers: [
             BlocProvider<LocalizationBloc>(
-              create: (_) => LocalizationBloc(),
+              create: (_) =>
+                  LocalizationBloc(userPreferenceBloc: userPreferenceBloc),
             ),
             BlocProvider<UserPreferenceBloc>(
-              create: (_) => UserPreferenceBloc(
-                  preferenceRepository: UserPreferenceRepository()),
+              create: (_) => userPreferenceBloc,
             )
           ], child: child);
         }));

@@ -9,8 +9,11 @@ class InitializeCloudMessaging extends LoadingTask {
   InitializeCloudMessaging() : super('Initializing Push Notifications');
   Future<void> execute() async {
     await _firebaseMessaging.requestNotificationPermissions();
-    await _firebaseMessaging.getToken().then(CloudMessagingRepository().setId);
     try {
+      await _firebaseMessaging
+          .getToken()
+          .then(CloudMessagingRepository().setId);
+
       _firebaseMessaging.configure(
           onMessage: (message) async {
             print(message);

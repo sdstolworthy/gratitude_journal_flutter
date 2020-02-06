@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-02-04T11:45:21.285543",
+  "@@last_modified": "2020-02-05T19:38:47.595166",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -147,6 +147,24 @@
   "writeAReview": "Write a Review",
   "@writeAReview": {
     "description": "Drawer item asking a user to write a review",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dailyJournalReminderBody": "Take some time to write down what you're thankful for",
+  "@dailyJournalReminderBody": {
+    "description": "Body for daily journaling reminder notification",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dailyJournalReminderTitle": "What are you grateful for today?",
+  "@dailyJournalReminderTitle": {
+    "description": "Title for daily journaling reminder notification",
+    "type": "text",
+    "placeholders": {}
+  },
+  "preferences": "Preferences",
+  "@preferences": {
+    "description": "User Preferences",
     "type": "text",
     "placeholders": {}
   }

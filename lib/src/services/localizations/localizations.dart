@@ -168,6 +168,25 @@ class AppLocalizations {
         name: 'writeAReview',
         desc: 'Drawer item asking a user to write a review');
   }
+
+  String get dailyJournalReminderBody {
+    return Intl.message(
+      "Take some time to write down what you're thankful for",
+      name: "dailyJournalReminderBody",
+      desc: 'Body for daily journaling reminder notification',
+    );
+  }
+
+  String get dailyJournalReminderTitle {
+    return Intl.message("What are you grateful for today?",
+        name: "dailyJournalReminderTitle",
+        desc: "Title for daily journaling reminder notification");
+  }
+
+  String get preferences {
+    return Intl.message("Preferences",
+        name: "preferences", desc: "User Preferences");
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

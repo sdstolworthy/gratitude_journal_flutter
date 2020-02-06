@@ -43,8 +43,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       notificationService.setDailyNotificationAtTime(
           event.time,
           new NotificationInformation(
-            body: 'Take some time to write down what you\'re thankful for',
-            title: 'What are you grateful for today?',
+            body: appLocalizations.dailyJournalReminderBody,
+            title: appLocalizations.dailyJournalReminderTitle,
           ),
           channelInformation: dailyJournalingReminder);
     }

@@ -150,5 +150,23 @@
     "description": "Drawer item asking a user to write a review",
     "type": "text",
     "placeholders": {}
+  },
+  "dailyJournalReminderBody": "Tómate un momento para pensar en lo que agredeces hoy.",
+  "@dailyJournalReminderBody": {
+    "description": "Body for daily journaling reminder notification",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dailyJournalReminderTitle": "Qué agredeces hoy?",
+  "@dailyJournalReminderTitle": {
+    "description": "Title for daily journaling reminder notification",
+    "type": "text",
+    "placeholders": {}
+  },
+  "preferences": "Ajustes",
+  "@preferences": {
+    "description": "User Preferences",
+    "type": "text",
+    "placeholders": {}
   }
 }

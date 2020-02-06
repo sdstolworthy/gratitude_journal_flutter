@@ -187,6 +187,28 @@ class AppLocalizations {
     return Intl.message("Preferences",
         name: "preferences", desc: "User Preferences");
   }
+
+  String get getADailyReminder {
+    return Intl.message("Get a Daily Journaling Reminder",
+        name: "getADailyReminder",
+        desc:
+            "Settings entry where a user can choose to see a daily reminder to journal");
+  }
+
+  String get chooseATime {
+    return Intl.message("Select a Time",
+        name: "chooseATime",
+        desc:
+            "Default button text for the reminder time when no reminder time has been selected");
+  }
+
+  String get reminderTime {
+    return Intl.message("Reminder Time",
+        name: "reminderTime",
+        desc:
+            "Settings entry where a user selects what time to see a reminder");
+  }
+
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

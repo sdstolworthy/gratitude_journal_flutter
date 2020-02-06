@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-02-05T19:38:47.595166",
+  "@@last_modified": "2020-02-06T09:23:03.259022",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -165,6 +165,24 @@
   "preferences": "Preferences",
   "@preferences": {
     "description": "User Preferences",
+    "type": "text",
+    "placeholders": {}
+  },
+  "getADailyReminder": "Get a Daily Journaling Reminder",
+  "@getADailyReminder": {
+    "description": "Settings entry where a user can choose to see a daily reminder to journal",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseATime": "Select a Time",
+  "@chooseATime": {
+    "description": "Default button text for the reminder time when no reminder time has been selected",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reminderTime": "Reminder Time",
+  "@reminderTime": {
+    "description": "Settings entry where a user selects what time to see a reminder",
     "type": "text",
     "placeholders": {}
   }

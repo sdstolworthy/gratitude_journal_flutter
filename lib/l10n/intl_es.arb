@@ -168,5 +168,23 @@
     "description": "User Preferences",
     "type": "text",
     "placeholders": {}
+  },
+  "getADailyReminder": "Recibir un recordatorio diario para escribir",
+  "@getADailyReminder": {
+    "description": "Settings entry where a user can choose to see a daily reminder to journal",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseATime": "Escoger una hora",
+  "@chooseATime": {
+    "description": "Default button text for the reminder time when no reminder time has been selected",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reminderTime": "Hora de recordatorio",
+  "@reminderTime": {
+    "description": "Settings entry where a user selects what time to see a reminder",
+    "type": "text",
+    "placeholders": {}
   }
 }

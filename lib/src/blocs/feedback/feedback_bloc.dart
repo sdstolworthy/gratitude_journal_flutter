@@ -18,8 +18,7 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
     if (event is SubmitFeedback) {
       yield FeedbackSending();
       try {
-        await FeedbackRepository()
-            .saveFeedback((event as SubmitFeedback).feedback);
+        await FeedbackRepository().saveFeedback(event.feedback);
         yield FeedbackSent();
       } catch (e) {
         yield FeedbackSendError();

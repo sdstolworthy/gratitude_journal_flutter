@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/user_preference/user_preference_bloc.dart';
-import 'package:grateful/src/screens/settings/notification_settings/notification_settings_widget.dart';
+import 'package:grateful/src/screens/settings/settings_widgets/language_settings_widget.dart';
+import 'package:grateful/src/screens/settings/settings_widgets/notification_settings_widget.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -17,7 +18,10 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: BackgroundGradientProvider(
         child: ListView(
-          children: <Widget>[NotificationSettingsWidget()],
+          children: <Widget>[
+            NotificationSettingsWidget(),
+            LanguageSettingsWidget()
+          ],
         ),
       ),
     );

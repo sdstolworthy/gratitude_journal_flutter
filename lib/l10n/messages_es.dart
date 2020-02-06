@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "aboutGratefulButtonText" : MessageLookupByLibrary.simpleMessage("Acerca de Grateful"),
     "addPhotos" : MessageLookupByLibrary.simpleMessage("Agregar Fotos"),
+    "chooseATime" : MessageLookupByLibrary.simpleMessage("Escoger una hora"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("confirmar contraseña"),
     "dailyJournalReminderBody" : MessageLookupByLibrary.simpleMessage("Tómate un momento para pensar en lo que agradeces hoy."),
     "dailyJournalReminderTitle" : MessageLookupByLibrary.simpleMessage("Qué agradeces hoy?"),
@@ -32,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteEntryYes" : MessageLookupByLibrary.simpleMessage("Sí, bórralo"),
     "email" : MessageLookupByLibrary.simpleMessage("Correo electrónico"),
     "feedbackHint" : MessageLookupByLibrary.simpleMessage("Déjanos saber tu opinión"),
+    "getADailyReminder" : MessageLookupByLibrary.simpleMessage("Recibir un recordatorio diario para escribir"),
     "gratefulPrompt" : MessageLookupByLibrary.simpleMessage("¿Qué agradeces hoy?"),
     "journalEntryHint" : MessageLookupByLibrary.simpleMessage("Escribe tus pensamientos..."),
     "language" : MessageLookupByLibrary.simpleMessage("idioma"),
@@ -42,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "password" : MessageLookupByLibrary.simpleMessage("contraseña"),
     "preferences" : MessageLookupByLibrary.simpleMessage("Ajustes"),
     "previousEntries" : MessageLookupByLibrary.simpleMessage("Entradas Anteriores"),
+    "reminderTime" : MessageLookupByLibrary.simpleMessage("Hora de recordatorio"),
     "shareGrateful" : MessageLookupByLibrary.simpleMessage("Compartir Grateful"),
     "shareJournalEntryText" : MessageLookupByLibrary.simpleMessage("Yo doy las gracias con Grateful. Descárgalo aquí:"),
     "signUp" : MessageLookupByLibrary.simpleMessage("Registrarte"),

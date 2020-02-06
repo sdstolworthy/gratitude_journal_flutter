@@ -4,6 +4,7 @@ import 'package:grateful/src/blocs/authentication/bloc.dart';
 import 'package:grateful/src/screens/loading_screen/loading_tasks/load_cloud_messenger.dart';
 import 'package:grateful/src/screens/loading_screen/loading_tasks/load_journal_feed.dart';
 import 'package:grateful/src/screens/loading_screen/loading_tasks/load_notifications.dart';
+import 'package:grateful/src/screens/loading_screen/loading_tasks/load_user_preferences.dart';
 import 'package:grateful/src/screens/loading_screen/loading_tasks/loading_task.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
@@ -21,7 +22,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   build(context) {
     preAuthenticationHooks = [InitializeCloudMessaging(), LoadNotifications()];
-    postAuthenticationHooks = [LoadJournalFeed(context)];
+    postAuthenticationHooks = [
+      LoadJournalFeed(context),
+      LoadUserPreferences(context)
+    ];
     BlocProvider.of<AuthenticationBloc>(context).add(AppStarted());
     final List<Future<dynamic>> preAuthenticationHookFutures =
         preAuthenticationHooks.map((hook) => hook.execute()).toList();

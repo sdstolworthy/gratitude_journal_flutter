@@ -5,7 +5,6 @@ import 'package:grateful/src/config/config.dart';
 import 'package:grateful/src/screens/feedback_form/feedback_form.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
-import 'package:grateful/src/services/notifications/notifcation_service.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/language_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,14 +24,12 @@ class AppDrawer extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 title: Text(
-                  "Manage notifications",
+                  "Preferences",
                   style: theme.primaryTextTheme.body1,
                 ),
-                leading:
-                    Icon(Icons.notifications, color: theme.iconTheme.color),
+                leading: Icon(Icons.settings, color: theme.iconTheme.color),
                 onTap: () {
-                  NotificationService().setDailyNotificationAtTime(
-                      DateTime.now().add(Duration(minutes: 1)));
+                  rootNavigationService.navigateTo(FlutterAppRoutes.settings);
                 },
               ),
               ListTile(

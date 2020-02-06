@@ -1,5 +1,5 @@
 import 'package:grateful/src/screens/loading_screen/loading_tasks/loading_task.dart';
-import 'package:grateful/src/services/notifications/notifcation_service.dart';
+import 'package:grateful/src/services/notifications/notification_service.dart';
 
 class LoadNotifications extends LoadingTask {
   LoadNotifications() : super('Loading Notifications');

@@ -20,6 +20,7 @@ class LoadUserPreferences extends LoadingTask {
         .firstWhere((state) => state is UserPreferencesFetched);
 
     localizationBloc.add(ChangeLocalization(Locale(userPreferenceState
-        .userPreferenceSettings.userLanguageSettings.locale)));
+            .userPreferenceSettings.userLanguageSettings?.locale ??
+        'en')));
   }
 }

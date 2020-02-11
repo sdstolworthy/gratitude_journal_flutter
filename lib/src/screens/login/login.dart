@@ -24,7 +24,7 @@ class LoginScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _LoginScreen(this.isLogin);
+    return _LoginScreen();
   }
 }
 
@@ -33,22 +33,17 @@ class _LoginScreen extends State<LoginScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final bool isLogin;
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
-  _LoginScreen(this.isLogin);
   build(context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
     final LoginScreenBloc _loginScreenBloc =
         LoginScreenBloc(authenticationBloc: authBloc);
-
     final theme = Theme.of(context);
     return BlocListener(
       bloc: authBloc,
       condition: (previousState, currentState) {
-        if ((previousState is Unauthenticated ||
-                previousState is Uninitialized) &&
-            currentState is Authenticated) {
+        if (previousState is! Authenticated && currentState is Authenticated) {
           return true;
         }
         return false;
@@ -78,7 +73,7 @@ class _LoginScreen extends State<LoginScreen> {
                     _scaffoldKey.currentState.showSnackBar(SnackBar(
                         content: Text(
                             'Something went wrong while' +
-                                (isLogin ? ' logging in' : 'signing up'),
+                                (widget.isLogin ? ' logging in' : 'signing up'),
                             style: theme.primaryTextTheme.body1)));
                   });
                 }
@@ -106,7 +101,7 @@ class _LoginScreen extends State<LoginScreen> {
                                             child: LogoHero()),
                                         Flexible(
                                           child: Text(
-                                            isLogin
+                                            widget.isLogin
                                                 ? localizations.loginCTA
                                                 : localizations.signupCTA,
                                             style:
@@ -117,19 +112,21 @@ class _LoginScreen extends State<LoginScreen> {
                                       Expanded(child: Container()),
                                       Form(
                                           key: _formKey,
-                                          child: _renderLoginForm(context,
-                                              isLogin, _loginScreenBloc)),
+                                          child: _renderLoginForm(
+                                              context,
+                                              widget.isLogin,
+                                              _loginScreenBloc)),
                                       Row(
                                         children: <Widget>[
                                           Expanded(
                                               child: OnboardingButton(
-                                            buttonText: isLogin
+                                            buttonText: widget.isLogin
                                                 ? localizations.logIn
                                                 : localizations.signUp,
                                             onPressed: loginState
                                                     is LoginLoading
                                                 ? null
-                                                : isLogin
+                                                : widget.isLogin
                                                     ? () => _handleSignIn(
                                                         _loginScreenBloc)
                                                     : () => _handleRegistration(

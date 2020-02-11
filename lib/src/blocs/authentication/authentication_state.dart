@@ -9,4 +9,6 @@ class Authenticated extends AuthenticationState {}
 
 class Unauthenticated extends AuthenticationState {}
 
+class RequiresBiometricsForAuthentication extends AuthenticationState {}
+
 class AuthenticationError extends AuthenticationState {}

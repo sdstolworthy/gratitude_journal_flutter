@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CloudMessagingRepository {
-  final _firebaseSettings = 'settings';
-  final _firebaceCloudStoreDocumentName = 'fcm';
-  final _firebaseTokens = 'tokens';
-  setId(String id) async {
+  final String _firebaseSettings = 'settings';
+  final String _firebaceCloudStoreDocumentName = 'fcm';
+  final String _firebaseTokens = 'tokens';
+  Future<void> setId(String id) async {
     await Firestore.instance
         .collection(_firebaseSettings)
         .document(_firebaceCloudStoreDocumentName)
-        .setData({
-      _firebaseTokens: FieldValue.arrayUnion([id]),
+        .setData(<String, dynamic>{
+      _firebaseTokens: FieldValue.arrayUnion(<String>[id]),
     }, merge: true);
   }
 }

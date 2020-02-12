@@ -5,30 +5,35 @@ import 'package:grateful/src/models/photograph.dart';
 abstract class ImageHandlerEvent {}
 
 class AddPhotograph extends ImageHandlerEvent {
-  final Photograph photograph;
   AddPhotograph(this.photograph);
+
+  final Photograph photograph;
 }
 
 class ReplaceFilePhotoWithNetworkPhoto extends ImageHandlerEvent {
-  final NetworkPhoto photograph;
-  final String filePhotoGuid;
   ReplaceFilePhotoWithNetworkPhoto(
       {@required this.photograph, @required this.filePhotoGuid});
+
+  final String filePhotoGuid;
+  final NetworkPhoto photograph;
 }
 
 class UploadHasProgress extends ImageHandlerEvent {
+  UploadHasProgress({@required this.progress, @required this.photograph});
+
   final Photograph photograph;
   final double progress;
-  UploadHasProgress({@required this.progress, @required this.photograph});
 }
 
 class UploadCompleted extends ImageHandlerEvent {
+  UploadCompleted(this.networkPhoto, this.placeholder);
+
   final NetworkPhoto networkPhoto;
   final FilePhoto placeholder;
-  UploadCompleted(this.networkPhoto, this.placeholder);
 }
 
 class SetPhotographs extends ImageHandlerEvent {
-  final List<Photograph> photographs;
   SetPhotographs(this.photographs);
+
+  final List<Photograph> photographs;
 }

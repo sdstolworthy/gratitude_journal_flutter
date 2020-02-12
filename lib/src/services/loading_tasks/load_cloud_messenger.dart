@@ -4,9 +4,11 @@ import 'package:grateful/src/services/loading_tasks/loading_task.dart';
 import 'package:grateful/src/services/messaging.dart';
 
 class InitializeCloudMessaging extends LoadingTask {
+  InitializeCloudMessaging() : super('Initializing Push Notifications');
+
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-  InitializeCloudMessaging() : super('Initializing Push Notifications');
+  @override
   Future<void> execute() async {
     await _firebaseMessaging.requestNotificationPermissions();
     try {
@@ -15,20 +17,20 @@ class InitializeCloudMessaging extends LoadingTask {
           .then(CloudMessagingRepository().setId);
 
       _firebaseMessaging.configure(
-          onMessage: (message) async {
+          onMessage: (Map<String, dynamic> message) async {
             print(message);
           },
           onBackgroundMessage: backgroundMessageHandler,
-          onLaunch: (m) async {
+          onLaunch: (Map<String, dynamic> m) async {
             print(m);
           },
-          onResume: (m) async {
+          onResume: (Map<String, dynamic> m) async {
             print(m);
           });
     } catch (e) {
       print(
           'Failed to configure Firebase Cloud Messaging. Are you using the iOS simulator?');
     }
-    return Future.delayed(Duration.zero);
+    return Future<void>.delayed(Duration.zero);
   }
 }

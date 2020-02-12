@@ -4,12 +4,13 @@ import 'package:grateful/src/services/loading_tasks/loading_task.dart';
 import 'package:grateful/src/blocs/journal_feed/bloc.dart';
 
 class LoadJournalFeed extends LoadingTask {
-  BuildContext context;
   LoadJournalFeed(this.context) : super('Loading Journal Feed');
+
+  BuildContext context;
 
   @override
   Future<void> execute() {
     BlocProvider.of<JournalFeedBloc>(context).add(FetchFeed());
-    return Future.delayed(Duration.zero);
+    return Future<void>.delayed(Duration.zero);
   }
 }

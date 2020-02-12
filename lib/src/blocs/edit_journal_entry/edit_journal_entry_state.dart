@@ -7,13 +7,15 @@ abstract class EditJournalEntryState {}
 class InitialEdititemState extends EditJournalEntryState {}
 
 class ItemLoaded extends EditJournalEntryState {
-  final JournalEntry item;
   ItemLoaded(this.item);
+
+  final JournalEntry item;
 }
 
 class JournalEntrySaved extends EditJournalEntryState {
-  final JournalEntry item;
   JournalEntrySaved(this.item);
+
+  final JournalEntry item;
 }
 
 class JournalEntryLoading extends EditJournalEntryState {}

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class YearSeparator extends StatelessWidget {
+  const YearSeparator(this.year);
+
   final String year;
-  YearSeparator(this.year);
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       // color: Theme.of(context).backgroundColor,

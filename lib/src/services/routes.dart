@@ -27,17 +27,19 @@ class FlutterAppRoutes {
   static const String settings = 'settings';
 }
 
-typedef Route CurriedRouter(RouteSettings settings);
+typedef CurriedRouter<T> = T Function(RouteSettings settings);
 
 class Router {
-  static _pageRoute(Widget widget, String routeName) {
-    return PageRouteBuilder(
-        pageBuilder: (c, a, s) =>
-            Theme(data: gratefulTheme(Theme.of(c)), child: widget),
-        transitionsBuilder: (c, a, s, child) {
+  static PageRouteBuilder<dynamic> _pageRoute(Widget widget, String routeName) {
+    return PageRouteBuilder<dynamic>(
+        pageBuilder:
+            (BuildContext c, Animation<double> a, Animation<double> s) =>
+                Theme(data: gratefulTheme(Theme.of(c)), child: widget),
+        transitionsBuilder: (BuildContext c, Animation<double> a,
+            Animation<double> s, Widget child) {
           return SlideTransition(
             child: child,
-            position: new Tween<Offset>(
+            position: Tween<Offset>(
                     begin: const Offset(1.0, 0.0), end: Offset.zero)
                 .animate(a),
           );
@@ -48,26 +50,29 @@ class Router {
   static Route<dynamic> generatedRoute(RouteSettings settings) {
     switch (settings.name) {
       case FlutterAppRoutes.journalPageView:
-        final JournalPageArguments args = settings.arguments;
+        final JournalPageArguments args =
+            settings.arguments as JournalPageArguments;
         return _pageRoute(
             JournalPageView(
               journalEntry: args?.entry,
             ),
             FlutterAppRoutes.journalPageView);
       case FlutterAppRoutes.journalEntryDetails:
-        final JournalEntryDetailArguments args = settings.arguments;
+        final JournalEntryDetailArguments args =
+            settings.arguments as JournalEntryDetailArguments;
         return _pageRoute(JournalEntryDetails(args.journalEntry),
             FlutterAppRoutes.journalEntryDetails);
       case FlutterAppRoutes.journalFeed:
         return _pageRoute(JournalEntryFeed(), FlutterAppRoutes.journalFeed);
       case FlutterAppRoutes.editJournalEntry:
-        final EditJournalEntryArgs args = settings.arguments;
+        final EditJournalEntryArgs args =
+            settings.arguments as EditJournalEntryArgs;
         return _pageRoute(EditJournalEntry(item: args?.journalEntry),
             FlutterAppRoutes.editJournalEntry);
       case FlutterAppRoutes.loginScreen:
-        return _pageRoute(LoginScreen(true), FlutterAppRoutes.loginScreen);
+        return _pageRoute(const LoginScreen(true), FlutterAppRoutes.loginScreen);
       case FlutterAppRoutes.signupScreen:
-        return _pageRoute(LoginScreen(false), FlutterAppRoutes.signupScreen);
+        return _pageRoute(const LoginScreen(false), FlutterAppRoutes.signupScreen);
       case FlutterAppRoutes.welcomeScreen:
         return _pageRoute(WelcomeScreen(), FlutterAppRoutes.welcomeScreen);
       case FlutterAppRoutes.aboutApp:
@@ -75,7 +80,8 @@ class Router {
       case FlutterAppRoutes.settings:
         return _pageRoute(SettingsScreen(), FlutterAppRoutes.settings);
       case FlutterAppRoutes.feedback:
-        final FeedbackFormArgs feedbackFormArgs = settings.arguments;
+        final FeedbackFormArgs feedbackFormArgs =
+            settings.arguments as FeedbackFormArgs;
         return _pageRoute(
             FeedbackForm(feedbackFormArgs), FlutterAppRoutes.feedback);
       default:

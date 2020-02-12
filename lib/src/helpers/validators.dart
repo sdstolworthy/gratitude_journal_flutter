@@ -1,3 +1,5 @@
+// ignore_for_file:avoid_classes_with_only_static_members
+
 import 'package:flutter/painting.dart';
 import 'package:intl/intl.dart';
 
@@ -9,16 +11,16 @@ class Validators {
     r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
   );
 
-  static isValidEmail(String email) {
+  static bool isValidEmail(String email) {
     return _emailRegExp.hasMatch(email);
   }
 
-  static isValidPassword(String password) {
+  static bool isValidPassword(String password) {
     return _passwordRegExp.hasMatch(password);
   }
 
   static String formatDate(DateTime date, Locale locale) {
-    if (date == null || !(date is DateTime)) {
+    if (date == null || (date is! DateTime)) {
       throw TypeError();
     }
     return DateFormat.yMMMMd(locale.languageCode).format(date);

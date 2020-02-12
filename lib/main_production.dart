@@ -4,7 +4,7 @@ import 'package:grateful/src/config/environment.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final configuredApp = new AppEnvironment(
+  final AppEnvironment configuredApp = AppEnvironment(
     child: FlutterApp(),
     cloudStorageBucket: 'gs://grateful-journal.appspot.com/',
   );

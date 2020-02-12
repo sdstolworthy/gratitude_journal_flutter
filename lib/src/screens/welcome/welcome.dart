@@ -8,11 +8,12 @@ import 'package:grateful/src/widgets/logo_hero.dart';
 import 'package:grateful/src/widgets/onboarding_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  build(context) {
+  @override
+  Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
 
     return Scaffold(
-      body: LayoutBuilder(builder: (_, viewportConstraints) {
+      body: LayoutBuilder(builder: (_, BoxConstraints viewportConstraints) {
         return BackgroundGradientProvider(
             child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -40,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                               )),
                             ],
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             children: <Widget>[
                               Expanded(
@@ -57,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    LanguagePicker()
+                    const LanguagePicker()
                   ],
                 ),
               ),

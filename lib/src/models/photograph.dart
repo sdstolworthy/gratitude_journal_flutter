@@ -6,14 +6,34 @@ import 'package:uuid/uuid.dart';
 abstract class Photograph {}
 
 class NetworkPhoto extends Photograph {
-  String title;
-  String description;
-  String imageUrl;
   NetworkPhoto({
     this.title,
     this.description,
     this.imageUrl,
   });
+
+  String description;
+  String imageUrl;
+  String title;
+
+  @override
+  int get hashCode => title.hashCode ^ description.hashCode ^ imageUrl.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+
+    return other is NetworkPhoto &&
+        other.title == title &&
+        other.description == description &&
+        other.imageUrl == imageUrl;
+  }
+
+  @override
+  String toString() =>
+      'Photograph title: $title, description: $description, imageUrl: $imageUrl';
 
   NetworkPhoto copyWith({
     String title,
@@ -28,7 +48,7 @@ class NetworkPhoto extends Photograph {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'title': title,
       'description': description,
       'imageUrl': imageUrl,
@@ -36,42 +56,29 @@ class NetworkPhoto extends Photograph {
   }
 
   static NetworkPhoto fromMap(Map<dynamic, dynamic> map) {
-    if (map == null) return null;
+    if (map == null) {
+      return null;
+    }
 
     return NetworkPhoto(
-      title: map['title'],
-      description: map['description'],
-      imageUrl: map['imageUrl'],
+      title: map['title'] as String,
+      description: map['description'] as String,
+      imageUrl: map['imageUrl'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  static NetworkPhoto fromJson(String source) => fromMap(json.decode(source));
-
-  @override
-  String toString() =>
-      'Photograph title: $title, description: $description, imageUrl: $imageUrl';
-
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is NetworkPhoto &&
-        o.title == title &&
-        o.description == description &&
-        o.imageUrl == imageUrl;
-  }
-
-  @override
-  int get hashCode => title.hashCode ^ description.hashCode ^ imageUrl.hashCode;
+  static NetworkPhoto fromJson(String source) =>
+      fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
 class FilePhoto extends Photograph {
-  final String guid;
-  final File file;
-  final String title;
-  final String description;
   FilePhoto({String guid, @required this.file, this.title, this.description})
       : guid = guid ?? Uuid().v4();
+
+  final String description;
+  final File file;
+  final String guid;
+  final String title;
 }

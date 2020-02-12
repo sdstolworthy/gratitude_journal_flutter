@@ -7,21 +7,20 @@ import 'package:meta/meta.dart';
 import './bloc.dart';
 
 class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
-  @override
-  LoginScreenState get initialState => InitialLoginScreenState();
-
-  AuthenticationBloc _authenticationBloc;
-  final UserRepository _userRepository;
-
-  FirebaseAnalytics _analytics;
-
   LoginScreenBloc(
       {UserRepository userRepository,
       @required AuthenticationBloc authenticationBloc,
       FirebaseAnalytics analytics})
       : _authenticationBloc = authenticationBloc,
-        this._userRepository = userRepository ?? UserRepository(),
+        _userRepository = userRepository ?? UserRepository(),
         _analytics = analytics ?? FirebaseAnalytics();
+
+  final FirebaseAnalytics _analytics;
+  final AuthenticationBloc _authenticationBloc;
+  final UserRepository _userRepository;
+
+  @override
+  LoginScreenState get initialState => InitialLoginScreenState();
 
   @override
   Stream<LoginScreenState> mapEventToState(
@@ -66,14 +65,14 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       yield LoginLoading();
       await _userRepository.signInWithCredentials(username, password);
       _authenticationBloc.add(Authenticate());
-      _analytics.logLogin(loginMethod: 'email').catchError((e) {
+      _analytics.logLogin(loginMethod: 'email').catchError((Error e) {
         print('error logging event to GA');
       });
       yield InitialLoginScreenState();
     } catch (e, s) {
       print(e);
       print(s);
-      print("Error during Authentication");
+      print('Error during Authentication');
       _authenticationBloc.add(Unauthenticate());
       yield LoginFailure();
     }

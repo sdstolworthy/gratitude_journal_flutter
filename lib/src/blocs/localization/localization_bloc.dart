@@ -6,11 +6,12 @@ import 'package:grateful/src/models/preferences/language_settings.dart';
 import 'bloc.dart';
 
 class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
-  LocalizationState get initialState => LocalizationState(Locale('en'));
+  LocalizationBloc({this.userPreferenceBloc});
 
   UserPreferenceBloc userPreferenceBloc;
 
-  LocalizationBloc({this.userPreferenceBloc});
+  @override
+  LocalizationState get initialState => LocalizationState(const Locale('en'));
 
   @override
   Stream<LocalizationState> mapEventToState(LocalizationEvent event) async* {

@@ -10,6 +10,11 @@ import 'package:intl/intl.dart';
 /// and `flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/src/services/localizations/localizations.dart lib/l10n/intl_*.arb`
 
 class AppLocalizations {
+  static List<AppLocale> availableLocalizations = <AppLocale>[
+    AppLocale(languageCode: 'en', flag: '🇺🇸', title: 'English'),
+    AppLocale(languageCode: 'es', flag: '🇪🇸', title: 'Español')
+  ];
+
   static Future<AppLocalizations> load(Locale locale) {
     final String name = locale.countryCode == null || locale.countryCode.isEmpty
         ? locale.languageCode
@@ -17,17 +22,12 @@ class AppLocalizations {
     final String localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((bool _) {
       Intl.defaultLocale = localeName;
-      return new AppLocalizations();
+      return AppLocalizations();
     });
   }
 
-  static List<AppLocale> availableLocalizations = [
-    AppLocale(languageCode: 'en', flag: '🇺🇸', title: 'English'),
-    AppLocale(languageCode: 'es', flag: '🇪🇸', title: 'Español')
-  ];
-
-  static get delegate {
-    return AppLocalizationDelegate();
+  static LocalizationsDelegate<AppLocalizations> get delegate {
+    return const AppLocalizationDelegate();
   }
 
   static AppLocalizations of(BuildContext context) {
@@ -164,75 +164,88 @@ class AppLocalizations {
   }
 
   String get writeAReview {
-    return Intl.message("Write a Review",
+    return Intl.message('Write a Review',
         name: 'writeAReview',
         desc: 'Drawer item asking a user to write a review');
   }
 
   String get dailyJournalReminderBody {
     return Intl.message(
-      "Take some time to write down what you're thankful for",
-      name: "dailyJournalReminderBody",
+      'Take some time to write down what you\'re thankful for',
+      name: 'dailyJournalReminderBody',
       desc: 'Body for daily journaling reminder notification',
     );
   }
 
   String get dailyJournalReminderTitle {
-    return Intl.message("What are you grateful for today?",
-        name: "dailyJournalReminderTitle",
-        desc: "Title for daily journaling reminder notification");
+    return Intl.message('What are you grateful for today?',
+        name: 'dailyJournalReminderTitle',
+        desc: 'Title for daily journaling reminder notification');
   }
 
   String get preferences {
-    return Intl.message("Preferences",
-        name: "preferences", desc: "User Preferences");
+    return Intl.message('Preferences',
+        name: 'preferences', desc: 'User Preferences');
   }
 
   String get getADailyReminder {
-    return Intl.message("Get a Daily Journaling Reminder",
-        name: "getADailyReminder",
+    return Intl.message('Get a Daily Journaling Reminder',
+        name: 'getADailyReminder',
         desc:
-            "Settings entry where a user can choose to see a daily reminder to journal");
+            'Settings entry where a user can choose to see a daily reminder to journal');
   }
 
   String get chooseATime {
-    return Intl.message("Select a Time",
-        name: "chooseATime",
+    return Intl.message('Select a Time',
+        name: 'chooseATime',
         desc:
-            "Default button text for the reminder time when no reminder time has been selected");
+            'Default button text for the reminder time when no reminder time has been selected');
   }
 
   String get reminderTime {
-    return Intl.message("Reminder Time",
-        name: "reminderTime",
+    return Intl.message('Reminder Time',
+        name: 'reminderTime',
         desc:
-            "Settings entry where a user selects what time to see a reminder");
+            'Settings entry where a user selects what time to see a reminder');
   }
 
+  String get lockJournalWithBiometrics {
+    return Intl.message('Lock Journal with Biometrics',
+        name: 'lockJournalWithBiometrics',
+        desc: 'Setting description for enabling biometrics screen lock');
+  }
+
+  String get verifyBiometrics {
+    return Intl.message('Verify biometrics',
+        name: 'verifyBiometrics',
+        desc: 'Prompt to verify biometrics before enabling them.');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   const AppLocalizationDelegate();
 
+  @override
   bool isSupported(Locale locale) {
-    return ['en', 'es'].contains(locale.languageCode);
+    return <String>['en', 'es'].contains(locale.languageCode);
   }
 
+  @override
   Future<AppLocalizations> load(Locale locale) {
     return AppLocalizations.load(locale);
   }
 
+  @override
   bool shouldReload(LocalizationsDelegate<AppLocalizations> old) {
     return false;
   }
 }
 
 class AppLocale {
-  final String languageCode;
+  AppLocale({@required this.languageCode, @required this.flag, String title})
+      : title = title ?? languageCode;
+
   final String flag;
+  final String languageCode;
   final String title;
-  AppLocale({@required languageCode, @required flag, title})
-      : this.languageCode = languageCode,
-        this.flag = flag,
-        title = title ?? languageCode;
 }

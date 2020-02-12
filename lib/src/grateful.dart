@@ -12,19 +12,21 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:grateful/src/blocs/localization/bloc.dart';
 
 class FlutterApp extends StatelessWidget {
-  final _journalFeedBloc =
+  final JournalFeedBloc _journalFeedBloc =
       JournalFeedBloc(journalEntryRepository: JournalEntryRepository());
-  build(_) {
+  @override
+  Widget build(BuildContext context) {
     final FirebaseAnalytics analytics = FirebaseAnalytics()
       ..logEvent(name: 'opened_app');
-    return AppBlocProviders(child: Builder(builder: (outerContext) {
-      return BlocBuilder(
+    return AppBlocProviders(
+        child: Builder(builder: (BuildContext outerContext) {
+      return BlocBuilder<LocalizationBloc, LocalizationState>(
           bloc: BlocProvider.of<LocalizationBloc>(outerContext),
-          builder: (context, LocalizationState state) {
+          builder: (BuildContext context, LocalizationState state) {
             return BlocProvider<JournalFeedBloc>(
                 create: (_) => _journalFeedBloc,
                 child: MaterialApp(
-                  localizationsDelegates: [
+                  localizationsDelegates: <LocalizationsDelegate<dynamic>>[
                     GlobalMaterialLocalizations.delegate,
                     GlobalWidgetsLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate,
@@ -32,9 +34,9 @@ class FlutterApp extends StatelessWidget {
                   ],
                   locale: state.locale,
                   supportedLocales: AppLocalizations.availableLocalizations
-                      .map((item) => Locale(item.languageCode)),
+                      .map((AppLocale item) => Locale(item.languageCode)),
                   onGenerateRoute: Router.generatedRoute,
-                  navigatorObservers: [
+                  navigatorObservers: <NavigatorObserver>[
                     FirebaseAnalyticsObserver(analytics: analytics)
                   ],
                   navigatorKey: rootNavigationService.navigatorKey,

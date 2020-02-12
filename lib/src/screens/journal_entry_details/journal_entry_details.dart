@@ -18,14 +18,15 @@ import 'package:intl/intl.dart';
 import 'package:share/share.dart';
 
 class JournalEntryDetailArguments {
-  JournalEntry journalEntry;
-
   JournalEntryDetailArguments({@required this.journalEntry});
+
+  JournalEntry journalEntry;
 }
 
 class JournalEntryDetails extends StatefulWidget {
+  const JournalEntryDetails(this.journalEntry);
+
   final JournalEntry journalEntry;
-  JournalEntryDetails(this.journalEntry);
 
   @override
   State<StatefulWidget> createState() {
@@ -35,20 +36,11 @@ class JournalEntryDetails extends StatefulWidget {
 
 class _JournalEntryDetails extends State<JournalEntryDetails>
     with TickerProviderStateMixin {
-  Animation<double> _animationController;
-  Animation<Offset> _animation;
   JournalEntry journalEntry;
   List<NetworkPhoto> photographs;
 
-  initState() {
-    super.initState();
-    this.journalEntry = widget.journalEntry;
-    this.photographs = (widget?.journalEntry?.photographs ?? []);
-  }
-
-  String _getShareText(BuildContext context, JournalEntry journalEntry) {
-    return '${journalEntry.body}\n\n${AppLocalizations.of(context).shareJournalEntryText}\n${Config.oneLinkDownload}';
-  }
+  Animation<Offset> _animation;
+  Animation<double> _animationController;
 
   @override
   void didChangeDependencies() {
@@ -57,9 +49,9 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
       // _animationController = ModalRoute.of(context).animation;
       _animationController = ModalRoute.of(context).animation;
       setState(() {
-        _animation =
-            Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
-                .animate(CurvedAnimation(
+        _animation = Tween<Offset>(
+                begin: const Offset(0.0, 1.0), end: const Offset(0.0, 0.0))
+            .animate(CurvedAnimation(
           parent: _animationController,
           curve: Curves.fastOutSlowIn,
         ));
@@ -74,10 +66,21 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
     // _animationController.dispose();
   }
 
-  Widget _renderAppBar(context) {
+  @override
+  void initState() {
+    super.initState();
+    journalEntry = widget.journalEntry;
+    photographs = widget?.journalEntry?.photographs ?? <NetworkPhoto>[];
+  }
+
+  String _getShareText(BuildContext context, JournalEntry journalEntry) {
+    return '${journalEntry.body}\n\n${AppLocalizations.of(context).shareJournalEntryText}\n${Config.oneLinkDownload}';
+  }
+
+  Widget _renderAppBar(BuildContext context) {
     final EditJournalEntryBloc _journalEntryBloc =
         BlocProvider.of<EditJournalEntryBloc>(context);
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return SliverAppBar(
       elevation: 0,
       backgroundColor: Colors.transparent,
@@ -91,9 +94,9 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
         IconButton(
           icon: Icon(Icons.delete),
           onPressed: () {
-            showDialog(
+            showDialog<void>(
                 context: context,
-                builder: (c) {
+                builder: (BuildContext c) {
                   return AlertDialog(
                     title: Text(
                       AppLocalizations.of(context).deleteEntryHeader,
@@ -147,15 +150,16 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
     );
   }
 
-  build(context) {
+  @override
+  Widget build(BuildContext context) {
     final EditJournalEntryBloc _journalEntryBloc = EditJournalEntryBloc(
-        analyticsRepository: new AnalyticsRepository(),
+        analyticsRepository: AnalyticsRepository(),
         journalEntryRepository: JournalEntryRepository(),
         journalFeedBloc: BlocProvider.of<JournalFeedBloc>(context));
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       body: GestureDetector(
-        onPanUpdate: (panUpdateDetails) {
+        onPanUpdate: (DragUpdateDetails panUpdateDetails) {
           if (panUpdateDetails.delta.dx > 0 && Navigator.of(context).canPop()) {
             Navigator.of(context).pop();
           }
@@ -163,7 +167,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
         child: BlocProvider<EditJournalEntryBloc>(
             create: (_) => _journalEntryBloc,
             child: BlocListener<EditJournalEntryBloc, EditJournalEntryState>(
-              listener: (context, state) {
+              listener: (BuildContext context, EditJournalEntryState state) {
                 if (state is JournalEntryDeleted) {
                   rootNavigationService.goBack();
                 }
@@ -171,15 +175,15 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
               bloc: _journalEntryBloc,
               child: AnimatedBuilder(
                   animation: _animation,
-                  builder: (context, snapshot) {
+                  builder: (BuildContext context, Widget animatedWidget) {
                     return LayoutBuilder(
-                        builder: (context, viewportConstraints) {
+                        builder: (BuildContext context, BoxConstraints viewportConstraints) {
                       return BackgroundGradientProvider(
                         child: SafeArea(
                           bottom: false,
                           child: NestedScrollView(
-                            headerSliverBuilder: (context, isScrolled) {
-                              return [_renderAppBar(context)].toList();
+                            headerSliverBuilder: (BuildContext context, bool isScrolled) {
+                              return <Widget>[_renderAppBar(context)].toList();
                             },
                             body: ListView(
                               children: <Widget>[
@@ -234,15 +238,15 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
         child: Container(
             constraints: BoxConstraints(minHeight: constraints.maxHeight),
             decoration: BoxDecoration(
-                boxShadow: [
+                boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Colors.black38,
                     spreadRadius: 1,
                     blurRadius: 2.0,
-                    offset: Offset(0, 1),
+                    offset: const Offset(0, 1),
                   )
                 ],
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20)),
                 color: Colors.white),
@@ -252,7 +256,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
   Widget _renderPhotoSlider() {
     return Container(
       height: journalEntry.photographs != null &&
-              journalEntry.photographs.length > 0
+              journalEntry.photographs.isNotEmpty
           ? 250
           : 0,
       child: Padding(
@@ -263,26 +267,27 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: <Widget>[
-                  ...Iterable<int>.generate(this.photographs.length)
+                  ...Iterable<int>.generate(photographs.length)
                       .toList()
-                      .map((index) => CachedNetworkImage(
-                            imageUrl: this.photographs[index]?.imageUrl,
-                            placeholder: (context, image) {
+                      .map((int index) => CachedNetworkImage(
+                            imageUrl: photographs[index]?.imageUrl,
+                            placeholder: (BuildContext context, String image) {
                               return Container(
                                 height: 250,
-                                child: Center(
+                                child: const Center(
                                   child: CircularProgressIndicator(),
                                 ),
                               );
                             },
-                            imageBuilder: (context, image) {
+                            imageBuilder: (BuildContext context, ImageProvider<dynamic> image) {
                               return Material(
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (c) => PhotoViewer(
+                                    Navigator.of(context).push<Route<dynamic>>(
+                                        MaterialPageRoute<Route<dynamic>>(
+                                            builder: (BuildContext c) =>
+                                                PhotoViewer(
                                                   photographs: photographs,
                                                   initialIndex: index,
                                                 )));

@@ -6,20 +6,18 @@ import 'package:grateful/src/models/preferences/language_settings.dart';
 import 'package:grateful/src/models/preferences/user_preference.dart';
 
 class UserPreferenceRepository {
-  static const _userCollectionName = Constants.userRepositoryName;
-  static const _preferenceCollectionName = 'preferences';
-
-  static const _languagePreferenceDocument = 'language';
-
-  static const _notificationPreferenceDocument = 'notifications';
-
-  FirebaseAuth _firebaseAuth;
+  UserPreferenceRepository({FirebaseAuth firebaseAuth, Firestore firestore})
+      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+        firestore = firestore ?? Firestore.instance;
 
   Firestore firestore;
 
-  UserPreferenceRepository({FirebaseAuth firebaseAuth, Firestore firestore})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        this.firestore = firestore ?? Firestore.instance;
+  static const String _languagePreferenceDocument = 'language';
+  static const String _notificationPreferenceDocument = 'notifications';
+  static const String _preferenceCollectionName = 'preferences';
+  static const String _userCollectionName = Constants.userRepositoryName;
+
+  final FirebaseAuth _firebaseAuth;
 
   Future<UserPreferenceSettings> updateUserPreference<T extends UserPreference>(
       UserPreference preference) async {
@@ -41,7 +39,7 @@ class UserPreferenceRepository {
   }
 
   Future<DocumentReference> _getDocumentReference(String documentName) async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    final FirebaseUser user = await _firebaseAuth.currentUser();
 
     return firestore
         .collection(_userCollectionName)
@@ -52,9 +50,9 @@ class UserPreferenceRepository {
 
   UserPreferenceSettings _serializeDocumentsToUserPreferences(
       List<DocumentSnapshot> documents) {
-    UserPreferenceSettings userPreferenceSettings = UserPreferenceSettings();
+    final UserPreferenceSettings userPreferenceSettings = UserPreferenceSettings();
 
-    documents.forEach((document) {
+    documents.forEach((DocumentSnapshot document) {
       if (document.documentID == _languagePreferenceDocument) {
         userPreferenceSettings.userLanguageSettings =
             UserLanguageSettings.fromMap(document.data);
@@ -68,15 +66,15 @@ class UserPreferenceRepository {
   }
 
   Future<UserPreferenceSettings> getUserSettings() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    final FirebaseUser user = await _firebaseAuth.currentUser();
 
-    final documents = await firestore
+    final QuerySnapshot documents = await firestore
         .collection(_userCollectionName)
         .document(user.uid)
         .collection(_preferenceCollectionName)
         .getDocuments();
 
-    final settings =
+    final UserPreferenceSettings settings =
         _serializeDocumentsToUserPreferences(documents.documents.toList());
 
     return settings;

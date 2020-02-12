@@ -28,29 +28,31 @@ class JournalEntryFeed extends StatefulWidget {
 
 class _JournalEntryFeedState extends State<JournalEntryFeed>
     with TickerProviderStateMixin {
-  Completer _refreshCompleter;
+  Completer<void> _refreshCompleter;
   AnimationController _hideFabAnimation;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  @override
   void initState() {
-    _refreshCompleter = new Completer<void>();
+    _refreshCompleter = Completer<void>();
     _hideFabAnimation =
         AnimationController(vsync: this, duration: kThemeAnimationDuration);
     _hideFabAnimation.forward();
     super.initState();
   }
 
+  @override
   void dispose() {
     super.dispose();
     _refreshCompleter.complete();
   }
 
   List<Widget> _renderAppBar(BuildContext context, bool isScrolled) {
-    final localizations = AppLocalizations.of(context);
-    final theme = Theme.of(context);
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final ThemeData theme = Theme.of(context);
 
-    return [
+    return <Widget>[
       SliverAppBar(
         floating: true,
         elevation: 0.0,
@@ -98,14 +100,15 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
     );
   }
 
-  build(context) {
-    final _journalFeedBloc = BlocProvider.of<JournalFeedBloc>(context);
+  @override
+  Widget build(BuildContext context) {
+    final JournalFeedBloc _journalFeedBloc = BlocProvider.of<JournalFeedBloc>(context);
     return BlocListener<JournalFeedBloc, JournalFeedState>(
         bloc: _journalFeedBloc,
-        listener: (context, state) {
+        listener: (BuildContext context, JournalFeedState state) {
           if (state is JournalFeedFetched) {
             _refreshCompleter.complete();
-            _refreshCompleter = new Completer();
+            _refreshCompleter = Completer<void>();
           }
         },
         child: Scaffold(
@@ -118,11 +121,11 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                 headerSliverBuilder: _renderAppBar,
                 body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
                   bloc: _journalFeedBloc,
-                  builder: (context, state) {
+                  builder: (BuildContext context, JournalFeedState state) {
                     if (state is JournalFeedUnloaded) {
                       _journalFeedBloc.add(FetchFeed());
                       return BackgroundGradientProvider(
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator(),
                         ),
                       );
@@ -132,14 +135,14 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                       final Map<int, List<JournalEntry>> sortedEntriesYearMap =
                           _groupEntriesByYear(state.journalEntries);
 
-                      final compiledList =
+                      final List<Widget> compiledList =
                           _getJournalEntryListItemWidgets(sortedEntriesYearMap);
                       return BackgroundGradientProvider(
                         child: SafeArea(
                             bottom: false,
                             child: RefreshIndicator(
                               onRefresh: () {
-                                _refreshCompleter = new Completer<void>();
+                                _refreshCompleter = Completer<void>();
 
                                 _journalFeedBloc.add(FetchFeed());
                                 return _refreshCompleter.future;
@@ -147,7 +150,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                               child: ScrollConfiguration(
                                 behavior: NoGlowScroll(showLeading: false),
                                 child: ListView.builder(
-                                  itemBuilder: (context, index) {
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
                                     return compiledList[index];
                                   },
                                   itemCount: compiledList.length,
@@ -169,9 +173,10 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
 
   Map<int, List<JournalEntry>> _groupEntriesByYear(
       List<JournalEntry> journalEntries) {
-    return journalEntries.fold<Map<int, List<JournalEntry>>>({},
-        (previous, current) {
-      final year = current.date.year;
+    return journalEntries
+        .fold<Map<int, List<JournalEntry>>>(<int, List<JournalEntry>>{},
+            (Map<int, List<JournalEntry>> previous, JournalEntry current) {
+      final int year = current.date.year;
       if (previous[year] == null) {
         previous[year] = <JournalEntry>[];
       }
@@ -195,20 +200,20 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
 
   List<Widget> _getJournalEntryListItemWidgets(
       Map<int, List<JournalEntry>> entriesByYear) {
-    return entriesByYear.keys.fold<List<Widget>>([],
-        (previousEntries, currentEntry) {
+    return entriesByYear.keys.fold<List<Widget>>(<Widget>[],
+        (List<Widget> previousEntries, int currentEntry) {
       return previousEntries
-        ..addAll([
+        ..addAll(<Widget>[
           StickyHeaderBuilder(
             builder: (BuildContext context, double stuckAmount) {
-              final opacity = 1.0 - stuckAmount.clamp(0.0, 1.0);
-              return new Container(
+              final double opacity = 1.0 - stuckAmount.clamp(0.0, 1.0);
+              return Container(
                   height: 50,
                   child: SizedBox.expand(
                       child: YearSeparator(currentEntry.toString())),
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                    colors: [
+                    colors: <Color>[
                       Colors.blue[900].withOpacity(opacity),
                       Colors.blue[900].withOpacity(0.8 * opacity),
                       Colors.blue[900].withOpacity(0.0)
@@ -218,7 +223,7 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                   )));
             },
             content: Column(
-                children: entriesByYear[currentEntry].map((entry) {
+                children: entriesByYear[currentEntry].map((JournalEntry entry) {
               return _renderEntryListItem(entry);
             }).toList()),
           )

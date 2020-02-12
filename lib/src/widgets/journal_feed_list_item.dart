@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:intl/intl.dart';
 
-typedef void OnPressed();
+typedef OnPressed = void Function();
 
 class JournalEntryListItem extends StatelessWidget {
+  const JournalEntryListItem({@required this.journalEntry, this.onPressed});
+
   final JournalEntry journalEntry;
   final OnPressed onPressed;
-  JournalEntryListItem({@required this.journalEntry, this.onPressed});
-  build(context) {
-    final theme = Theme.of(context);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return FlatButton(
       onPressed: onPressed,
       child: Row(

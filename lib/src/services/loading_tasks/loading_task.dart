@@ -8,14 +8,15 @@ import 'package:grateful/src/services/loading_tasks/load_notifications.dart';
 import 'package:grateful/src/services/loading_tasks/load_user_preferences.dart';
 
 abstract class LoadingTask {
-  Future<void> execute();
+  LoadingTask(this.loadingText);
 
   final String loadingText;
-  LoadingTask(this.loadingText);
+
+  Future<void> execute();
 }
 
 List<LoadingTask> getPreAuthenticationHooks() {
-  return [InitializeCloudMessaging(), LoadNotifications()];
+  return <LoadingTask>[InitializeCloudMessaging(), LoadNotifications()];
 }
 
 List<LoadingTask> getPostAuthenticationHooks(BuildContext context) {
@@ -23,7 +24,7 @@ List<LoadingTask> getPostAuthenticationHooks(BuildContext context) {
       BlocProvider.of<LocalizationBloc>(context);
   final UserPreferenceBloc userPreferenceBloc =
       BlocProvider.of<UserPreferenceBloc>(context);
-  return [
+  return <LoadingTask>[
     LoadJournalFeed(context),
     LoadUserPreferences(
         localizationBloc: localizationBloc,

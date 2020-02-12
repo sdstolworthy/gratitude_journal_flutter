@@ -5,11 +5,13 @@ import 'package:meta/meta.dart';
 abstract class EditJournalEntryEvent {}
 
 class SaveJournalEntry extends EditJournalEntryEvent {
-  final JournalEntry journalEntry;
   SaveJournalEntry(this.journalEntry);
+
+  final JournalEntry journalEntry;
 }
 
 class DeleteJournalEntry extends EditJournalEntryEvent {
-  final JournalEntry journalEntry;
   DeleteJournalEntry(this.journalEntry);
+
+  final JournalEntry journalEntry;
 }

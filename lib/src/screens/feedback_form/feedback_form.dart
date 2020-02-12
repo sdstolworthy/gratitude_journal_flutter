@@ -6,23 +6,26 @@ import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 
 class FeedbackFormArgs {
-  final ScaffoldState scaffoldReference;
   FeedbackFormArgs(this.scaffoldReference);
+
+  final ScaffoldState scaffoldReference;
 }
 
 class FeedbackForm extends StatelessWidget {
-  final TextEditingController textEditingController =
-      new TextEditingController();
-  final FeedbackFormArgs feedbackFormArgs;
   FeedbackForm(this.feedbackFormArgs);
-  build(context) {
-    final localizations = AppLocalizations.of(context);
 
-    final feedbackBloc = FeedbackBloc();
-    return BlocProvider(
+  final FeedbackFormArgs feedbackFormArgs;
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+
+    final FeedbackBloc feedbackBloc = FeedbackBloc();
+    return BlocProvider<FeedbackBloc>(
       create: (_) => feedbackBloc,
       child: BlocListener<FeedbackBloc, FeedbackState>(
-        listener: (context, feedbackState) {
+        listener: (BuildContext context, FeedbackState feedbackState) {
           if (feedbackState is FeedbackSent) {
             if (rootNavigationService?.navigatorKey?.currentState?.canPop() ==
                     true &&
@@ -41,12 +44,12 @@ class FeedbackForm extends StatelessWidget {
               title: Text(AppLocalizations.of(context).leaveFeedback),
             ),
             body: BackgroundGradientProvider(
-              child: LayoutBuilder(builder: (context, viewportDimensions) {
+              child: LayoutBuilder(builder: (BuildContext context, BoxConstraints viewportDimensions) {
                 return BlocBuilder<FeedbackBloc, FeedbackState>(
                     bloc: feedbackBloc,
-                    builder: (context, feedbackState) {
+                    builder: (BuildContext context, FeedbackState feedbackState) {
                       if (feedbackState is FeedbackSending) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
@@ -78,9 +81,9 @@ class FeedbackForm extends StatelessWidget {
                                             .copyWith(
                                                 color: Colors.white38,
                                                 fontStyle: FontStyle.italic),
-                                        enabledBorder: UnderlineInputBorder(
+                                        enabledBorder: const UnderlineInputBorder(
                                             borderSide: BorderSide.none),
-                                        focusedBorder: UnderlineInputBorder(
+                                        focusedBorder: const UnderlineInputBorder(
                                             borderSide: BorderSide.none),
                                       ),
                                       controller: textEditingController,

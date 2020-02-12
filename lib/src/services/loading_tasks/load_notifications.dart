@@ -7,6 +7,6 @@ class LoadNotifications extends LoadingTask {
   @override
   Future<void> execute() async {
     NotificationService().initialize();
-    return null;
+    return;
   }
 }

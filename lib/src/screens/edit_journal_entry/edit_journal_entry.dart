@@ -28,13 +28,13 @@ class EditJournalEntryArgs {
 }
 
 class EditJournalEntry extends StatefulWidget {
-  EditJournalEntry({this.item});
+  const EditJournalEntry({this.item});
 
   final JournalEntry item;
 
   @override
   State<StatefulWidget> createState() {
-    return _EditJournalEntryState(journalEntry: this.item);
+    return _EditJournalEntryState(journalEntry: item);
   }
 
   bool get wantKeepAlive => true;
@@ -45,66 +45,70 @@ const double imageDimension = 125.0;
 class _EditJournalEntryState extends State<EditJournalEntry>
     with AutomaticKeepAliveClientMixin {
   _EditJournalEntryState({JournalEntry journalEntry}) {
-    this._journalEntry = journalEntry ?? JournalEntry();
-    _journalEntryController.value = TextEditingValue(text: '');
+    _journalEntry = journalEntry ?? JournalEntry();
+    _journalEntryController.value = const TextEditingValue(text: '');
     isEdit = journalEntry != null;
   }
 
   bool isEdit;
 
   EditJournalEntryBloc _editJournalEntryBloc;
-  List<ImageHandlerBloc> _imageHandlerBlocs = [];
+  List<ImageHandlerBloc> _imageHandlerBlocs = <ImageHandlerBloc>[];
   JournalEntry _journalEntry;
   final TextEditingController _journalEntryController = TextEditingController();
 
   FileRepository fileRepository;
 
+  @override
   bool get wantKeepAlive => true;
 
-  initState() {
+  @override
+  void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       fileRepository = FileRepository(
           storageBucketUrl: AppEnvironment.of(context).cloudStorageBucket);
       _initializePhotographs(_journalEntry);
     });
     setState(() {
-      _journalEntry = this._journalEntry;
+      _journalEntry = _journalEntry;
     });
     _editJournalEntryBloc = EditJournalEntryBloc(
-        analyticsRepository: new AnalyticsRepository(),
+        analyticsRepository: AnalyticsRepository(),
         journalFeedBloc: BlocProvider.of<JournalFeedBloc>(context));
     super.initState();
     _journalEntryController.value =
         TextEditingValue(text: _journalEntry.body ?? '');
   }
 
-  _initializePhotographs(JournalEntry journalEntry) {
-    journalEntry.photographs.forEach((photo) => _imageHandlerBlocs.add(
-        new ImageHandlerBloc(
+  void _initializePhotographs(JournalEntry journalEntry) {
+    journalEntry.photographs.forEach((NetworkPhoto photo) =>
+        _imageHandlerBlocs.add(ImageHandlerBloc(
             fileRepository: fileRepository, photograph: photo)));
   }
 
-  dispose() {
+  @override
+  void dispose() {
     _editJournalEntryBloc.close();
-    this._imageHandlerBlocs.map((bloc) => bloc?.close());
+    _imageHandlerBlocs.map((ImageHandlerBloc bloc) => bloc?.close());
     super.dispose();
   }
 
-  clearEditState() {
+  void clearEditState() {
     setState(() {
       _journalEntry = JournalEntry();
       isEdit = false;
-      _imageHandlerBlocs = [];
+      _imageHandlerBlocs = <ImageHandlerBloc>[];
       _journalEntryController.value =
           TextEditingValue(text: _journalEntry.body ?? '');
     });
   }
 
-  build(c) {
+  @override
+  Widget build(BuildContext c) {
     super.build(c);
 
     return _renderFullScreenGradientScrollView(
-      child: Builder(builder: (context) {
+      child: Builder(builder: (BuildContext context) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -127,17 +131,18 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   Widget _renderFullScreenGradientScrollView({@required Widget child}) {
     return NestedScrollView(
-      headerSliverBuilder: (context, isScrolled) {
-        return [_renderSliverAppBar(this.context)];
+      headerSliverBuilder: (BuildContext context, bool isScrolled) {
+        return <Widget>[_renderSliverAppBar(this.context)];
       },
       body: Scaffold(
         body: GestureDetector(
           onTap: () {
-            FocusScope.of(this.context).requestFocus(new FocusNode());
+            FocusScope.of(context).requestFocus(FocusNode());
           },
           child: BackgroundGradientProvider(
             child: SafeArea(
-              child: LayoutBuilder(builder: (context, layoutConstraints) {
+              child: LayoutBuilder(builder:
+                  (BuildContext context, BoxConstraints layoutConstraints) {
                 return ScrollConfiguration(
                   behavior: NoGlowScroll(showLeading: true),
                   child: SingleChildScrollView(
@@ -158,8 +163,8 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     );
   }
 
-  void _handlePickDate(context) async {
-    DateTime newDate = await showDatePicker(
+  Future<void> _handlePickDate(BuildContext context) async {
+    final DateTime newDate = await showDatePicker(
       context: context,
       initialDate: _journalEntry.date ?? DateTime.now(),
       firstDate: DateTime.parse('1900-01-01'),
@@ -175,7 +180,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   Widget _entryEditComponent(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
         Text(
           AppLocalizations.of(context).gratefulPrompt,
           style: Theme.of(context).primaryTextTheme.headline,
@@ -189,9 +194,9 @@ class _EditJournalEntryState extends State<EditJournalEntry>
         Divider(
           color: Colors.white,
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         JournalInput(
-          onChanged: (text) {
+          onChanged: (String text) {
             setState(() {
               _journalEntry.body = text;
             });
@@ -202,7 +207,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     );
   }
 
-  Widget _renderSliverAppBar(context) {
+  Widget _renderSliverAppBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 0,
       floating: false,
@@ -239,10 +244,10 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     );
   }
 
-  _renderSaveCheck(BuildContext saveContext) {
-    final isJournalEntryNull = this._journalEntry.body == null;
+  Widget _renderSaveCheck(BuildContext saveContext) {
+    final bool isJournalEntryNull = _journalEntry.body == null;
     return IconButton(
-        padding: EdgeInsets.all(50),
+        padding: const EdgeInsets.all(50),
         icon: Icon(Icons.check, size: 40),
         disabledColor: Colors.white38,
         onPressed: isJournalEntryNull
@@ -252,9 +257,9 @@ class _EditJournalEntryState extends State<EditJournalEntry>
               });
   }
 
-  _handleSavePress(BuildContext saveContext) {
-    final photosAreFinishedUploading =
-        _imageHandlerBlocs.fold<bool>(true, (prev, curr) {
+  void Function() _handleSavePress(BuildContext saveContext) {
+    final bool photosAreFinishedUploading =
+        _imageHandlerBlocs.fold<bool>(true, (bool prev, ImageHandlerBloc curr) {
       if (prev == false) {
         return false;
       }
@@ -266,35 +271,38 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     if (_journalEntry.body != null) {
       _editJournalEntryBloc.add(SaveJournalEntry(_journalEntry.copyWith(
           photographs: _imageHandlerBlocs
-              .where((bloc) => bloc.photograph is NetworkPhoto)
-              .map<NetworkPhoto>((bloc) => bloc.photograph)
+              .where((ImageHandlerBloc bloc) => bloc.photograph is NetworkPhoto)
+              .map<NetworkPhoto>(
+                  (ImageHandlerBloc bloc) => bloc.photograph as NetworkPhoto)
               .toList())));
-      this.clearEditState();
+      clearEditState();
     }
 
     BlocProvider.of<PageViewBloc>(context).add(SetPage(1));
+    return () {};
   }
 
-  _handleSaveDisabledPress(BuildContext context) {
+  void Function() _handleSaveDisabledPress(BuildContext context) {
     return () {
       Scaffold.of(context)
         ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(
+        ..showSnackBar(const SnackBar(
           content:
               Text('Please wait until all images have finished uploading.'),
         ));
     };
   }
 
-  _renderPhotoBlocks() {
-    final photoWidgets = _imageHandlerBlocs.map((_bloc) {
-      return BlocProvider(
+  List<Widget> _renderPhotoBlocks() {
+    final List<Widget> photoWidgets =
+        _imageHandlerBlocs.map((ImageHandlerBloc _bloc) {
+      return BlocProvider<ImageHandlerBloc>(
           create: (_) => _bloc,
           child: ImageUploader(
             onRemove: (ImageHandlerBloc bloc) {
               setState(() {
                 bloc.close();
-                this._imageHandlerBlocs.remove(_bloc);
+                _imageHandlerBlocs.remove(_bloc);
               });
             },
           ));
@@ -303,21 +311,21 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     return photoWidgets;
   }
 
-  _handleAddPhotoPress(context) async {
-    File file = await ImagePicker.pickImage(
+  Future<void> _handleAddPhotoPress(BuildContext context) async {
+    final File file = await ImagePicker.pickImage(
         imageQuality: 35, source: ImageSource.gallery);
     if (file == null) {
       return;
     }
-    final FilePhoto photo = new FilePhoto(file: file, guid: Uuid().v4());
+    final FilePhoto photo = FilePhoto(file: file, guid: Uuid().v4());
     setState(() {
-      _imageHandlerBlocs.add(new ImageHandlerBloc(
-          photograph: photo, fileRepository: fileRepository));
+      _imageHandlerBlocs.add(
+          ImageHandlerBloc(photograph: photo, fileRepository: fileRepository));
     });
   }
 
-  _renderAddPhotoButton(context) {
-    final localizations = AppLocalizations.of(context);
+  Widget _renderAddPhotoButton(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
 
     return FlatButton(
         onPressed: () {
@@ -330,7 +338,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
               Icons.add_a_photo,
               color: Colors.white,
             ),
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Text(
               localizations.addPhotos,
               style: Theme.of(context).primaryTextTheme.body1,

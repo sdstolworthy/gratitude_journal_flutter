@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 abstract class PageViewState {}
 
 class CurrentPage extends PageViewState {
-  final int pageIndex;
   CurrentPage(this.pageIndex);
+
+  final int pageIndex;
 }

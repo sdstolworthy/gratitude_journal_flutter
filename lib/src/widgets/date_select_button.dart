@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class DateSelectorButton extends StatelessWidget {
-  final DateTime selectedDate;
-  final void Function(BuildContext context) onPressed;
+  const DateSelectorButton({this.selectedDate, this.onPressed, Locale locale})
+      : locale = locale ?? const Locale('en_US');
+
   final Locale locale;
-  DateSelectorButton({this.selectedDate, this.onPressed, Locale locale})
-      : this.locale = locale ?? Locale('en_US');
-  build(BuildContext context) {
+  final DateTime selectedDate;
+
+  final void Function(BuildContext context) onPressed;
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       child: FlatButton(
         padding: EdgeInsets.zero,

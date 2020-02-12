@@ -9,53 +9,53 @@ import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart'
 
 enum Page { entryEdit, entryFeed }
 
-const _pageOrder = <Page>[Page.entryEdit, Page.entryFeed];
+const List<Page> _pageOrder = <Page>[Page.entryEdit, Page.entryFeed];
 
 class JournalPageArguments {
-  final Page page;
+  JournalPageArguments({Page page, this.entry})
+      : page = page ?? Page.entryEdit,
+        isEdit = entry != null;
+
   final JournalEntry entry;
   final bool isEdit;
-
-  JournalPageArguments({page, entry})
-      : page = page ?? Page.entryEdit,
-        entry = entry ?? null,
-        isEdit = entry != null;
+  final Page page;
 }
 
 class JournalPageView extends StatefulWidget {
+  const JournalPageView({Page initialPage, this.journalEntry})
+      : initialPage = initialPage ?? Page.entryEdit;
+
   final Page initialPage;
   final JournalEntry journalEntry;
-  JournalPageView({initialPage, journalEntry})
-      : initialPage = initialPage ?? Page.entryEdit,
-        journalEntry = journalEntry ?? null;
-  createState() =>
-      _JournalPageView(initialPage: initialPage, journalEntry: journalEntry);
+
+  @override
+  State<StatefulWidget> createState() => _JournalPageView();
 }
 
 class _JournalPageView extends State<JournalPageView> {
-  final Page initialPage;
-  final JournalEntry journalEntry;
-  _JournalPageView({this.initialPage, this.journalEntry});
+  StreamSubscription<void> activeCanceller;
+  bool isActive;
 
   PageViewBloc _pageViewBloc = PageViewBloc();
-  bool isActive;
-  StreamSubscription<void> activeCanceller;
+
+  @override
   void initState() {
     setActive(true);
     _pageViewBloc =
-        PageViewBloc(initialPage: _pageOrder.indexOf(this.initialPage) ?? 0);
+        PageViewBloc(initialPage: _pageOrder.indexOf(widget.initialPage) ?? 0);
     super.initState();
   }
 
-  void setActive(active) {
+  void setActive(bool active) {
     setState(() {
       isActive = active;
     });
     if (active == true) {
       activeCanceller?.cancel();
-      activeCanceller =
-          Future.delayed(const Duration(seconds: 2)).asStream().listen((_) {
-        if (this.mounted) {
+      activeCanceller = Future<void>.delayed(const Duration(seconds: 2))
+          .asStream()
+          .listen((_) {
+        if (mounted) {
           setState(() {
             setActive(false);
           });
@@ -64,27 +64,27 @@ class _JournalPageView extends State<JournalPageView> {
     }
   }
 
-
+  @override
   Widget build(BuildContext c) {
     return BlocProvider<PageViewBloc>(
-        create: (context) => _pageViewBloc,
+        create: (BuildContext context) => _pageViewBloc,
         child: BlocBuilder<PageViewBloc, PageViewState>(
             bloc: _pageViewBloc,
-            builder: (context, state) {
+            builder: (BuildContext context, PageViewState state) {
               _pageViewBloc.pageController.addListener(() {
                 /// When changing pages, hide the keyboard
-                FocusScope.of(context).requestFocus(new FocusNode());
+                FocusScope.of(context).requestFocus(FocusNode());
               });
               if (state is CurrentPage) {
                 return GestureDetector(
                   onTapDown: (_) {
                     setActive(true);
                   },
-                  child: Stack(children: [
+                  child: Stack(children: <Widget>[
                     PageView(
                       controller: _pageViewBloc.pageController,
                       children: <Widget>[
-                        EditJournalEntry(item: journalEntry),
+                        EditJournalEntry(item: widget.journalEntry),
                         JournalEntryFeed(),
                       ],
                     ),

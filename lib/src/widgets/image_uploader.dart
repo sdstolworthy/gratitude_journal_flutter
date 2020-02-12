@@ -5,22 +5,31 @@ import 'package:grateful/src/blocs/image_handler/bloc.dart';
 import 'package:grateful/src/models/photograph.dart';
 import 'package:grateful/src/widgets/deletable_resource.dart';
 
-typedef void OnRemove(ImageHandlerBloc imageHandlerBloc);
+typedef OnRemove = void Function(ImageHandlerBloc imageHandlerBloc);
 
 class ImageUploader extends StatelessWidget {
+  const ImageUploader({@required OnRemove onRemove}) : _onRemove = onRemove;
+
   final OnRemove _onRemove;
 
-  ImageUploader({@required onRemove}) : _onRemove = onRemove;
+  Widget _makeImageDeletable(BuildContext context, Widget child) {
+    return DeletableResource(
+        child: child,
+        onRemove: () {
+          _onRemove(BlocProvider.of<ImageHandlerBloc>(context));
+        });
+  }
 
-  build(context) {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<ImageHandlerBloc, ImageHandlerState>(
-        builder: (context, state) {
+        builder: (BuildContext context, ImageHandlerState state) {
           if (state is FileUploaded) {
             return _makeImageDeletable(
                 context,
                 CachedNetworkImage(
                     imageUrl: (state.photograph as NetworkPhoto).imageUrl,
-                    placeholder: (context, url) {
+                    placeholder: (BuildContext context, String url) {
                       return state.placeholder != null
                           ? Image.file(state.placeholder?.file)
                           : Container();
@@ -29,13 +38,14 @@ class ImageUploader extends StatelessWidget {
           return Stack(
             fit: StackFit.passthrough,
             children: <Widget>[
-              (state.photograph is FilePhoto)
-                  ? Image.file((state.photograph as FilePhoto).file)
-                  : _makeImageDeletable(
-                      context,
-                      CachedNetworkImage(
-                        imageUrl: (state.photograph as NetworkPhoto).imageUrl,
-                      )),
+              if (state.photograph is FilePhoto)
+                Image.file((state.photograph as FilePhoto).file)
+              else
+                _makeImageDeletable(
+                    context,
+                    CachedNetworkImage(
+                      imageUrl: (state.photograph as NetworkPhoto).imageUrl,
+                    )),
               if (state is UploadProgress)
                 Positioned.fill(
                     child: Container(
@@ -44,7 +54,7 @@ class ImageUploader extends StatelessWidget {
                     child: CircularProgressIndicator(
                       backgroundColor: Colors.black38,
                       value: state.fileProgress,
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   ),
                 ))
@@ -54,13 +64,5 @@ class ImageUploader extends StatelessWidget {
           );
         },
         bloc: BlocProvider.of<ImageHandlerBloc>(context));
-  }
-
-  Widget _makeImageDeletable(BuildContext context, Widget child) {
-    return DeletableResource(
-        child: child,
-        onRemove: () {
-          this._onRemove(BlocProvider.of<ImageHandlerBloc>(context));
-        });
   }
 }

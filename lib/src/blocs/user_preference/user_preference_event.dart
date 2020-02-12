@@ -7,6 +7,7 @@ class FetchUserPreferences extends UserPreferenceEvent {}
 
 class UpdateUserPreference<T extends UserPreference>
     extends UserPreferenceEvent {
-  final T userPreference;
   UpdateUserPreference(this.userPreference);
+
+  final T userPreference;
 }

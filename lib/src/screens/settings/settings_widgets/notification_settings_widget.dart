@@ -14,22 +14,22 @@ class NotificationSettingsWidget extends StatefulWidget {
 
 class _NotificationSettingsWidgetState
     extends State<NotificationSettingsWidget> {
-  build(context) {
-    final localizations = AppLocalizations.of(context);
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
     final UserPreferenceBloc userPreferenceBloc =
         BlocProvider.of<UserPreferenceBloc>(context);
-    return BlocProvider(
+    return BlocProvider<NotificationBloc>(
       create: (_) => NotificationBloc(
           appLocalizations: AppLocalizations.of(context),
           notificationService: NotificationService()),
-      child: BlocBuilder(
+      child: BlocBuilder<UserPreferenceBloc, UserPreferenceState>(
           bloc: userPreferenceBloc,
-          builder: (context, UserPreferenceState userPreferenceState) {
-            final isUserPreferencesFetched =
-                userPreferenceState is UserPreferencesFetched;
+          builder:
+              (BuildContext context, UserPreferenceState userPreferenceState) {
             if (userPreferenceState is! UserPreferencesFetched) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else {
               return Column(
                 children: <Widget>[
@@ -43,16 +43,14 @@ class _NotificationSettingsWidgetState
                         style: theme.primaryTextTheme.body1,
                       ),
                       trailing: Switch(
-                        onChanged: (newValue) {
-                          this.toggleNotifications(context, newValue);
+                        onChanged: (bool newValue) {
+                          toggleNotifications(context, newValue);
                         },
-                        value: isUserPreferencesFetched
-                            ? (userPreferenceState as UserPreferencesFetched)
-                                    .userPreferenceSettings
-                                    ?.dailyJournalReminderSettings
-                                    ?.isEnabled ??
-                                false
-                            : false,
+                        value: (userPreferenceState as UserPreferencesFetched)
+                                ?.userPreferenceSettings
+                                ?.dailyJournalReminderSettings
+                                ?.isEnabled ??
+                            false || false,
                       )),
                   ListTile(
                       title: Text(
@@ -84,14 +82,14 @@ class _NotificationSettingsWidgetState
     );
   }
 
-  void toggleNotifications(BuildContext context, bool isEnabled) async {
+  Future<void> toggleNotifications(BuildContext context, bool isEnabled) async {
     final NotificationBloc notificationBloc =
         BlocProvider.of<NotificationBloc>(context);
 
     final UserPreferenceBloc userPreferenceBloc =
         BlocProvider.of<UserPreferenceBloc>(context);
     if (userPreferenceBloc.state is UserPreferencesFetched) {
-      final existingReminderSettings =
+      final DailyJournalReminderSettings existingReminderSettings =
           (userPreferenceBloc.state as UserPreferencesFetched)
               .userPreferenceSettings
               .dailyJournalReminderSettings;
@@ -108,27 +106,27 @@ class _NotificationSettingsWidgetState
     }
   }
 
-  void setNotificationTime(BuildContext context) async {
+  Future<void> setNotificationTime(BuildContext context) async {
     final UserPreferenceBloc userPreferenceBloc =
         BlocProvider.of<UserPreferenceBloc>(context);
     final NotificationBloc notificationBloc =
         BlocProvider.of<NotificationBloc>(context);
-    final initialTime = userPreferenceBloc.state is UserPreferencesFetched
+    final DateTime initialTime = userPreferenceBloc.state is UserPreferencesFetched
         ? (userPreferenceBloc.state as UserPreferencesFetched)
             .userPreferenceSettings
             .dailyJournalReminderSettings
             .notificationTime
         : DateTime.now();
-    final time = await showTimePicker(
+    final TimeOfDay time = await showTimePicker(
         context: context, initialTime: TimeOfDay.fromDateTime(initialTime));
     if (time == null) {
       return;
     }
-    final now = DateTime.now();
-    final notificationTime =
+    final DateTime now = DateTime.now();
+    final DateTime notificationTime =
         DateTime(now.year, now.month, now.day, time.hour, time.minute);
 
-    final dailyReminderSettings =
+    final DailyJournalReminderSettings dailyReminderSettings =
         (userPreferenceBloc.state as UserPreferencesFetched)
             .userPreferenceSettings
             .dailyJournalReminderSettings

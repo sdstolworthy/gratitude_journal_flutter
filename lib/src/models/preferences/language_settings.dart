@@ -3,10 +3,26 @@ import 'dart:convert';
 import 'package:grateful/src/models/preferences/user_preference.dart';
 
 class UserLanguageSettings extends UserPreference {
-  final String locale;
   UserLanguageSettings({
     this.locale,
   });
+
+  final String locale;
+
+  @override
+  int get hashCode => locale.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+
+    return other is UserLanguageSettings && other.locale == locale;
+  }
+
+  @override
+  String toString() => 'UserLanguageSettings locale: $locale';
 
   UserLanguageSettings copyWith({
     String locale,
@@ -16,35 +32,25 @@ class UserLanguageSettings extends UserPreference {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'locale': locale,
     };
   }
 
   static UserLanguageSettings fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+    if (map == null) {
+      return null;
+    }
 
     return UserLanguageSettings(
-      locale: map['locale'],
+      locale: map['locale'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
   static UserLanguageSettings fromJson(String source) =>
-      fromMap(json.decode(source));
-
-  @override
-  String toString() => 'UserLanguageSettings locale: $locale';
-
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is UserLanguageSettings && o.locale == locale;
-  }
-
-  @override
-  int get hashCode => locale.hashCode;
+      fromMap(json.decode(source) as Map<String, dynamic>);
 }

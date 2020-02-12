@@ -5,21 +5,25 @@ import 'package:meta/meta.dart';
 abstract class FileUploadEvent {}
 
 class SubscribeToProgress extends FileUploadEvent {
-  final StorageUploadTask uploadTask;
   SubscribeToProgress(this.uploadTask);
+
+  final StorageUploadTask uploadTask;
 }
 
 class UploadCompleted extends FileUploadEvent {
-  final String imageUrl;
   UploadCompleted(this.imageUrl);
+
+  final String imageUrl;
 }
 
 class OnProgress extends FileUploadEvent {
-  final double progress;
   OnProgress(this.progress);
+
+  final double progress;
 }
 
 class BeginFileUpload extends FileUploadEvent {
-  final Future<dynamic> future;
   BeginFileUpload(this.future);
+
+  final Future<dynamic> future;
 }

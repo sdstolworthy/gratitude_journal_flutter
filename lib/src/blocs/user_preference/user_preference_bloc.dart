@@ -10,12 +10,9 @@ part 'user_preference_state.dart';
 
 class UserPreferenceBloc
     extends Bloc<UserPreferenceEvent, UserPreferenceState> {
-  UserPreferenceRepository preferenceRepository;
-
   UserPreferenceBloc({@required this.preferenceRepository});
 
-  @override
-  UserPreferenceState get initialState => UserPreferenceInitial();
+  UserPreferenceRepository preferenceRepository;
 
   @override
   Stream<UserPreferenceState> mapEventToState(
@@ -23,15 +20,19 @@ class UserPreferenceBloc
   ) async* {
     if (event is FetchUserPreferences) {
       try {
-        final settings = await preferenceRepository.getUserSettings();
+        final UserPreferenceSettings settings =
+            await preferenceRepository.getUserSettings();
         yield UserPreferencesFetched(settings);
       } catch (e) {
         yield UserPreferencesFetched(UserPreferenceSettings());
       }
     } else if (event is UpdateUserPreference) {
-      final settings =
+      final UserPreferenceSettings settings =
           await preferenceRepository.updateUserPreference(event.userPreference);
       yield UserPreferencesFetched(settings);
     }
   }
+
+  @override
+  UserPreferenceState get initialState => UserPreferenceInitial();
 }

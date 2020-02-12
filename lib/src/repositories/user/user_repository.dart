@@ -3,9 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserRepository {
-  final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn;
-  final FirebaseAnalytics _analytics;
   UserRepository(
       {FirebaseAuth firebaseAuth,
       GoogleSignIn googleSignIn,
@@ -13,6 +10,10 @@ class UserRepository {
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn(),
         _analytics = analytics ?? FirebaseAnalytics();
+
+  final FirebaseAnalytics _analytics;
+  final FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
 
   Future<FirebaseUser> signInWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -35,11 +36,12 @@ class UserRepository {
   }
 
   Future<void> signOut() async {
-    return Future.wait([_firebaseAuth.signOut(), _googleSignIn.signOut()]);
+    return Future.wait<void>(
+        <Future<dynamic>>[_firebaseAuth.signOut(), _googleSignIn.signOut()]);
   }
 
   Future<bool> isSignedIn() async {
-    final currentUser = await _firebaseAuth.currentUser();
+    final FirebaseUser currentUser = await _firebaseAuth.currentUser();
     return currentUser != null;
   }
 
@@ -75,11 +77,5 @@ class UserRepository {
     assert(user.uid == currentUser.uid);
 
     return 'signInWithGoogle succeeded: $user';
-  }
-
-  void signOutWithGoogle() async {
-    await _googleSignIn.signOut();
-
-    print("User Sign Out");
   }
 }

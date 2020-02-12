@@ -1,22 +1,46 @@
+//ignore_for_file:avoid_classes_with_only_static_members
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-ThemeData gratefulTheme(ThemeData appTheme) {
+class AvailableColorSchemes {
+  static ColorScheme blueScheme = ColorScheme.fromSwatch(
+      backgroundColor: Colors.blue[900],
+      accentColor: Colors.blue[600],
+      brightness: Brightness.light,
+      cardColor: Colors.lightBlue[900],
+      errorColor: Colors.deepOrange[800],
+      primarySwatch: Colors.blue);
+
+  static ColorScheme yellowScheme = ColorScheme.fromSwatch(
+      backgroundColor: Colors.yellow[900],
+      accentColor: Colors.yellow[600],
+      brightness: Brightness.light,
+      cardColor: Colors.amber[900],
+      errorColor: Colors.deepOrange[800],
+      primarySwatch: Colors.yellow);
+
+  static ColorScheme greenScheme = ColorScheme.fromSwatch(
+      backgroundColor: Colors.green[900],
+      accentColor: Colors.green[600],
+      brightness: Brightness.light,
+      cardColor: Colors.lightGreen[900],
+      errorColor: Colors.deepOrange[800],
+      primarySwatch: Colors.green);
+
+  static ColorScheme brownScheme = ColorScheme.fromSwatch(
+      backgroundColor: Colors.brown[900],
+      accentColor: Colors.brown[600],
+      brightness: Brightness.light,
+      cardColor: Colors.brown[100],
+      errorColor: Colors.deepOrange[800],
+      primarySwatch: Colors.brown);
+}
+
+ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
   final ThemeData theme = ThemeData(brightness: Brightness.light);
 
-  final Color primaryColor = Colors.blue[900];
-  final Color accentColor = Colors.blue[600];
-  final Color errorColor = Colors.deepOrange[800];
-  final Color secondaryColor = Colors.lightBlue[900];
-  final MaterialColor primarySwatch = Colors.blue;
-
-  final ColorScheme colorScheme = ColorScheme.fromSwatch(
-      backgroundColor: primaryColor,
-      accentColor: accentColor,
-      brightness: Brightness.light,
-      cardColor: secondaryColor,
-      errorColor: errorColor,
-      primarySwatch: primarySwatch);
+  colorScheme ??= AvailableColorSchemes.blueScheme;
 
   return theme
       .copyWith(
@@ -24,16 +48,16 @@ ThemeData gratefulTheme(ThemeData appTheme) {
             backgroundColor: colorScheme.secondaryVariant),
         appBarTheme: AppBarTheme(
             iconTheme: IconThemeData(color: colorScheme.onBackground),
-            color: primaryColor),
-        backgroundColor: primaryColor,
-        cardTheme: CardTheme(color: primaryColor, elevation: 2.0),
-        buttonColor: accentColor,
+            color: colorScheme.background),
+        backgroundColor: colorScheme.background,
+        cardTheme: CardTheme(color: colorScheme.primary, elevation: 2.0),
+        buttonColor: colorScheme.secondary,
         buttonTheme: ButtonThemeData(
-          buttonColor: accentColor,
+          buttonColor: colorScheme.secondary,
           textTheme: ButtonTextTheme.primary,
         ),
         colorScheme: colorScheme,
-        canvasColor: secondaryColor,
+        canvasColor: colorScheme.secondary,
         inputDecorationTheme: appTheme.inputDecorationTheme.copyWith(
             labelStyle:
                 TextStyle(color: Colors.white70, fontFamily: 'Raleway')),

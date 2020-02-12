@@ -56,7 +56,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
         floating: true,
         elevation: 0.0,
         title: Text(localizations.previousEntries,
-            style: theme.primaryTextTheme.title),
+            style: theme.primaryTextTheme.title
+                .copyWith(color: theme.colorScheme.onPrimary)),
       )
     ];
   }
@@ -80,7 +81,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
     return false;
   }
 
-  Widget renderFab() {
+  Widget renderFab(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return ScaleTransition(
       scale: _hideFabAnimation,
       alignment: Alignment.bottomRight,
@@ -88,7 +90,10 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
         onPressed: () {
           BlocProvider.of<PageViewBloc>(context).add(SetPage(0));
         },
-        child: Icon(Icons.edit),
+        child: Icon(
+          Icons.edit,
+          color: theme.colorScheme.onSecondary,
+        ),
       ),
     );
   }
@@ -107,7 +112,7 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
         },
         child: Scaffold(
             key: _scaffoldKey,
-            floatingActionButton: renderFab(),
+            floatingActionButton: renderFab(context),
             body: NotificationListener<ScrollNotification>(
               onNotification: _handleScrollNotification,
               child: NestedScrollView(

@@ -15,7 +15,7 @@ class AppBlocProviders extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext _) {
+  Widget build(BuildContext context) {
     final BiometricBloc biometricBloc = BiometricBloc(BiometricRepository());
     final AuthenticationBloc authBloc =
         AuthenticationBloc(UserRepository(), biometricBloc);

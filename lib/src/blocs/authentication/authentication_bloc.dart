@@ -21,7 +21,7 @@ class AuthenticationBloc
       biometricBloc.add(FetchBiometricsStatus());
       final Completer<void> c = Completer<void>();
       biometricBloc.listen((BiometricState data) {
-        if (data is BiometricStatusFetched) {
+        if (data is BiometricStatusFetched && !c.isCompleted) {
           c.complete();
         }
       });

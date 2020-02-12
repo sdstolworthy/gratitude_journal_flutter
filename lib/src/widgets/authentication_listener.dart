@@ -26,6 +26,10 @@ class AuthenticationListener extends StatelessWidget {
             currentState is Unauthenticated) {
           return true;
         }
+        if (previousState is! RequiresBiometricsForAuthentication &&
+            currentState is RequiresBiometricsForAuthentication) {
+          return true;
+        }
         return false;
       },
       listener: (BuildContext context, AuthenticationState state) {
@@ -34,7 +38,8 @@ class AuthenticationListener extends StatelessWidget {
                 .map((LoadingTask hook) => hook.execute())
                 .toList();
         try {
-          if (state is Unauthenticated) {
+          if (state is Unauthenticated ||
+              state is RequiresBiometricsForAuthentication) {
             rootNavigationService.returnToLogin();
           } else if (state is Authenticated) {
             Future.wait<void>(<Future<dynamic>>[

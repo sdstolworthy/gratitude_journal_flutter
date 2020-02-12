@@ -6,16 +6,16 @@ import 'package:local_auth/local_auth.dart';
 Future<void> showBiometricsDialog(
     {@required BuildContext context,
     @required void Function(bool authenticationStatus) onComplete}) async {
-  final LocalAuthentication localAuthentication = new LocalAuthentication();
+  final LocalAuthentication localAuthentication = LocalAuthentication();
 
-  final localizations = AppLocalizations.of(context);
+  final AppLocalizations localizations = AppLocalizations.of(context);
   try {
     localAuthentication.stopAuthentication();
   } catch (e) {
     print('Could not stop authentication');
   }
   try {
-    final didAuthenticate =
+    final bool didAuthenticate =
         await localAuthentication.authenticateWithBiometrics(
             localizedReason: localizations.verifyBiometrics);
     onComplete(didAuthenticate);

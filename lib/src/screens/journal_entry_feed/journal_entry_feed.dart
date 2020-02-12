@@ -30,8 +30,6 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
   Completer<void> _refreshCompleter;
   AnimationController _hideFabAnimation;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   void initState() {
     _refreshCompleter = Completer<void>();
@@ -43,8 +41,9 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
 
   @override
   void dispose() {
-    super.dispose();
+    _hideFabAnimation.dispose();
     _refreshCompleter.complete();
+    super.dispose();
   }
 
   List<Widget> _renderAppBar(BuildContext context, bool isScrolled) {
@@ -110,60 +109,55 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
             _refreshCompleter = Completer<void>();
           }
         },
-        child: Scaffold(
-            key: _scaffoldKey,
-            floatingActionButton: renderFab(context),
-            body: NotificationListener<ScrollNotification>(
-              onNotification: _handleScrollNotification,
-              child: NestedScrollView(
-                headerSliverBuilder: _renderAppBar,
-                body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
-                  bloc: _journalFeedBloc,
-                  builder: (BuildContext context, JournalFeedState state) {
-                    if (state is JournalFeedUnloaded) {
-                      _journalFeedBloc.add(FetchFeed());
-                      return const BackgroundGradientProvider(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    } else if (state is JournalFeedFetched) {
-                      state.journalEntries
-                          .sort(_sortJournalEntriesDescendingDate);
-                      final Map<int, List<JournalEntry>> sortedEntriesYearMap =
-                          _groupEntriesByYear(state.journalEntries);
+        child: NotificationListener<ScrollNotification>(
+          onNotification: _handleScrollNotification,
+          child: NestedScrollView(
+            headerSliverBuilder: _renderAppBar,
+            body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
+              bloc: _journalFeedBloc,
+              builder: (BuildContext context, JournalFeedState state) {
+                if (state is JournalFeedUnloaded) {
+                  _journalFeedBloc.add(FetchFeed());
+                  return const BackgroundGradientProvider(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (state is JournalFeedFetched) {
+                  state.journalEntries.sort(_sortJournalEntriesDescendingDate);
+                  final Map<int, List<JournalEntry>> sortedEntriesYearMap =
+                      _groupEntriesByYear(state.journalEntries);
 
-                      final List<Widget> compiledList =
-                          _getJournalEntryListItemWidgets(
-                              context, sortedEntriesYearMap);
-                      return BackgroundGradientProvider(
-                        child: SafeArea(
-                            bottom: false,
-                            child: RefreshIndicator(
-                              onRefresh: () {
-                                _refreshCompleter = Completer<void>();
+                  final List<Widget> compiledList =
+                      _getJournalEntryListItemWidgets(
+                          context, sortedEntriesYearMap);
+                  return BackgroundGradientProvider(
+                    child: SafeArea(
+                        bottom: false,
+                        child: RefreshIndicator(
+                          onRefresh: () {
+                            _refreshCompleter = Completer<void>();
 
-                                _journalFeedBloc.add(FetchFeed());
-                                return _refreshCompleter.future;
+                            _journalFeedBloc.add(FetchFeed());
+                            return _refreshCompleter.future;
+                          },
+                          child: ScrollConfiguration(
+                            behavior: NoGlowScroll(showLeading: false),
+                            child: ListView.builder(
+                              itemBuilder: (BuildContext context, int index) {
+                                return compiledList[index];
                               },
-                              child: ScrollConfiguration(
-                                behavior: NoGlowScroll(showLeading: false),
-                                child: ListView.builder(
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return compiledList[index];
-                                  },
-                                  itemCount: compiledList.length,
-                                ),
-                              ),
-                            )),
-                      );
-                    }
-                    return Container();
-                  },
-                ),
-              ),
-            )));
+                              itemCount: compiledList.length,
+                            ),
+                          ),
+                        )),
+                  );
+                }
+                return Container();
+              },
+            ),
+          ),
+        ));
   }
 
   int _sortJournalEntriesDescendingDate(JournalEntry a, JournalEntry b) {

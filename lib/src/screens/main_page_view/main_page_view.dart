@@ -1,17 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grateful/src/blocs/page_view/bloc.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
 import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
 import 'package:grateful/src/screens/settings/settings_screen.dart';
 import 'package:grateful/src/widgets/navigation_bar.dart';
 
-enum Page { entryEdit, entryFeed }
-
-const List<Page> _pageOrder = <Page>[Page.entryEdit, Page.entryFeed];
+enum Page { entryEdit, entryFeed, settings }
 
 class JournalPageArguments {
   JournalPageArguments({Page page, this.entry})
@@ -24,10 +20,10 @@ class JournalPageArguments {
 }
 
 class JournalPageView extends StatefulWidget {
-  const JournalPageView({Page initialPage, this.journalEntry})
-      : initialPage = initialPage ?? Page.entryEdit;
+  const JournalPageView({int initialPage, this.journalEntry})
+      : initialPage = initialPage ?? 0;
 
-  final Page initialPage;
+  final int initialPage;
   final JournalEntry journalEntry;
 
   @override
@@ -37,15 +33,15 @@ class JournalPageView extends StatefulWidget {
 class _JournalPageView extends State<JournalPageView> {
   StreamSubscription<void> activeCanceller;
   bool isActive;
-
-  PageViewBloc _pageViewBloc = PageViewBloc();
+  int activePage;
+  PageController pageController;
 
   @override
   void initState() {
+    activePage = widget.initialPage ?? 0;
     setActive(true);
-    _pageViewBloc =
-        PageViewBloc(initialPage: _pageOrder.indexOf(widget.initialPage) ?? 0);
     super.initState();
+    pageController = PageController(initialPage: widget.initialPage);
   }
 
   void setActive(bool active) {
@@ -68,42 +64,34 @@ class _JournalPageView extends State<JournalPageView> {
 
   @override
   Widget build(BuildContext c) {
-    return BlocProvider<PageViewBloc>(
-        create: (BuildContext context) => _pageViewBloc,
-        child: BlocBuilder<PageViewBloc, PageViewState>(
-            bloc: _pageViewBloc,
-            builder: (BuildContext context, PageViewState state) {
-              _pageViewBloc.pageController.addListener(() {
-                /// When changing pages, hide the keyboard
-                FocusScope.of(context).requestFocus(FocusNode());
+    return GestureDetector(
+      onTapDown: (_) {
+        setActive(true);
+      },
+      child: SafeArea(
+        child: Scaffold(
+          bottomNavigationBar: NavigationBar(
+            currentIndex: activePage,
+            onSelectTab: (int newTabIndex) async {
+              pageController.jumpToPage(newTabIndex);
+            },
+          ),
+          body: PageView(
+            controller: pageController,
+            onPageChanged: (int page) {
+              FocusScope.of(context).requestFocus(FocusNode());
+              setState(() {
+                activePage = page;
               });
-              if (state is CurrentPage) {
-                return GestureDetector(
-                  onTapDown: (_) {
-                    setActive(true);
-                  },
-                  child: Scaffold(
-                    bottomNavigationBar: NavigationBar(
-                      currentIndex: _pageViewBloc.pageController.hasClients
-                          ? _pageViewBloc.pageController.page
-                          : 0,
-                      onSelectTab: (int newTabIndex) {
-                        _pageViewBloc.pageController.jumpToPage(newTabIndex);
-                      },
-                    ),
-                    body: PageView(
-                      controller: _pageViewBloc.pageController,
-                      children: <Widget>[
-                        EditJournalEntry(item: widget.journalEntry),
-                        JournalEntryFeed(),
-                        SettingsScreen()
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            }));
+            },
+            children: <Widget>[
+              EditJournalEntry(item: widget.journalEntry),
+              JournalEntryFeed(),
+              SettingsScreen()
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

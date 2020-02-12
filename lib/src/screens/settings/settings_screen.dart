@@ -14,18 +14,16 @@ class SettingsScreen extends StatelessWidget {
     if (userPreferenceBloc is! UserPreferencesFetched) {
       userPreferenceBloc.add(FetchUserPreferences());
     }
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
-      body: BackgroundGradientProvider(
-        child: ListView(
-          children: <Widget>[
-            NotificationSettingsWidget(),
-            LanguageSettingsWidget(),
-            AppRelatedActions(),
-          ],
-        ),
+    return BackgroundGradientProvider(
+      child: ListView(
+        children: <Widget>[
+          const SizedBox(
+            height: 30,
+          ),
+          NotificationSettingsWidget(),
+          LanguageSettingsWidget(),
+          AppRelatedActions(),
+        ],
       ),
     );
   }

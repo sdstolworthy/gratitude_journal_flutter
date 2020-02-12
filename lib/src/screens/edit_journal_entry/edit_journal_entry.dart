@@ -135,29 +135,27 @@ class _EditJournalEntryState extends State<EditJournalEntry>
       headerSliverBuilder: (BuildContext context, bool isScrolled) {
         return <Widget>[_renderSliverAppBar(this.context)];
       },
-      body: Scaffold(
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: BackgroundGradientProvider(
-            child: SafeArea(
-              child: LayoutBuilder(builder:
-                  (BuildContext context, BoxConstraints layoutConstraints) {
-                return ScrollConfiguration(
-                  behavior: NoGlowScroll(showLeading: true),
-                  child: SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minHeight: layoutConstraints.maxHeight),
-                      child: IntrinsicHeight(
-                        child: child,
-                      ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: BackgroundGradientProvider(
+          child: SafeArea(
+            child: LayoutBuilder(builder:
+                (BuildContext context, BoxConstraints layoutConstraints) {
+              return ScrollConfiguration(
+                behavior: NoGlowScroll(showLeading: true),
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints:
+                        BoxConstraints(minHeight: layoutConstraints.maxHeight),
+                    child: IntrinsicHeight(
+                      child: child,
                     ),
                   ),
-                );
-              }),
-            ),
+                ),
+              );
+            }),
           ),
         ),
       ),

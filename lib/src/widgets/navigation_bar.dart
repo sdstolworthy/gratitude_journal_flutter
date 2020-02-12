@@ -8,13 +8,13 @@ class NavigationBar extends StatelessWidget {
 
   final OnSelectTab onSelectTab;
 
-  final double currentIndex;
+  final int currentIndex;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return BottomNavigationBar(
-      currentIndex: currentIndex.toInt(),
+      currentIndex: currentIndex,
       onTap: onSelectTab,
       elevation: 30,
       backgroundColor: theme.colorScheme.primaryVariant,

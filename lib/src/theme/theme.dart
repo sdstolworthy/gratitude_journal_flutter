@@ -1,6 +1,7 @@
 //ignore_for_file:avoid_classes_with_only_static_members
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AvailableColorSchemes {
@@ -41,6 +42,13 @@ ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
   final ThemeData theme = ThemeData(brightness: Brightness.light);
 
   colorScheme ??= AvailableColorSchemes.blueScheme;
+
+  try {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: colorScheme.background));
+  } catch (e) {
+    print(e);
+  }
 
   return theme
       .copyWith(

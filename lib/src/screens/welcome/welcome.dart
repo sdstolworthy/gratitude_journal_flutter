@@ -107,6 +107,7 @@ class WelcomeScreen extends StatelessWidget {
         BlocProvider.of<AuthenticationBloc>(context);
     showBiometricsDialog(
         context: context,
+        dialogPrompt: AppLocalizations.of(context).unlockJournal,
         onComplete: (bool isAuthenticated) {
           if (isAuthenticated) {
             authenticationBloc.add(Authenticate());

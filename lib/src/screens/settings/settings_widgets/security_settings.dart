@@ -43,6 +43,7 @@ class SecuritySettings extends StatelessWidget {
                             if (newValue) {
                               showBiometricsDialog(
                                   context: context,
+                                  dialogPrompt: localizations.verifyBiometrics,
                                   onComplete: (bool authStatus) {
                                     if (authStatus) {
                                       biometricsBloc

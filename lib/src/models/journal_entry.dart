@@ -94,10 +94,9 @@ class JournalEntry {
       body: map['body'] as String,
       description: map['description'] as String,
       date: _parseDate(map['date']),
-      photographs: List<NetworkPhoto>.from(
-          (map['photographs'] as Iterable<Map<String, dynamic>>)
-              ?.map<NetworkPhoto>(
-                  (Map<String, dynamic> x) => NetworkPhoto.fromMap(x))),
+      photographs: List<NetworkPhoto>.from((map['photographs'] as List<dynamic>)
+          ?.map<NetworkPhoto>((dynamic x) => NetworkPhoto.fromMap(
+              Map<String, dynamic>.from(x as Map<dynamic, dynamic>)))),
     );
   }
 

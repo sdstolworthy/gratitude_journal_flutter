@@ -5,6 +5,7 @@ import 'package:grateful/src/blocs/user_preference/user_preference_bloc.dart';
 import 'package:grateful/src/repositories/user/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/repositories/user_preferences/user_preference_repository.dart';
+import 'package:grateful/src/widgets/authentication_listener.dart';
 
 /// Combines application level bloc stores above the rest of the application
 class AppBlocProviders extends StatelessWidget {
@@ -28,7 +29,7 @@ class AppBlocProviders extends StatelessWidget {
             BlocProvider<UserPreferenceBloc>(
               create: (_) => userPreferenceBloc,
             )
-          ], child: child);
+          ], child: AuthenticationListener(child: child));
         }));
   }
 }

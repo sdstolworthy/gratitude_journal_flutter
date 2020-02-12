@@ -22,8 +22,10 @@ class _LanguagePicker extends State<LanguagePicker> {
       builder: (BuildContext context, LocalizationState state) {
         return DropdownButton<String>(
           underline: Container(),
+          itemHeight: 55,
           value: state.locale.languageCode,
-          items: AppLocalizations.availableLocalizations.map((AppLocale locale) {
+          items:
+              AppLocalizations.availableLocalizations.map((AppLocale locale) {
             return DropdownMenuItem<String>(
                 child: Text(
                   '${locale.flag} ${locale.title}',

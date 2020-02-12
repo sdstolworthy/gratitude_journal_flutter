@@ -8,12 +8,14 @@ import 'package:intl/intl.dart';
 class LanguageSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final UserPreferenceBloc userPreferenceBloc = BlocProvider.of<UserPreferenceBloc>(context);
+    final UserPreferenceBloc userPreferenceBloc =
+        BlocProvider.of<UserPreferenceBloc>(context);
     final AppLocalizations localizations = AppLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
     return BlocBuilder<UserPreferenceBloc, UserPreferenceState>(
         bloc: userPreferenceBloc,
-        builder: (BuildContext context, UserPreferenceState userPreferenceState) {
+        builder:
+            (BuildContext context, UserPreferenceState userPreferenceState) {
           if (userPreferenceState is! UserPreferencesFetched) {
             return const Center(child: CircularProgressIndicator());
           } else {
@@ -28,7 +30,7 @@ class LanguageSettingsWidget extends StatelessWidget {
                     toBeginningOfSentenceCase(localizations.language),
                     style: theme.primaryTextTheme.body1,
                   ),
-                  trailing: LanguagePicker(),
+                  trailing: const LanguagePicker(),
                 )
               ],
             );

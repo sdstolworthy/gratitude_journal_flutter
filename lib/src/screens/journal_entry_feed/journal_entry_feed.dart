@@ -102,7 +102,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
 
   @override
   Widget build(BuildContext context) {
-    final JournalFeedBloc _journalFeedBloc = BlocProvider.of<JournalFeedBloc>(context);
+    final JournalFeedBloc _journalFeedBloc =
+        BlocProvider.of<JournalFeedBloc>(context);
     return BlocListener<JournalFeedBloc, JournalFeedState>(
         bloc: _journalFeedBloc,
         listener: (BuildContext context, JournalFeedState state) {
@@ -124,8 +125,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                   builder: (BuildContext context, JournalFeedState state) {
                     if (state is JournalFeedUnloaded) {
                       _journalFeedBloc.add(FetchFeed());
-                      return BackgroundGradientProvider(
-                        child: const Center(
+                      return const BackgroundGradientProvider(
+                        child: Center(
                           child: CircularProgressIndicator(),
                         ),
                       );

@@ -13,7 +13,6 @@
 // ignore_for_file:map_value_type_not_assignable, implicit_dynamic_return, annotate_overrides
 // ignore_for_file:always_declare_return_types, implicit_dynamic_parameter
 
-import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
 final messages = new MessageLookup();

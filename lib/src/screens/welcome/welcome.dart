@@ -58,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    LanguagePicker()
+                    const LanguagePicker()
                   ],
                 ),
               ),

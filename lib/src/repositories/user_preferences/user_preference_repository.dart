@@ -50,9 +50,10 @@ class UserPreferenceRepository {
 
   UserPreferenceSettings _serializeDocumentsToUserPreferences(
       List<DocumentSnapshot> documents) {
-    final UserPreferenceSettings userPreferenceSettings = UserPreferenceSettings();
+    final UserPreferenceSettings userPreferenceSettings =
+        UserPreferenceSettings();
 
-    documents.forEach((DocumentSnapshot document) {
+    for (final DocumentSnapshot document in documents) {
       if (document.documentID == _languagePreferenceDocument) {
         userPreferenceSettings.userLanguageSettings =
             UserLanguageSettings.fromMap(document.data);
@@ -60,7 +61,7 @@ class UserPreferenceRepository {
         userPreferenceSettings.dailyJournalReminderSettings =
             DailyJournalReminderSettings.fromMap(document.data);
       }
-    });
+    }
 
     return userPreferenceSettings;
   }

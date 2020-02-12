@@ -81,9 +81,10 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   }
 
   void _initializePhotographs(JournalEntry journalEntry) {
-    journalEntry.photographs.forEach((NetworkPhoto photo) =>
-        _imageHandlerBlocs.add(ImageHandlerBloc(
-            fileRepository: fileRepository, photograph: photo)));
+    for (final NetworkPhoto photo in journalEntry.photographs) {
+      _imageHandlerBlocs.add(
+          ImageHandlerBloc(fileRepository: fileRepository, photograph: photo));
+    }
   }
 
   @override
@@ -180,30 +181,32 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   Widget _entryEditComponent(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-        Text(
-          AppLocalizations.of(context).gratefulPrompt,
-          style: Theme.of(context).primaryTextTheme.headline,
-          textAlign: TextAlign.left,
-        ),
-        DateSelectorButton(
-          onPressed: _handlePickDate,
-          selectedDate: _journalEntry.date,
-          locale: Localizations.localeOf(context),
-        ),
-        Divider(
-          color: Colors.white,
-        ),
-        const SizedBox(height: 10),
-        JournalInput(
-          onChanged: (String text) {
-            setState(() {
-              _journalEntry.body = text;
-            });
-          },
-          controller: _journalEntryController,
-        ),
-      ]),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context).gratefulPrompt,
+              style: Theme.of(context).primaryTextTheme.headline,
+              textAlign: TextAlign.left,
+            ),
+            DateSelectorButton(
+              onPressed: _handlePickDate,
+              selectedDate: _journalEntry.date,
+              locale: Localizations.localeOf(context),
+            ),
+            Divider(
+              color: Colors.white,
+            ),
+            const SizedBox(height: 10),
+            JournalInput(
+              onChanged: (String text) {
+                setState(() {
+                  _journalEntry.body = text;
+                });
+              },
+              controller: _journalEntryController,
+            ),
+          ]),
     );
   }
 

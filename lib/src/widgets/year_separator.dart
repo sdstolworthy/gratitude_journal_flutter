@@ -8,7 +8,6 @@ class YearSeparator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Theme.of(context).backgroundColor,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 7, top: 10),
         child: Row(

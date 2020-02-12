@@ -105,7 +105,7 @@ class AboutApp extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        color: theme.colorScheme.background,
         child: SafeArea(
           child: ListView.builder(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 40),

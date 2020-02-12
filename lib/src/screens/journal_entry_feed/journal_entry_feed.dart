@@ -9,7 +9,6 @@ import 'package:grateful/src/screens/journal_entry_details/journal_entry_details
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
-import 'package:grateful/src/widgets/drawer.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 import 'package:grateful/src/widgets/journal_feed_list_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,8 +30,6 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
   Completer<void> _refreshCompleter;
   AnimationController _hideFabAnimation;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   void initState() {
     _refreshCompleter = Completer<void>();
@@ -44,8 +41,9 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
 
   @override
   void dispose() {
-    super.dispose();
+    _hideFabAnimation.dispose();
     _refreshCompleter.complete();
+    super.dispose();
   }
 
   List<Widget> _renderAppBar(BuildContext context, bool isScrolled) {
@@ -57,13 +55,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
         floating: true,
         elevation: 0.0,
         title: Text(localizations.previousEntries,
-            style: theme.primaryTextTheme.title),
-        leading: FlatButton(
-          child: Icon(Icons.menu, color: theme.appBarTheme.iconTheme.color),
-          onPressed: () {
-            _scaffoldKey.currentState.openDrawer();
-          },
-        ),
+            style: theme.primaryTextTheme.title
+                .copyWith(color: theme.colorScheme.onPrimary)),
       )
     ];
   }
@@ -87,7 +80,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
     return false;
   }
 
-  Widget renderFab() {
+  Widget renderFab(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return ScaleTransition(
       scale: _hideFabAnimation,
       alignment: Alignment.bottomRight,
@@ -95,7 +89,10 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
         onPressed: () {
           BlocProvider.of<PageViewBloc>(context).add(SetPage(0));
         },
-        child: Icon(Icons.edit),
+        child: Icon(
+          Icons.edit,
+          color: theme.colorScheme.onSecondary,
+        ),
       ),
     );
   }
@@ -112,60 +109,55 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
             _refreshCompleter = Completer<void>();
           }
         },
-        child: Scaffold(
-            key: _scaffoldKey,
-            floatingActionButton: renderFab(),
-            drawer: AppDrawer(),
-            body: NotificationListener<ScrollNotification>(
-              onNotification: _handleScrollNotification,
-              child: NestedScrollView(
-                headerSliverBuilder: _renderAppBar,
-                body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
-                  bloc: _journalFeedBloc,
-                  builder: (BuildContext context, JournalFeedState state) {
-                    if (state is JournalFeedUnloaded) {
-                      _journalFeedBloc.add(FetchFeed());
-                      return const BackgroundGradientProvider(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    } else if (state is JournalFeedFetched) {
-                      state.journalEntries
-                          .sort(_sortJournalEntriesDescendingDate);
-                      final Map<int, List<JournalEntry>> sortedEntriesYearMap =
-                          _groupEntriesByYear(state.journalEntries);
+        child: NotificationListener<ScrollNotification>(
+          onNotification: _handleScrollNotification,
+          child: NestedScrollView(
+            headerSliverBuilder: _renderAppBar,
+            body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
+              bloc: _journalFeedBloc,
+              builder: (BuildContext context, JournalFeedState state) {
+                if (state is JournalFeedUnloaded) {
+                  _journalFeedBloc.add(FetchFeed());
+                  return const BackgroundGradientProvider(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (state is JournalFeedFetched) {
+                  state.journalEntries.sort(_sortJournalEntriesDescendingDate);
+                  final Map<int, List<JournalEntry>> sortedEntriesYearMap =
+                      _groupEntriesByYear(state.journalEntries);
 
-                      final List<Widget> compiledList =
-                          _getJournalEntryListItemWidgets(sortedEntriesYearMap);
-                      return BackgroundGradientProvider(
-                        child: SafeArea(
-                            bottom: false,
-                            child: RefreshIndicator(
-                              onRefresh: () {
-                                _refreshCompleter = Completer<void>();
+                  final List<Widget> compiledList =
+                      _getJournalEntryListItemWidgets(
+                          context, sortedEntriesYearMap);
+                  return BackgroundGradientProvider(
+                    child: SafeArea(
+                        bottom: false,
+                        child: RefreshIndicator(
+                          onRefresh: () {
+                            _refreshCompleter = Completer<void>();
 
-                                _journalFeedBloc.add(FetchFeed());
-                                return _refreshCompleter.future;
+                            _journalFeedBloc.add(FetchFeed());
+                            return _refreshCompleter.future;
+                          },
+                          child: ScrollConfiguration(
+                            behavior: NoGlowScroll(showLeading: false),
+                            child: ListView.builder(
+                              itemBuilder: (BuildContext context, int index) {
+                                return compiledList[index];
                               },
-                              child: ScrollConfiguration(
-                                behavior: NoGlowScroll(showLeading: false),
-                                child: ListView.builder(
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return compiledList[index];
-                                  },
-                                  itemCount: compiledList.length,
-                                ),
-                              ),
-                            )),
-                      );
-                    }
-                    return Container();
-                  },
-                ),
-              ),
-            )));
+                              itemCount: compiledList.length,
+                            ),
+                          ),
+                        )),
+                  );
+                }
+                return Container();
+              },
+            ),
+          ),
+        ));
   }
 
   int _sortJournalEntriesDescendingDate(JournalEntry a, JournalEntry b) {
@@ -200,7 +192,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
   }
 
   List<Widget> _getJournalEntryListItemWidgets(
-      Map<int, List<JournalEntry>> entriesByYear) {
+      BuildContext context, Map<int, List<JournalEntry>> entriesByYear) {
+    final ThemeData theme = Theme.of(context);
     return entriesByYear.keys.fold<List<Widget>>(<Widget>[],
         (List<Widget> previousEntries, int currentEntry) {
       return previousEntries
@@ -215,9 +208,9 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                     colors: <Color>[
-                      Colors.blue[900].withOpacity(opacity),
-                      Colors.blue[900].withOpacity(0.8 * opacity),
-                      Colors.blue[900].withOpacity(0.0)
+                      theme.colorScheme.background.withOpacity(opacity),
+                      theme.colorScheme.background.withOpacity(0.8 * opacity),
+                      theme.colorScheme.background.withOpacity(0.0)
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,

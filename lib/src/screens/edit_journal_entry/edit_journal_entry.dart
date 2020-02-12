@@ -17,6 +17,7 @@ import 'package:grateful/src/widgets/background_gradient_provider.dart';
 import 'package:grateful/src/widgets/date_select_button.dart';
 import 'package:grateful/src/widgets/image_uploader.dart';
 import 'package:grateful/src/widgets/journal_entry_input.dart';
+import 'package:grateful/src/widgets/navigation_bar.dart';
 import 'package:grateful/src/widgets/no_glow_configuration.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -123,7 +124,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                 _renderAddPhotoButton(context),
                 _renderSaveCheck(context),
               ],
-            )
+            ),
           ],
         );
       }),

@@ -8,7 +8,7 @@ import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/models/photograph.dart';
 import 'package:grateful/src/repositories/journal_entry/journal_entry_repository.dart';
 import 'package:grateful/src/repositories/analytics/analytics_repository.dart';
-import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
+import 'package:grateful/src/screens/main_page_view/main_page_view.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';

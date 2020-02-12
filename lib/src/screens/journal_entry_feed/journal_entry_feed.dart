@@ -9,7 +9,6 @@ import 'package:grateful/src/screens/journal_entry_details/journal_entry_details
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
-import 'package:grateful/src/widgets/drawer.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 import 'package:grateful/src/widgets/journal_feed_list_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,12 +57,6 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
         elevation: 0.0,
         title: Text(localizations.previousEntries,
             style: theme.primaryTextTheme.title),
-        leading: FlatButton(
-          child: Icon(Icons.menu, color: theme.appBarTheme.iconTheme.color),
-          onPressed: () {
-            _scaffoldKey.currentState.openDrawer();
-          },
-        ),
       )
     ];
   }
@@ -115,7 +108,6 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
         child: Scaffold(
             key: _scaffoldKey,
             floatingActionButton: renderFab(),
-            drawer: AppDrawer(),
             body: NotificationListener<ScrollNotification>(
               onNotification: _handleScrollNotification,
               child: NestedScrollView(

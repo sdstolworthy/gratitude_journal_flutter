@@ -6,6 +6,8 @@ import 'package:grateful/src/blocs/page_view/bloc.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
 import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
+import 'package:grateful/src/screens/settings/settings_screen.dart';
+import 'package:grateful/src/widgets/navigation_bar.dart';
 
 enum Page { entryEdit, entryFeed }
 
@@ -80,15 +82,30 @@ class _JournalPageView extends State<JournalPageView> {
                   onTapDown: (_) {
                     setActive(true);
                   },
-                  child: Stack(children: <Widget>[
-                    PageView(
-                      controller: _pageViewBloc.pageController,
-                      children: <Widget>[
-                        EditJournalEntry(item: widget.journalEntry),
-                        JournalEntryFeed(),
-                      ],
-                    ),
-                  ]),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Stack(children: <Widget>[
+                          PageView(
+                            controller: _pageViewBloc.pageController,
+                            children: <Widget>[
+                              EditJournalEntry(item: widget.journalEntry),
+                              JournalEntryFeed(),
+                              SettingsScreen()
+                            ],
+                          ),
+                        ]),
+                      ),
+                      NavigationBar(
+                        currentIndex: _pageViewBloc.pageController.hasClients
+                            ? _pageViewBloc.pageController.page
+                            : 0,
+                        onSelectTab: (int newTabIndex) {
+                          _pageViewBloc.pageController.jumpToPage(newTabIndex);
+                        },
+                      ),
+                    ],
+                  ),
                 );
               } else {
                 return Container();

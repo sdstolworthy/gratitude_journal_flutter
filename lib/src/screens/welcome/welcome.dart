@@ -67,7 +67,8 @@ class WelcomeScreen extends StatelessWidget {
                                 ],
                               ),
                               if (authenticationState
-                                  is RequiresBiometricsForAuthentication)
+                                      is RequiresBiometricsForAuthentication ||
+                                  authenticationState is Authenticated)
                                 Row(
                                   children: <Widget>[
                                     SizedBox(

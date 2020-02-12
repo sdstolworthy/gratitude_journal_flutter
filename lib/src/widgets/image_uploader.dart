@@ -22,7 +22,6 @@ class ImageUploader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return BlocBuilder<ImageHandlerBloc, ImageHandlerState>(
         builder: (BuildContext context, ImageHandlerState state) {
           if (state is FileUploaded) {
@@ -55,8 +54,7 @@ class ImageUploader extends StatelessWidget {
                     child: CircularProgressIndicator(
                       backgroundColor: Colors.black38,
                       value: state.fileProgress,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          theme.colorScheme.onBackground),
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   ),
                 ))

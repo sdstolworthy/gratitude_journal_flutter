@@ -8,7 +8,7 @@ import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/models/photograph.dart';
 import 'package:grateful/src/repositories/journal_entry/journal_entry_repository.dart';
 import 'package:grateful/src/repositories/analytics/analytics_repository.dart';
-import 'package:grateful/src/screens/main_page_view/main_page_view.dart';
+import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
@@ -123,7 +123,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                               AppLocalizations.of(context).deleteEntryYes,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: theme.colorScheme.error)))
+                                  color: Colors.red[900])))
                     ],
                   );
                 });
@@ -132,7 +132,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
         IconButton(
           icon: Icon(
             Icons.edit,
-            color: theme.colorScheme.onBackground,
+            color: Colors.white,
           ),
           onPressed: () {
             rootNavigationService.navigateTo(FlutterAppRoutes.journalPageView,
@@ -141,7 +141,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
         ),
         IconButton(
           icon: Icon(Icons.share),
-          color: theme.colorScheme.onBackground,
+          color: Colors.white,
           onPressed: () {
             Share.share(_getShareText(context, journalEntry));
           },
@@ -176,21 +176,19 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
               child: AnimatedBuilder(
                   animation: _animation,
                   builder: (BuildContext context, Widget animatedWidget) {
-                    return LayoutBuilder(builder: (BuildContext context,
-                        BoxConstraints viewportConstraints) {
+                    return LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints viewportConstraints) {
                       return BackgroundGradientProvider(
                         child: SafeArea(
                           bottom: false,
                           child: NestedScrollView(
-                            headerSliverBuilder:
-                                (BuildContext context, bool isScrolled) {
+                            headerSliverBuilder: (BuildContext context, bool isScrolled) {
                               return <Widget>[_renderAppBar(context)].toList();
                             },
                             body: ListView(
                               children: <Widget>[
                                 _renderPhotoSlider(),
                                 _renderContentSleigh(
-                                    context: context,
                                     child: Padding(
                                       padding: const EdgeInsets.all(20),
                                       child: IntrinsicHeight(
@@ -234,10 +232,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
   }
 
   Widget _renderContentSleigh(
-      {@required Widget child,
-      @required BoxConstraints constraints,
-      @required BuildContext context}) {
-    final ThemeData theme = Theme.of(context);
+      {@required Widget child, @required BoxConstraints constraints}) {
     return FractionalTranslation(
         translation: _animation.value,
         child: Container(
@@ -254,7 +249,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20)),
-                color: theme.colorScheme.onBackground),
+                color: Colors.white),
             child: child));
   }
 
@@ -284,8 +279,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                                 ),
                               );
                             },
-                            imageBuilder: (BuildContext context,
-                                ImageProvider<dynamic> image) {
+                            imageBuilder: (BuildContext context, ImageProvider<dynamic> image) {
                               return Material(
                                 color: Colors.transparent,
                                 child: InkWell(

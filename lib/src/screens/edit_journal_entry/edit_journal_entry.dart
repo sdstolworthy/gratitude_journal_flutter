@@ -123,7 +123,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                 _renderAddPhotoButton(context),
                 _renderSaveCheck(context),
               ],
-            ),
+            )
           ],
         );
       }),
@@ -135,27 +135,29 @@ class _EditJournalEntryState extends State<EditJournalEntry>
       headerSliverBuilder: (BuildContext context, bool isScrolled) {
         return <Widget>[_renderSliverAppBar(this.context)];
       },
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: BackgroundGradientProvider(
-          child: SafeArea(
-            child: LayoutBuilder(builder:
-                (BuildContext context, BoxConstraints layoutConstraints) {
-              return ScrollConfiguration(
-                behavior: NoGlowScroll(showLeading: true),
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: layoutConstraints.maxHeight),
-                    child: IntrinsicHeight(
-                      child: child,
+      body: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: BackgroundGradientProvider(
+            child: SafeArea(
+              child: LayoutBuilder(builder:
+                  (BuildContext context, BoxConstraints layoutConstraints) {
+                return ScrollConfiguration(
+                  behavior: NoGlowScroll(showLeading: true),
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minHeight: layoutConstraints.maxHeight),
+                      child: IntrinsicHeight(
+                        child: child,
+                      ),
                     ),
                   ),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ),
         ),
       ),
@@ -177,7 +179,6 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   }
 
   Widget _entryEditComponent(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -185,7 +186,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           children: <Widget>[
             Text(
               AppLocalizations.of(context).gratefulPrompt,
-              style: theme.primaryTextTheme.headline,
+              style: Theme.of(context).primaryTextTheme.headline,
               textAlign: TextAlign.left,
             ),
             DateSelectorButton(
@@ -194,7 +195,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
               locale: Localizations.localeOf(context),
             ),
             Divider(
-              color: theme.colorScheme.onBackground,
+              color: Colors.white,
             ),
             const SizedBox(height: 10),
             JournalInput(
@@ -210,7 +211,6 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   }
 
   Widget _renderSliverAppBar(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return SliverAppBar(
       expandedHeight: 0,
       floating: false,
@@ -221,7 +221,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           FlatButton(
             child: Icon(
               Icons.clear,
-              color: theme.colorScheme.onBackground,
+              color: Colors.white,
             ),
             onPressed: clearEditState,
           )
@@ -247,17 +247,16 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     );
   }
 
-  Widget _renderSaveCheck(BuildContext context) {
+  Widget _renderSaveCheck(BuildContext saveContext) {
     final bool isJournalEntryNull = _journalEntry.body == null;
-    final ThemeData theme = Theme.of(context);
     return IconButton(
         padding: const EdgeInsets.all(50),
         icon: Icon(Icons.check, size: 40),
-        disabledColor: theme.colorScheme.onBackground.withOpacity(0.6),
+        disabledColor: Colors.white38,
         onPressed: isJournalEntryNull
             ? null
             : () {
-                _handleSavePress(context);
+                _handleSavePress(saveContext);
               });
   }
 
@@ -330,7 +329,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   Widget _renderAddPhotoButton(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
-    final ThemeData theme = Theme.of(context);
+
     return FlatButton(
         onPressed: () {
           _handleAddPhotoPress(context);
@@ -340,7 +339,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           children: <Widget>[
             Icon(
               Icons.add_a_photo,
-              color: theme.colorScheme.onBackground,
+              color: Colors.white,
             ),
             const SizedBox(width: 15),
             Text(

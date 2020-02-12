@@ -10,7 +10,6 @@ class DeletableResource extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Stack(
       fit: StackFit.passthrough,
       children: <Widget>[
@@ -20,7 +19,7 @@ class DeletableResource extends StatelessWidget {
           top: 3,
           child: Container(
             decoration: BoxDecoration(
-                color: theme.colorScheme.onBackground,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(35),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
@@ -33,7 +32,7 @@ class DeletableResource extends StatelessWidget {
               children: <Widget>[
                 Icon(
                   Icons.remove_circle,
-                  color: theme.colorScheme.error,
+                  color: Colors.red,
                   size: 35,
                 ),
                 Positioned.fill(

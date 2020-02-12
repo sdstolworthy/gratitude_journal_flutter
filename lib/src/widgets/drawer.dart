@@ -16,7 +16,7 @@ class AppDrawer extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     return Drawer(
       child: Container(
-        color: theme.colorScheme.background,
+        color: Theme.of(context).backgroundColor,
         child: SafeArea(
             child: Padding(
           padding: const EdgeInsets.all(12.0),

@@ -5,7 +5,7 @@ import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart'
 import 'package:grateful/src/screens/feedback_form/feedback_form.dart';
 import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
 import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
-import 'package:grateful/src/screens/main_page_view/main_page_view.dart';
+import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
 import 'package:grateful/src/screens/loading_screen/loading_screen.dart';
 import 'package:grateful/src/screens/login/login.dart';
 import 'package:grateful/src/screens/settings/settings_screen.dart';

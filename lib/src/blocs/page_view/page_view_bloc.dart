@@ -9,7 +9,12 @@ class PageViewBloc extends Bloc<PageViewEvent, PageViewState> {
   PageViewBloc({PageController pageController, this.pages, int initialPage}) {
     this.initialPage = initialPage ?? 0;
     this.pageController =
-        pageController ?? PageController(initialPage: this.initialPage);
+        (pageController ?? PageController(initialPage: this.initialPage))
+          ..addListener(() {
+            if (this.pageController.page.toInt() == this.pageController.page) {
+              add(NotifyPageChange(this.pageController.page.toInt()));
+            }
+          });
   }
 
   int initialPage;
@@ -36,9 +41,7 @@ class PageViewBloc extends Bloc<PageViewEvent, PageViewState> {
     } else if (event is NotifyPageChange) {
       yield CurrentPage(pageController.page.toInt());
     } else if (event is SetPage) {
-      pageController.animateToPage(event.page,
-          curve: const ElasticInOutCurve(),
-          duration: const Duration(milliseconds: 400));
+      pageController.jumpToPage(event.page);
     }
     yield CurrentPage(pageController.page.toInt());
   }

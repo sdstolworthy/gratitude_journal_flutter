@@ -46,7 +46,6 @@ class _NotificationSettingsWidgetState
                         onChanged: (bool newValue) {
                           toggleNotifications(context, newValue);
                         },
-                        activeColor: theme.colorScheme.primary,
                         value: (userPreferenceState as UserPreferencesFetched)
                                 ?.userPreferenceSettings
                                 ?.dailyJournalReminderSettings

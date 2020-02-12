@@ -19,7 +19,6 @@ class LoginFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
       child: TextFormField(
@@ -33,7 +32,7 @@ class LoginFormField extends StatelessWidget {
         decoration: InputDecoration(
             labelText: label,
             labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-            prefixIcon: Icon(icon, color: theme.primaryIconTheme.color),
+            prefixIcon: Icon(icon, color: Colors.white70),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white60)),
             focusedBorder: const UnderlineInputBorder(

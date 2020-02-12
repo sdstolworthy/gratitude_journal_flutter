@@ -82,29 +82,23 @@ class _JournalPageView extends State<JournalPageView> {
                   onTapDown: (_) {
                     setActive(true);
                   },
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Stack(children: <Widget>[
-                          PageView(
-                            controller: _pageViewBloc.pageController,
-                            children: <Widget>[
-                              EditJournalEntry(item: widget.journalEntry),
-                              JournalEntryFeed(),
-                              SettingsScreen()
-                            ],
-                          ),
-                        ]),
-                      ),
-                      NavigationBar(
-                        currentIndex: _pageViewBloc.pageController.hasClients
-                            ? _pageViewBloc.pageController.page
-                            : 0,
-                        onSelectTab: (int newTabIndex) {
-                          _pageViewBloc.pageController.jumpToPage(newTabIndex);
-                        },
-                      ),
-                    ],
+                  child: Scaffold(
+                    bottomNavigationBar: NavigationBar(
+                      currentIndex: _pageViewBloc.pageController.hasClients
+                          ? _pageViewBloc.pageController.page
+                          : 0,
+                      onSelectTab: (int newTabIndex) {
+                        _pageViewBloc.pageController.jumpToPage(newTabIndex);
+                      },
+                    ),
+                    body: PageView(
+                      controller: _pageViewBloc.pageController,
+                      children: <Widget>[
+                        EditJournalEntry(item: widget.journalEntry),
+                        JournalEntryFeed(),
+                        SettingsScreen()
+                      ],
+                    ),
                   ),
                 );
               } else {

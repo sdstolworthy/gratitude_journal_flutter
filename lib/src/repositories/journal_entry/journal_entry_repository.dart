@@ -4,25 +4,27 @@ import 'package:grateful/src/config/constants.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 
 class JournalEntryRepository {
-  static const _userCollectionName = Constants.userRepositoryName;
-  static const _itemCollectionName = 'journal_entries';
-
-  FirebaseAuth _firebaseAuth;
-
   JournalEntryRepository({FirebaseAuth firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-  getFeed({take = 50, limit = 50, skip = 50}) async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+
+  static const String _itemCollectionName = 'journal_entries';
+  static const String _userCollectionName = Constants.userRepositoryName;
+
+  final FirebaseAuth _firebaseAuth;
+
+  Future<List<JournalEntry>> getFeed(
+      {int take = 50, int limit = 50, int skip = 50}) async {
+    final FirebaseUser user = await _firebaseAuth.currentUser();
     if (user == null) {
       return null;
     }
-    List<DocumentSnapshot> entries = (await Firestore.instance
+    final List<DocumentSnapshot> entries = (await Firestore.instance
             .collection(_userCollectionName)
             .document(user.uid)
             .collection(_itemCollectionName)
             .getDocuments())
         .documents
-        .where((d) => !(d.data['deleted'] == true))
+        .where((DocumentSnapshot d) => !(d.data['deleted'] == true))
         .toList();
     return entries.isEmpty
         ? <JournalEntry>[]
@@ -34,7 +36,7 @@ class JournalEntryRepository {
   }
 
   Future<JournalEntry> saveItem(JournalEntry journalEntry) async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    final FirebaseUser user = await _firebaseAuth.currentUser();
     await Firestore.instance
         .collection(_userCollectionName)
         .document(user.uid)
@@ -44,13 +46,13 @@ class JournalEntryRepository {
     return journalEntry;
   }
 
-  deleteItem(JournalEntry journalEntry) async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+  Future<void> deleteItem(JournalEntry journalEntry) async {
+    final FirebaseUser user = await _firebaseAuth.currentUser();
     await Firestore.instance
         .collection(_userCollectionName)
         .document(user.uid)
         .collection(_itemCollectionName)
         .document(journalEntry.id.toString())
-        .updateData({'deleted': true});
+        .updateData(<String, dynamic>{'deleted': true});
   }
 }

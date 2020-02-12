@@ -7,9 +7,9 @@ import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 
 class AuthenticationListener extends StatelessWidget {
-  final Widget child;
+  const AuthenticationListener({@required this.child});
 
-  AuthenticationListener({@required this.child});
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,8 @@ class AuthenticationListener extends StatelessWidget {
         BlocProvider.of<AuthenticationBloc>(context);
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       bloc: authenticationBloc,
-      condition: (previousState, currentState) {
+      condition: (AuthenticationState previousState,
+          AuthenticationState currentState) {
         if (previousState is! Authenticated && currentState is Authenticated) {
           return true;
         }
@@ -27,26 +28,25 @@ class AuthenticationListener extends StatelessWidget {
         }
         return false;
       },
-      listener: (context, state) {
+      listener: (BuildContext context, AuthenticationState state) {
         final List<Future<dynamic>> preAuthenticationHookFutures =
             getPreAuthenticationHooks(context)
-                .map((hook) => hook.execute())
+                .map((LoadingTask hook) => hook.execute())
                 .toList();
         try {
           if (state is Unauthenticated) {
             rootNavigationService.returnToLogin();
-          }
-          if (state is Authenticated) {
-            Future.wait(<Future<dynamic>>[
+          } else if (state is Authenticated) {
+            Future.wait<void>(<Future<dynamic>>[
               ...getPostAuthenticationHooks(context)
-                  .map<Future<dynamic>>((hook) => hook.execute()),
+                  .map<Future<dynamic>>((LoadingTask hook) => hook.execute()),
               ...preAuthenticationHookFutures
             ]).then((_) {
               rootNavigationService
                   .pushReplacementNamed(FlutterAppRoutes.journalPageView);
             });
           } else {
-            Future.wait(preAuthenticationHookFutures).then((_) {
+            Future.wait<void>(preAuthenticationHookFutures).then((_) {
               rootNavigationService.returnToLogin();
             });
           }

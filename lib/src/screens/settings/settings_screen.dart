@@ -7,7 +7,8 @@ import 'package:grateful/src/screens/settings/settings_widgets/security_settings
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
-  build(context) {
+  @override
+  Widget build(BuildContext context) {
     final UserPreferenceBloc userPreferenceBloc =
         BlocProvider.of<UserPreferenceBloc>(context);
     if (userPreferenceBloc is! UserPreferencesFetched) {

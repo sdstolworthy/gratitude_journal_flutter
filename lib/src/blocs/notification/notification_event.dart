@@ -4,8 +4,9 @@ part of 'notification_bloc.dart';
 abstract class NotificationEvent {}
 
 class AddDailyJournalReminderNotification extends NotificationEvent {
-  final DateTime time;
   AddDailyJournalReminderNotification(this.time);
+
+  final DateTime time;
 }
 
 class CancelDailyJournalReminderNotification extends NotificationEvent {}

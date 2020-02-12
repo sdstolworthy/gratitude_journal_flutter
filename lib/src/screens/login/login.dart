@@ -14,13 +14,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class LoginScreenArguments {
-  final bool isLogin;
   LoginScreenArguments(this.isLogin);
+
+  final bool isLogin;
 }
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen(this.isLogin);
+
   final bool isLogin;
-  LoginScreen(this.isLogin);
 
   @override
   State<StatefulWidget> createState() {
@@ -29,29 +31,36 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreen extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = new GlobalKey<ScaffoldState>();
-  build(context) {
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
+    final AuthenticationBloc authBloc =
+        BlocProvider.of<AuthenticationBloc>(context);
     final LoginScreenBloc _loginScreenBloc =
         LoginScreenBloc(authenticationBloc: authBloc);
     final theme = Theme.of(context);
-    return BlocListener(
+    return BlocListener<AuthenticationBloc, AuthenticationState>(
       bloc: authBloc,
-      condition: (previousState, currentState) {
+      condition: (AuthenticationState previousState,
+          AuthenticationState currentState) {
         if (previousState is! Authenticated && currentState is Authenticated) {
           return true;
         }
         return false;
       },
-      listener: (context, state) {
-        getPostAuthenticationHooks(context).forEach((hook) => hook.execute());
+      listener: (BuildContext context, AuthenticationState state) {
+        getPostAuthenticationHooks(context)
+            .forEach((LoadingTask hook) => hook.execute());
         rootNavigationService.pushNamedAndRemoveUntil(
-            FlutterAppRoutes.journalPageView, (route) => false);
+            FlutterAppRoutes.journalPageView, (Route<dynamic> route) => false);
       },
       child: Scaffold(
           key: _scaffoldKey,
@@ -67,7 +76,7 @@ class _LoginScreen extends State<LoginScreen> {
               )),
           body: BlocBuilder<LoginScreenBloc, LoginScreenState>(
               bloc: _loginScreenBloc,
-              builder: (context, loginState) {
+              builder: (BuildContext context, LoginScreenState loginState) {
                 if (loginState is LoginFailure) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -80,8 +89,8 @@ class _LoginScreen extends State<LoginScreen> {
                 return BackgroundGradientProvider(
                   child: Container(
                     child: SafeArea(
-                      child: LayoutBuilder(
-                          builder: (context, viewportConstraints) {
+                      child: LayoutBuilder(builder: (BuildContext context,
+                          BoxConstraints viewportConstraints) {
                         return SingleChildScrollView(
                           child: ConstrainedBox(
                             constraints: BoxConstraints(
@@ -94,9 +103,9 @@ class _LoginScreen extends State<LoginScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
-                                      Row(children: [
+                                      Row(children: <Widget>[
                                         Container(
-                                            constraints: BoxConstraints(
+                                            constraints: const BoxConstraints(
                                                 maxHeight: 100, maxWidth: 100),
                                             child: LogoHero()),
                                         Flexible(
@@ -169,25 +178,25 @@ class _LoginScreen extends State<LoginScreen> {
     );
   }
 
-  _handleRegistration(LoginScreenBloc _loginBloc) {
-    final username = emailController.text;
-    final password = passwordController.text;
+  void _handleRegistration(LoginScreenBloc _loginBloc) {
+    final String username = emailController.text;
+    final String password = passwordController.text;
     if (_formKey.currentState.validate()) {
       _loginBloc.add(SignUp(username, password));
     }
   }
 
-  _renderLoginForm(
+  Widget _renderLoginForm(
       BuildContext context, bool isLogin, LoginScreenBloc loginScreenBloc) {
     final AppLocalizations localizations = AppLocalizations.of(context);
 
     return BlocBuilder<LoginScreenBloc, LoginScreenState>(
         bloc: loginScreenBloc,
-        builder: (context, loginScreenState) {
+        builder: (BuildContext context, LoginScreenState loginScreenState) {
           return Column(mainAxisAlignment: MainAxisAlignment.end, children: <
               Widget>[
             LoginFormField(
-              validator: (input) {
+              validator: (String input) {
                 final bool emailValid = RegExp(
                         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
                     .hasMatch(input);
@@ -196,7 +205,7 @@ class _LoginScreen extends State<LoginScreen> {
                 }
                 return null;
               },
-              enabled: !(loginScreenState is LoginLoading),
+              enabled: loginScreenState is! LoginLoading,
               icon: Icons.person,
               label: toBeginningOfSentenceCase(localizations.email),
               controller: emailController,
@@ -206,8 +215,8 @@ class _LoginScreen extends State<LoginScreen> {
               label: toBeginningOfSentenceCase(localizations.password),
               isObscured: true,
               controller: passwordController,
-              enabled: !(loginScreenState is LoginLoading),
-              validator: (input) {
+              enabled: loginScreenState is! LoginLoading,
+              validator: (String input) {
                 if (passwordController.text == null ||
                     passwordController.text == '') {
                   return 'Password must not be blank';
@@ -223,10 +232,10 @@ class _LoginScreen extends State<LoginScreen> {
               LoginFormField(
                 controller: confirmPasswordController,
                 icon: Icons.lock,
-                enabled: !(loginScreenState is LoginLoading),
+                enabled: loginScreenState is! LoginLoading,
                 label: toBeginningOfSentenceCase(localizations.confirmPassword),
                 isObscured: true,
-                validator: (input) {
+                validator: (String input) {
                   if (confirmPasswordController.text !=
                       passwordController.text) {
                     return 'Passwords do not match';
@@ -238,9 +247,9 @@ class _LoginScreen extends State<LoginScreen> {
         });
   }
 
-  _handleSignIn(LoginScreenBloc _loginBloc) {
-    final username = emailController.text;
-    final password = passwordController.text;
+  void _handleSignIn(LoginScreenBloc _loginBloc) {
+    final String username = emailController.text;
+    final String password = passwordController.text;
     if (_formKey.currentState.validate()) {
       _loginBloc.add(LogIn(username, password));
     }

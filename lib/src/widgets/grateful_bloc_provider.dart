@@ -11,19 +11,20 @@ import 'package:grateful/src/widgets/authentication_listener.dart';
 
 /// Combines application level bloc stores above the rest of the application
 class AppBlocProviders extends StatelessWidget {
+  const AppBlocProviders({this.child});
   final Widget child;
-  AppBlocProviders({this.child});
+
+  @override
   Widget build(BuildContext _) {
-    final BiometricBloc biometricBloc =
-        new BiometricBloc(new BiometricRepository());
+    final BiometricBloc biometricBloc = BiometricBloc(BiometricRepository());
     final AuthenticationBloc authBloc =
-        new AuthenticationBloc(new UserRepository(), biometricBloc);
+        AuthenticationBloc(UserRepository(), biometricBloc);
     final UserPreferenceBloc userPreferenceBloc =
         UserPreferenceBloc(preferenceRepository: UserPreferenceRepository());
-    return BlocProvider(
-        create: (context) => authBloc,
-        child: Builder(builder: (subAuthenticationContext) {
-          return MultiBlocProvider(providers: [
+    return BlocProvider<AuthenticationBloc>(
+        create: (BuildContext context) => authBloc,
+        child: Builder(builder: (BuildContext subAuthenticationContext) {
+          return MultiBlocProvider(providers: <BlocProvider<dynamic>>[
             BlocProvider<LocalizationBloc>(
               create: (_) =>
                   LocalizationBloc(userPreferenceBloc: userPreferenceBloc),

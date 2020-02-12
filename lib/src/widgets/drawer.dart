@@ -10,9 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share/share.dart';
 
 class AppDrawer extends StatelessWidget {
-  build(context) {
+  @override
+  Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return Drawer(
       child: Container(
         color: Theme.of(context).backgroundColor,
@@ -67,7 +68,7 @@ class AppDrawer extends StatelessWidget {
                 title: Text(localizations.writeAReview,
                     style: theme.primaryTextTheme.body1),
                 onTap: () {
-                  AppReview.writeReview.then((value) => print(value));
+                  AppReview.writeReview;
                 },
               ),
               Expanded(child: Container()),

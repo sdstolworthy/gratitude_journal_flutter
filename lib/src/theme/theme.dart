@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 ThemeData gratefulTheme(ThemeData appTheme) {
-  final theme = ThemeData(brightness: Brightness.light);
+  final ThemeData theme = ThemeData(brightness: Brightness.light);
   return theme
       .copyWith(
         floatingActionButtonTheme:

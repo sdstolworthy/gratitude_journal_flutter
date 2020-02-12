@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-typedef void OnRemove();
+typedef OnRemove = void Function();
 
 class DeletableResource extends StatelessWidget {
+  const DeletableResource({@required this.child, @required this.onRemove});
+
   final Widget child;
   final OnRemove onRemove;
-  DeletableResource({@required this.child, @required this.onRemove});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -19,9 +21,9 @@ class DeletableResource extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(35),
-                boxShadow: [
+                boxShadow: <BoxShadow>[
                   BoxShadow(
-                      offset: Offset(1, 1),
+                      offset: const Offset(1, 1),
                       spreadRadius: 0,
                       blurRadius: 2,
                       color: Colors.grey[900])
@@ -36,7 +38,7 @@ class DeletableResource extends StatelessWidget {
                 Positioned.fill(
                     child: Material(
                   color: Colors.transparent,
-                  child: InkWell(onTap: this.onRemove),
+                  child: InkWell(onTap: onRemove),
                 )),
               ],
             ),

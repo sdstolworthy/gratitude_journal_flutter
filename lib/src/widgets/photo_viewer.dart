@@ -5,9 +5,10 @@ import 'package:grateful/src/models/photograph.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PhotoViewer extends StatefulWidget {
+  const PhotoViewer({this.photographs, this.initialIndex = 0});
+
   final int initialIndex;
   final List<NetworkPhoto> photographs;
-  PhotoViewer({this.photographs, this.initialIndex = 0});
 
   @override
   _PhotoViewerState createState() => _PhotoViewerState();
@@ -15,15 +16,22 @@ class PhotoViewer extends StatefulWidget {
 
 class _PhotoViewerState extends State<PhotoViewer> {
   PageController pageController;
+
   @override
   void initState() {
     super.initState();
-    pageController = new PageController(initialPage: widget.initialIndex);
+    pageController = PageController(initialPage: widget.initialIndex);
+  }
+
+  Widget _renderPhotoView(NetworkPhoto photograph) {
+    return PhotoView(
+      imageProvider: CachedNetworkImageProvider(photograph.imageUrl),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.photographs.length == 0) {}
+    if (widget.photographs.isEmpty) {}
     return Scaffold(
         body: Container(
       color: Colors.black,
@@ -32,7 +40,7 @@ class _PhotoViewerState extends State<PhotoViewer> {
           PageView(
             controller: pageController,
             children: widget.photographs
-                .map((photograph) => _renderPhotoView(photograph))
+                .map((NetworkPhoto photograph) => _renderPhotoView(photograph))
                 .toList(),
           ),
           Positioned(
@@ -46,11 +54,5 @@ class _PhotoViewerState extends State<PhotoViewer> {
         ],
       ),
     ));
-  }
-
-  Widget _renderPhotoView(NetworkPhoto photograph) {
-    return PhotoView(
-      imageProvider: CachedNetworkImageProvider(photograph.imageUrl),
-    );
   }
 }

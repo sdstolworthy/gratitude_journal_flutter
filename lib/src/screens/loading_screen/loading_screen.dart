@@ -12,9 +12,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<AuthenticationBloc>(context).add(AppStarted());
-
+    final ThemeData theme = Theme.of(context);
     return Container(
-      color: Colors.blue[900],
+      color: theme.colorScheme.background,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

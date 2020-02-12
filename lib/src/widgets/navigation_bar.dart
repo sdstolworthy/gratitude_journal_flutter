@@ -16,13 +16,12 @@ class NavigationBar extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex.toInt(),
       onTap: onSelectTab,
-      elevation: 5,
-      selectedItemColor: Colors.white,
-      backgroundColor: theme.backgroundColor,
-      selectedIconTheme: theme.primaryIconTheme,
-      unselectedIconTheme:
-          theme.primaryIconTheme.copyWith(color: Colors.lightBlue[800]),
-      selectedLabelStyle: const TextStyle(color: Colors.white),
+      elevation: 30,
+      backgroundColor: theme.colorScheme.primaryVariant,
+      selectedIconTheme:
+          theme.primaryIconTheme.copyWith(color: theme.colorScheme.onSecondary),
+      unselectedIconTheme: theme.primaryIconTheme
+          .copyWith(color: theme.colorScheme.onSecondary.withOpacity(0.4)),
       unselectedLabelStyle: const TextStyle(color: Colors.white12),
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(

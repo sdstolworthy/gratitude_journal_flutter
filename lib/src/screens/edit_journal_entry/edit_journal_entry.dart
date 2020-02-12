@@ -17,7 +17,6 @@ import 'package:grateful/src/widgets/background_gradient_provider.dart';
 import 'package:grateful/src/widgets/date_select_button.dart';
 import 'package:grateful/src/widgets/image_uploader.dart';
 import 'package:grateful/src/widgets/journal_entry_input.dart';
-import 'package:grateful/src/widgets/navigation_bar.dart';
 import 'package:grateful/src/widgets/no_glow_configuration.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -180,6 +179,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   }
 
   Widget _entryEditComponent(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -187,7 +187,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           children: <Widget>[
             Text(
               AppLocalizations.of(context).gratefulPrompt,
-              style: Theme.of(context).primaryTextTheme.headline,
+              style: theme.primaryTextTheme.headline,
               textAlign: TextAlign.left,
             ),
             DateSelectorButton(
@@ -196,7 +196,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
               locale: Localizations.localeOf(context),
             ),
             Divider(
-              color: Colors.white,
+              color: theme.colorScheme.onBackground,
             ),
             const SizedBox(height: 10),
             JournalInput(
@@ -212,6 +212,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   }
 
   Widget _renderSliverAppBar(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return SliverAppBar(
       expandedHeight: 0,
       floating: false,
@@ -222,7 +223,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           FlatButton(
             child: Icon(
               Icons.clear,
-              color: Colors.white,
+              color: theme.colorScheme.onBackground,
             ),
             onPressed: clearEditState,
           )
@@ -248,16 +249,17 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     );
   }
 
-  Widget _renderSaveCheck(BuildContext saveContext) {
+  Widget _renderSaveCheck(BuildContext context) {
     final bool isJournalEntryNull = _journalEntry.body == null;
+    final ThemeData theme = Theme.of(context);
     return IconButton(
         padding: const EdgeInsets.all(50),
         icon: Icon(Icons.check, size: 40),
-        disabledColor: Colors.white38,
+        disabledColor: theme.colorScheme.onBackground.withOpacity(0.6),
         onPressed: isJournalEntryNull
             ? null
             : () {
-                _handleSavePress(saveContext);
+                _handleSavePress(context);
               });
   }
 
@@ -330,7 +332,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   Widget _renderAddPhotoButton(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
-
+    final ThemeData theme = Theme.of(context);
     return FlatButton(
         onPressed: () {
           _handleAddPhotoPress(context);
@@ -340,7 +342,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           children: <Widget>[
             Icon(
               Icons.add_a_photo,
-              color: Colors.white,
+              color: theme.colorScheme.onBackground,
             ),
             const SizedBox(width: 15),
             Text(

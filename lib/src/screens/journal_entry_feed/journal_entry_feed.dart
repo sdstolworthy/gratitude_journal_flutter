@@ -129,7 +129,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                           _groupEntriesByYear(state.journalEntries);
 
                       final List<Widget> compiledList =
-                          _getJournalEntryListItemWidgets(sortedEntriesYearMap);
+                          _getJournalEntryListItemWidgets(
+                              context, sortedEntriesYearMap);
                       return BackgroundGradientProvider(
                         child: SafeArea(
                             bottom: false,
@@ -192,7 +193,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
   }
 
   List<Widget> _getJournalEntryListItemWidgets(
-      Map<int, List<JournalEntry>> entriesByYear) {
+      BuildContext context, Map<int, List<JournalEntry>> entriesByYear) {
+    final ThemeData theme = Theme.of(context);
     return entriesByYear.keys.fold<List<Widget>>(<Widget>[],
         (List<Widget> previousEntries, int currentEntry) {
       return previousEntries
@@ -207,9 +209,9 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                     colors: <Color>[
-                      Colors.blue[900].withOpacity(opacity),
-                      Colors.blue[900].withOpacity(0.8 * opacity),
-                      Colors.blue[900].withOpacity(0.0)
+                      theme.colorScheme.background.withOpacity(opacity),
+                      theme.colorScheme.background.withOpacity(0.8 * opacity),
+                      theme.colorScheme.background.withOpacity(0.0)
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,

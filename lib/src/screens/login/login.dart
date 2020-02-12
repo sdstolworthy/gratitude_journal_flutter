@@ -71,7 +71,7 @@ class _LoginScreen extends State<LoginScreen> {
       child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-              backgroundColor: theme.backgroundColor,
+              backgroundColor: theme.colorScheme.background,
               elevation: 0,
               leading: FlatButton(
                 child: Icon(

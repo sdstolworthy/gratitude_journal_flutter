@@ -7,12 +7,13 @@ class BackgroundGradientProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: <Color>[Colors.blue[900], Colors.blue[600]],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter)),
+          gradient: LinearGradient(colors: <Color>[
+        theme.colorScheme.background,
+        theme.colorScheme.secondary
+      ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
       child: SizedBox.expand(child: child),
     );
   }

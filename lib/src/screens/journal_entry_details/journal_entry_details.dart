@@ -136,7 +136,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
           ),
           onPressed: () {
             rootNavigationService.navigateTo(FlutterAppRoutes.journalPageView,
-                arguments: JournalPageArguments(entry: journalEntry));
+                arguments: JournalPageViewArguments(entry: journalEntry));
           },
         ),
         IconButton(

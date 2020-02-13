@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/journal_entry.dart';
-import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
+import 'package:grateful/src/screens/compose_entry/compose_entry.dart';
 import 'package:grateful/src/screens/journal_feed/journal_feed.dart';
 import 'package:grateful/src/screens/settings/settings_screen.dart';
 import 'package:grateful/src/widgets/navigation_bar.dart';
 
 enum Page { entryEdit, entryFeed, settings }
 
-class JournalPageArguments {
-  JournalPageArguments({Page page, this.entry})
+class JournalPageViewArguments {
+  JournalPageViewArguments({Page page, this.entry})
       : page = page ?? Page.entryEdit,
         isEdit = entry != null;
 
@@ -88,7 +88,7 @@ class _JournalPageView extends State<JournalPageView> {
               });
             },
             children: <Widget>[
-              EditJournalEntry(
+              ComposeEntry(
                 item: widget.journalEntry,
                 onSave: () {
                   pageController.jumpToPage(1);

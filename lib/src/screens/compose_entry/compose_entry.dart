@@ -20,21 +20,21 @@ import 'package:grateful/src/widgets/no_glow_configuration.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
-class EditJournalEntryArgs {
-  EditJournalEntryArgs({this.journalEntry});
+class ComposeEntryArgs {
+  ComposeEntryArgs({this.journalEntry});
 
   JournalEntry journalEntry;
 }
 
-class EditJournalEntry extends StatefulWidget {
-  const EditJournalEntry({this.item, this.onSave});
+class ComposeEntry extends StatefulWidget {
+  const ComposeEntry({this.item, this.onSave});
   final void Function() onSave;
 
   final JournalEntry item;
 
   @override
   State<StatefulWidget> createState() {
-    return _EditJournalEntryState(journalEntry: item);
+    return _ComposeEntryState(journalEntry: item);
   }
 
   bool get wantKeepAlive => true;
@@ -42,9 +42,9 @@ class EditJournalEntry extends StatefulWidget {
 
 const double imageDimension = 125.0;
 
-class _EditJournalEntryState extends State<EditJournalEntry>
+class _ComposeEntryState extends State<ComposeEntry>
     with AutomaticKeepAliveClientMixin {
-  _EditJournalEntryState({JournalEntry journalEntry}) {
+  _ComposeEntryState({JournalEntry journalEntry}) {
     _journalEntry = journalEntry ?? JournalEntry();
     _journalEntryController.value = const TextEditingValue(text: '');
     isEdit = journalEntry != null;

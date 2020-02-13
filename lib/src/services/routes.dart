@@ -48,8 +48,8 @@ class Router {
   static Route<dynamic> generatedRoute(RouteSettings settings) {
     switch (settings.name) {
       case FlutterAppRoutes.journalPageView:
-        final JournalPageArguments args =
-            settings.arguments as JournalPageArguments;
+        final JournalPageViewArguments args =
+            settings.arguments as JournalPageViewArguments;
         return _pageRoute(
             JournalPageView(
               journalEntry: args?.entry,

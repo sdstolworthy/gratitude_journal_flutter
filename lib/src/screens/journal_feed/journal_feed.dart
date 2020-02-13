@@ -28,20 +28,15 @@ class JournalFeed extends StatefulWidget {
 class _JournalFeedState extends State<JournalFeed>
     with TickerProviderStateMixin {
   Completer<void> _refreshCompleter;
-  AnimationController _hideFabAnimation;
 
   @override
   void initState() {
     _refreshCompleter = Completer<void>();
-    _hideFabAnimation =
-        AnimationController(vsync: this, duration: kThemeAnimationDuration);
-    _hideFabAnimation.forward();
     super.initState();
   }
 
   @override
   void dispose() {
-    _hideFabAnimation.dispose();
     _refreshCompleter.complete();
     super.dispose();
   }
@@ -61,25 +56,6 @@ class _JournalFeedState extends State<JournalFeed>
     ];
   }
 
-  bool _handleScrollNotification(ScrollNotification notification) {
-    if (notification.depth == 0) {
-      if (notification is UserScrollNotification) {
-        final UserScrollNotification userScroll = notification;
-        switch (userScroll.direction) {
-          case ScrollDirection.forward:
-            _hideFabAnimation.forward();
-            break;
-          case ScrollDirection.reverse:
-            _hideFabAnimation.reverse();
-            break;
-          case ScrollDirection.idle:
-            break;
-        }
-      }
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     final JournalFeedBloc _journalFeedBloc =
@@ -92,39 +68,36 @@ class _JournalFeedState extends State<JournalFeed>
             _refreshCompleter = Completer<void>();
           }
         },
-        child: NotificationListener<ScrollNotification>(
-          onNotification: _handleScrollNotification,
-          child: BlocBuilder<JournalFeedBloc, JournalFeedState>(
-            bloc: _journalFeedBloc,
-            builder: (BuildContext context, JournalFeedState state) {
-              if (state is JournalFeedUnloaded) {
-                _journalFeedBloc.add(FetchFeed());
-                return const BackgroundGradientProvider(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              } else if (state is JournalFeedFetched) {
-                state.journalEntries.sort(_sortJournalEntriesDescendingDate);
-                final Map<int, List<JournalEntry>> sortedEntriesYearMap =
-                    _groupEntriesByYear(state.journalEntries);
+        child: BlocBuilder<JournalFeedBloc, JournalFeedState>(
+          bloc: _journalFeedBloc,
+          builder: (BuildContext context, JournalFeedState state) {
+            if (state is JournalFeedUnloaded) {
+              _journalFeedBloc.add(FetchFeed());
+              return const BackgroundGradientProvider(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            } else if (state is JournalFeedFetched) {
+              state.journalEntries.sort(_sortJournalEntriesDescendingDate);
+              final Map<int, List<JournalEntry>> sortedEntriesYearMap =
+                  _groupEntriesByYear(state.journalEntries);
 
-                final List<Widget> compiledList =
-                    _getJournalEntryListItemWidgets(
-                        context, sortedEntriesYearMap);
-                return FullScreenLayout(
-                  headerSliverBuilder: _renderAppBar,
-                  child: ListView.builder(
-                    itemBuilder: (BuildContext context, int index) {
-                      return compiledList[index];
-                    },
-                    itemCount: compiledList.length,
-                  ),
-                );
-              }
-              return Container();
-            },
-          ),
+              final List<Widget> compiledList =
+                  _getJournalEntryListItemWidgets(
+                      context, sortedEntriesYearMap);
+              return FullScreenLayout(
+                headerSliverBuilder: _renderAppBar,
+                child: ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return compiledList[index];
+                  },
+                  itemCount: compiledList.length,
+                ),
+              );
+            }
+            return Container();
+          },
         ));
   }
 

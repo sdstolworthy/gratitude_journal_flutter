@@ -3,18 +3,21 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class LoginScreenEvent {}
 
-class LogIn extends LoginScreenEvent {
+class RequiresUserToBeSignedOut {}
+
+class LogIn extends LoginScreenEvent implements RequiresUserToBeSignedOut {
   LogIn(this.username, this.password);
 
   final String password;
   final String username;
 }
 
-class SignUp extends LoginScreenEvent {
+class SignUp extends LoginScreenEvent implements RequiresUserToBeSignedOut {
   SignUp(this.username, this.password);
 
   final String password;
   final String username;
 }
 
-class AuthWithGoogle extends LoginScreenEvent {}
+class AuthWithGoogle extends LoginScreenEvent
+    implements RequiresUserToBeSignedOut {}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/localization/localization_bloc.dart';
 import 'package:grateful/src/blocs/user_preference/user_preference_bloc.dart';
+import 'package:grateful/src/services/loading_tasks/load_biometrics.dart';
 import 'package:grateful/src/services/loading_tasks/load_cloud_messenger.dart';
 import 'package:grateful/src/services/loading_tasks/load_notifications.dart';
 import 'package:grateful/src/services/loading_tasks/load_user_preferences.dart';
@@ -14,8 +15,12 @@ abstract class LoadingTask {
   Future<void> execute();
 }
 
-List<LoadingTask> getPreAuthenticationHooks() {
-  return <LoadingTask>[InitializeCloudMessaging(), LoadNotifications()];
+List<LoadingTask> getPreAuthenticationHooks(BuildContext context) {
+  return <LoadingTask>[
+    InitializeCloudMessaging(),
+    LoadNotifications(),
+    LoadBiometrics(context)
+  ];
 }
 
 List<LoadingTask> getPostAuthenticationHooks(BuildContext context) {

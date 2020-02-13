@@ -5,6 +5,7 @@ import 'package:grateful/src/screens/settings/settings_widgets/app_related_actio
 import 'package:grateful/src/screens/settings/settings_widgets/color_settings.dart';
 import 'package:grateful/src/screens/settings/settings_widgets/language_settings_widget.dart';
 import 'package:grateful/src/screens/settings/settings_widgets/notification_settings_widget.dart';
+import 'package:grateful/src/screens/settings/settings_widgets/security_settings.dart';
 import 'package:grateful/src/widgets/full_screen_layout.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -23,6 +24,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           NotificationSettingsWidget(),
           LanguageSettingsWidget(),
+          SecuritySettings(),
           ColorSettingsWidget(),
           AppRelatedActions(),
         ],

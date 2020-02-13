@@ -4,15 +4,12 @@
 // function name.
 
 // Ignore issues from commonly used lints in this file.
-// ignore_for_file:implementation_imports, file_names, unnecessary_new
-// ignore_for_file:unnecessary_brace_in_string_interps, directives_ordering
-// ignore_for_file:argument_type_not_assignable, invalid_assignment
-// ignore_for_file:prefer_single_quotes, prefer_generic_function_type_aliases
-// ignore_for_file:comment_references, implicit_dynamic_type, always_specify_types
-// ignore_for_file:prefer_final_locals, always_put_control_body_on_new_line
-// ignore_for_file:map_value_type_not_assignable, implicit_dynamic_return, annotate_overrides
-// ignore_for_file:always_declare_return_types, implicit_dynamic_parameter
+// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
+// ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
+// ignore_for_file:unused_import, file_names
 
+import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
 final messages = new MessageLookup();
@@ -41,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "journalEntryHint" : MessageLookupByLibrary.simpleMessage("Escribe tus pensamientos..."),
     "language" : MessageLookupByLibrary.simpleMessage("idioma"),
     "leaveFeedback" : MessageLookupByLibrary.simpleMessage("Dejar comentarios"),
+    "lockJournalWithBiometrics" : MessageLookupByLibrary.simpleMessage("Bloquear el diario con biometría"),
     "logIn" : MessageLookupByLibrary.simpleMessage("Entrar"),
     "logOut" : MessageLookupByLibrary.simpleMessage("Salir"),
     "loginCTA" : MessageLookupByLibrary.simpleMessage("Qué bueno verte."),
@@ -53,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUp" : MessageLookupByLibrary.simpleMessage("Registrarte"),
     "signupCTA" : MessageLookupByLibrary.simpleMessage("Un gusto conocerte."),
     "thanksForYourFeedback" : MessageLookupByLibrary.simpleMessage("¡Gracias por tus comentarios!"),
+    "unlockJournal" : MessageLookupByLibrary.simpleMessage("Desbloquer el diario"),
+    "verifyBiometrics" : MessageLookupByLibrary.simpleMessage("Verificar biometría"),
     "welcomeCTA" : MessageLookupByLibrary.simpleMessage("Bienvenidos."),
     "writeAReview" : MessageLookupByLibrary.simpleMessage("Escribir una reseña")
   };

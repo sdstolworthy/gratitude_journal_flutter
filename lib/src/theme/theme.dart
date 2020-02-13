@@ -4,6 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const MaterialColor primaryBlack = MaterialColor(
+  _blackPrimaryValue,
+  <int, Color>{
+    50: Color(0xFF000000),
+    100: Color(0xFF000000),
+    200: Color(0xFF000000),
+    300: Color(0xFF000000),
+    400: Color(0xFF000000),
+    500: Color(_blackPrimaryValue),
+    600: Color(0xFF000000),
+    700: Color(0xFF000000),
+    800: Color(0xFF000000),
+    900: Color(0xFF000000),
+  },
+);
+const int _blackPrimaryValue = 0xFF000000;
+
 class AppColorScheme {
   AppColorScheme(this.identifier, this.colorScheme);
 
@@ -50,11 +67,33 @@ class AppColorScheme {
           errorColor: Colors.deepOrange[800],
           primarySwatch: Colors.brown));
 
+  static AppColorScheme purpleScheme = AppColorScheme(
+      'purple',
+      ColorScheme.fromSwatch(
+          backgroundColor: Colors.purple[900],
+          accentColor: Colors.purple[600],
+          brightness: Brightness.light,
+          cardColor: Colors.purple[100],
+          errorColor: Colors.deepOrange[800],
+          primarySwatch: Colors.purple));
+
+  static AppColorScheme blackScheme = AppColorScheme(
+      'black',
+      ColorScheme.fromSwatch(
+          backgroundColor: Colors.black,
+          accentColor: Colors.black87,
+          brightness: Brightness.light,
+          cardColor: Colors.black12,
+          errorColor: Colors.deepOrange[800],
+          primarySwatch: primaryBlack));
+
   static List<AppColorScheme> availableSchemes = <AppColorScheme>[
     blueScheme,
     yellowScheme,
     greenScheme,
-    brownScheme
+    purpleScheme,
+    blackScheme,
+    brownScheme,
   ];
 }
 
@@ -90,7 +129,8 @@ ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
             labelStyle:
                 TextStyle(color: Colors.white70, fontFamily: 'Raleway')),
         primaryColorLight: colorScheme.onBackground,
-        iconTheme: IconThemeData(color: colorScheme.onBackground.withOpacity(0.8)),
+        iconTheme:
+            IconThemeData(color: colorScheme.onBackground.withOpacity(0.8)),
         primaryTextTheme: TextTheme(
             button: appTheme.primaryTextTheme.button
                 .copyWith(fontFamily: 'Raleway'),

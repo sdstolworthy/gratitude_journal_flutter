@@ -43,7 +43,7 @@ class Router {
                 return Theme(
                     data: gratefulTheme(
                       Theme.of(c),
-                      colorScheme: AppColorScheme.availableSchemes.singleWhere(
+                      colorScheme: AppColorScheme?.availableSchemes?.firstWhere(
                           (AppColorScheme appColorScheme) {
                         if (userPreferenceState is UserPreferencesFetched) {
                           return appColorScheme.identifier ==

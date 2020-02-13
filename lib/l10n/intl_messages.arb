@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-02-11T23:14:58.953965",
+  "@@last_modified": "2020-02-12T18:58:59.169407",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -201,6 +201,12 @@
   "unlockJournal": "Unlock Journal",
   "@unlockJournal": {
     "description": "Prompt to unlock the journal",
+    "type": "text",
+    "placeholders": {}
+  },
+  "customizeColor": "Customize App Color",
+  "@customizeColor": {
+    "description": "Prompt to customize the app's color in the settings",
     "type": "text",
     "placeholders": {}
   }

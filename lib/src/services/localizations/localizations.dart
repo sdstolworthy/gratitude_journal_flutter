@@ -225,6 +225,12 @@ class AppLocalizations {
     return Intl.message('Unlock Journal',
         name: 'unlockJournal', desc: 'Prompt to unlock the journal');
   }
+
+  String get customizeColor {
+    return Intl.message('Customize App Color',
+        name: 'customizeColor',
+        desc: 'Prompt to customize the app\'s color in the settings');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

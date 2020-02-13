@@ -204,5 +204,11 @@
     "description": "Prompt to unlock the journal",
     "type": "text",
     "placeholders": {}
+  },
+  "customizeColor": "Customize App Color",
+  "@customizeColor": {
+    "description": "Prompt to customize the app's color in the settings",
+    "type": "text",
+    "placeholders": {}
   }
 }

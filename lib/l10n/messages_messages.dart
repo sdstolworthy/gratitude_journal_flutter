@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addPhotos" : MessageLookupByLibrary.simpleMessage("Add Photos"),
     "chooseATime" : MessageLookupByLibrary.simpleMessage("Select a Time"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("confirm password"),
+    "customizeColor" : MessageLookupByLibrary.simpleMessage("Customize App Color"),
     "dailyJournalReminderBody" : MessageLookupByLibrary.simpleMessage("Take some time to write down what you\'re thankful for"),
     "dailyJournalReminderTitle" : MessageLookupByLibrary.simpleMessage("What are you grateful for today?"),
     "deleteEntryConfirmPrompt" : MessageLookupByLibrary.simpleMessage("Are you sure you want to delete this entry?"),

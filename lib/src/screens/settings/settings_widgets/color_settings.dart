@@ -24,7 +24,7 @@ class ColorSettingsWidget extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   leading: Icon(Icons.palette, color: theme.iconTheme.color),
-                  title: Text('Customize App Color',
+                  title: Text(localizations.customizeColor,
                       style: theme.primaryTextTheme.body1),
                 ),
                 SingleChildScrollView(

@@ -220,6 +220,11 @@ class AppLocalizations {
         name: 'verifyBiometrics',
         desc: 'Prompt to verify biometrics before enabling them.');
   }
+
+  String get unlockJournal {
+    return Intl.message('Unlock Journal',
+        name: 'unlockJournal', desc: 'Prompt to unlock the journal');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

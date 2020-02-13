@@ -186,5 +186,23 @@
     "description": "Settings entry where a user selects what time to see a reminder",
     "type": "text",
     "placeholders": {}
+  },
+  "lockJournalWithBiometrics": "Bloquear el diario con biometría",
+  "@lockJournalWithBiometrics": {
+    "description": "Setting description for enabling biometrics screen lock",
+    "type": "text",
+    "placeholders": {}
+  },
+  "verifyBiometrics": "Verificar biometría",
+  "@verifyBiometrics": {
+    "description": "Prompt to verify biometrics before enabling them.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unlockJournal": "Desbloquer el diario",
+  "@unlockJournal": {
+    "description": "Prompt to unlock the journal",
+    "type": "text",
+    "placeholders": {}
   }
 }

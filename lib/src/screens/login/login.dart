@@ -24,17 +24,14 @@ class LoginScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _LoginScreen(isLogin);
+    return _LoginScreen();
   }
 }
 
 class _LoginScreen extends State<LoginScreen> {
-  _LoginScreen(this.isLogin);
-
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final bool isLogin;
   final TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -47,7 +44,6 @@ class _LoginScreen extends State<LoginScreen> {
         BlocProvider.of<AuthenticationBloc>(context);
     final LoginScreenBloc _loginScreenBloc =
         LoginScreenBloc(authenticationBloc: authBloc);
-
     final ThemeData theme = Theme.of(context);
     return Scaffold(
         key: _scaffoldKey,
@@ -69,7 +65,7 @@ class _LoginScreen extends State<LoginScreen> {
                   _scaffoldKey.currentState.showSnackBar(SnackBar(
                       content: Text(
                           'Something went wrong while' +
-                              (isLogin ? ' logging in' : 'signing up'),
+                              (widget.isLogin ? ' logging in' : 'signing up'),
                           style: theme.primaryTextTheme.body1)));
                 });
               }
@@ -97,7 +93,7 @@ class _LoginScreen extends State<LoginScreen> {
                                           child: LogoHero()),
                                       Flexible(
                                         child: Text(
-                                          isLogin
+                                          widget.isLogin
                                               ? localizations.loginCTA
                                               : localizations.signupCTA,
                                           style:
@@ -109,17 +105,17 @@ class _LoginScreen extends State<LoginScreen> {
                                     Form(
                                         key: _formKey,
                                         child: _renderLoginForm(context,
-                                            isLogin, _loginScreenBloc)),
+                                            widget.isLogin, _loginScreenBloc)),
                                     Row(
                                       children: <Widget>[
                                         Expanded(
                                             child: OnboardingButton(
-                                          buttonText: isLogin
+                                          buttonText: widget.isLogin
                                               ? localizations.logIn
                                               : localizations.signUp,
                                           onPressed: loginState is LoginLoading
                                               ? null
-                                              : isLogin
+                                              : widget.isLogin
                                                   ? () => _handleSignIn(
                                                       _loginScreenBloc)
                                                   : () => _handleRegistration(

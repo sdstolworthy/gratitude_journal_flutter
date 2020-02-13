@@ -27,6 +27,15 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
     LoginScreenEvent event,
   ) async* {
     yield LoginLoading();
+
+    if (event is RequiresUserToBeSignedOut) {
+      try {
+        _userRepository.signOut();
+      } catch (e) {
+        print('Sign out error. Maybe the user is already signed out?');
+      }
+    }
+
     if (event is LogIn) {
       yield* _mapLoginEventToState(event.username, event.password);
     } else if (event is SignUp) {

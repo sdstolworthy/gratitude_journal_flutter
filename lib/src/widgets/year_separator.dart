@@ -7,8 +7,8 @@ class YearSeparator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Container(
-      // color: Theme.of(context).backgroundColor,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 7, top: 10),
         child: Row(
@@ -16,7 +16,7 @@ class YearSeparator extends StatelessWidget {
           children: <Widget>[
             Text(
               year,
-              style: Theme.of(context).primaryTextTheme.subhead,
+              style: theme.primaryTextTheme.subhead,
             )
           ],
         ),

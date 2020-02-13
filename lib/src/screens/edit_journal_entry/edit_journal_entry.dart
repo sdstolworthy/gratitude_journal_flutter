@@ -5,7 +5,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
 import 'package:grateful/src/blocs/image_handler/bloc.dart';
 import 'package:grateful/src/blocs/journal_feed/journal_feed_bloc.dart';
-import 'package:grateful/src/blocs/page_view/bloc.dart';
 import 'package:grateful/src/config/environment.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +27,8 @@ class EditJournalEntryArgs {
 }
 
 class EditJournalEntry extends StatefulWidget {
-  const EditJournalEntry({this.item});
+  const EditJournalEntry({this.item, this.onSave});
+  final void Function() onSave;
 
   final JournalEntry item;
 
@@ -282,7 +282,9 @@ class _EditJournalEntryState extends State<EditJournalEntry>
       clearEditState();
     }
 
-    BlocProvider.of<PageViewBloc>(context).add(SetPage(1));
+    if (widget.onSave != null) {
+      widget.onSave();
+    }
     return () {};
   }
 

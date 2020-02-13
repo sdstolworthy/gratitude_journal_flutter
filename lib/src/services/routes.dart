@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grateful/src/screens/about_app/about_app.dart';
-import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
 import 'package:grateful/src/screens/feedback_form/feedback_form.dart';
-import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
 import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
 import 'package:grateful/src/screens/main_page_view/main_page_view.dart';
 import 'package:grateful/src/screens/loading_screen/loading_screen.dart';
@@ -62,13 +60,6 @@ class Router {
             settings.arguments as JournalEntryDetailArguments;
         return _pageRoute(JournalEntryDetails(args.journalEntry),
             FlutterAppRoutes.journalEntryDetails);
-      case FlutterAppRoutes.journalFeed:
-        return _pageRoute(JournalEntryFeed(), FlutterAppRoutes.journalFeed);
-      case FlutterAppRoutes.editJournalEntry:
-        final EditJournalEntryArgs args =
-            settings.arguments as EditJournalEntryArgs;
-        return _pageRoute(EditJournalEntry(item: args?.journalEntry),
-            FlutterAppRoutes.editJournalEntry);
       case FlutterAppRoutes.loginScreen:
         return _pageRoute(const LoginScreen(true), FlutterAppRoutes.loginScreen);
       case FlutterAppRoutes.signupScreen:

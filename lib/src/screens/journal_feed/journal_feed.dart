@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:grateful/src/blocs/journal_feed/bloc.dart';
-import 'package:grateful/src/blocs/page_view/bloc.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
@@ -12,20 +11,21 @@ import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 import 'package:grateful/src/widgets/journal_feed_list_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grateful/src/widgets/no_glow_configuration.dart';
+import 'package:grateful/src/widgets/layouts/full_screen_layout.dart';
 import 'package:grateful/src/widgets/year_separator.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
-class JournalEntryFeed extends StatefulWidget {
+class JournalFeed extends StatefulWidget {
+  const JournalFeed();
   bool get wantKeepAlive => false;
 
   @override
   State<StatefulWidget> createState() {
-    return _JournalEntryFeedState();
+    return _JournalFeedState();
   }
 }
 
-class _JournalEntryFeedState extends State<JournalEntryFeed>
+class _JournalFeedState extends State<JournalFeed>
     with TickerProviderStateMixin {
   Completer<void> _refreshCompleter;
   AnimationController _hideFabAnimation;
@@ -80,23 +80,6 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
     return false;
   }
 
-  Widget renderFab(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return ScaleTransition(
-      scale: _hideFabAnimation,
-      alignment: Alignment.bottomRight,
-      child: FloatingActionButton(
-        onPressed: () {
-          BlocProvider.of<PageViewBloc>(context).add(SetPage(0));
-        },
-        child: Icon(
-          Icons.edit,
-          color: theme.colorScheme.onSecondary,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final JournalFeedBloc _journalFeedBloc =
@@ -111,51 +94,36 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
         },
         child: NotificationListener<ScrollNotification>(
           onNotification: _handleScrollNotification,
-          child: NestedScrollView(
-            headerSliverBuilder: _renderAppBar,
-            body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
-              bloc: _journalFeedBloc,
-              builder: (BuildContext context, JournalFeedState state) {
-                if (state is JournalFeedUnloaded) {
-                  _journalFeedBloc.add(FetchFeed());
-                  return const BackgroundGradientProvider(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                } else if (state is JournalFeedFetched) {
-                  state.journalEntries.sort(_sortJournalEntriesDescendingDate);
-                  final Map<int, List<JournalEntry>> sortedEntriesYearMap =
-                      _groupEntriesByYear(state.journalEntries);
+          child: BlocBuilder<JournalFeedBloc, JournalFeedState>(
+            bloc: _journalFeedBloc,
+            builder: (BuildContext context, JournalFeedState state) {
+              if (state is JournalFeedUnloaded) {
+                _journalFeedBloc.add(FetchFeed());
+                return const BackgroundGradientProvider(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              } else if (state is JournalFeedFetched) {
+                state.journalEntries.sort(_sortJournalEntriesDescendingDate);
+                final Map<int, List<JournalEntry>> sortedEntriesYearMap =
+                    _groupEntriesByYear(state.journalEntries);
 
-                  final List<Widget> compiledList =
-                      _getJournalEntryListItemWidgets(
-                          context, sortedEntriesYearMap);
-                  return BackgroundGradientProvider(
-                    child: SafeArea(
-                        bottom: false,
-                        child: RefreshIndicator(
-                          onRefresh: () {
-                            _refreshCompleter = Completer<void>();
-
-                            _journalFeedBloc.add(FetchFeed());
-                            return _refreshCompleter.future;
-                          },
-                          child: ScrollConfiguration(
-                            behavior: NoGlowScroll(showLeading: false),
-                            child: ListView.builder(
-                              itemBuilder: (BuildContext context, int index) {
-                                return compiledList[index];
-                              },
-                              itemCount: compiledList.length,
-                            ),
-                          ),
-                        )),
-                  );
-                }
-                return Container();
-              },
-            ),
+                final List<Widget> compiledList =
+                    _getJournalEntryListItemWidgets(
+                        context, sortedEntriesYearMap);
+                return FullScreenLayout(
+                  headerSliverBuilder: _renderAppBar,
+                  child: ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      return compiledList[index];
+                    },
+                    itemCount: compiledList.length,
+                  ),
+                );
+              }
+              return Container();
+            },
           ),
         ));
   }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
-import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
+import 'package:grateful/src/screens/journal_feed/journal_feed.dart';
 import 'package:grateful/src/screens/settings/settings_screen.dart';
 import 'package:grateful/src/widgets/navigation_bar.dart';
 
@@ -35,6 +35,8 @@ class _JournalPageView extends State<JournalPageView> {
   bool isActive;
   int activePage;
   PageController pageController;
+
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -69,6 +71,7 @@ class _JournalPageView extends State<JournalPageView> {
         setActive(true);
       },
       child: SafeArea(
+        key: scaffoldKey,
         child: Scaffold(
           bottomNavigationBar: NavigationBar(
             currentIndex: activePage,
@@ -85,8 +88,13 @@ class _JournalPageView extends State<JournalPageView> {
               });
             },
             children: <Widget>[
-              EditJournalEntry(item: widget.journalEntry),
-              JournalEntryFeed(),
+              EditJournalEntry(
+                item: widget.journalEntry,
+                onSave: () {
+                  pageController.jumpToPage(1);
+                },
+              ),
+              const JournalFeed(),
               SettingsScreen()
             ],
           ),

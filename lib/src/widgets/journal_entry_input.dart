@@ -12,13 +12,14 @@ class JournalInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Container(
         child: TextFormField(
       keyboardType: TextInputType.multiline,
       controller: controller,
       onChanged: onChanged,
       minLines: 3,
-      cursorColor: Colors.blue[100],
+      cursorColor: theme.colorScheme.secondaryVariant,
       autocorrect: true,
       autovalidate: true,
       validator: (_) => null,
@@ -27,10 +28,9 @@ class JournalInput extends StatelessWidget {
       style: Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 18),
       decoration: InputDecoration(
         hintText: AppLocalizations.of(context).journalEntryHint,
-        hintStyle: Theme.of(context)
-            .primaryTextTheme
-            .body1
-            .copyWith(color: Colors.white38, fontStyle: FontStyle.italic),
+        hintStyle: Theme.of(context).primaryTextTheme.body1.copyWith(
+            color: theme.colorScheme.onBackground.withOpacity(0.7),
+            fontStyle: FontStyle.italic),
         enabledBorder: const UnderlineInputBorder(borderSide: BorderSide.none),
         focusedBorder: const UnderlineInputBorder(borderSide: BorderSide.none),
       ),

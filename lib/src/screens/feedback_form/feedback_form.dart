@@ -20,7 +20,7 @@ class FeedbackForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
-
+    final ThemeData theme = Theme.of(context);
     final FeedbackBloc feedbackBloc = FeedbackBloc();
     return BlocProvider<FeedbackBloc>(
       create: (_) => feedbackBloc,
@@ -39,15 +39,17 @@ class FeedbackForm extends StatelessWidget {
         },
         child: Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.blue[900],
+              backgroundColor: theme.colorScheme.background,
               elevation: 0,
               title: Text(AppLocalizations.of(context).leaveFeedback),
             ),
             body: BackgroundGradientProvider(
-              child: LayoutBuilder(builder: (BuildContext context, BoxConstraints viewportDimensions) {
+              child: LayoutBuilder(builder:
+                  (BuildContext context, BoxConstraints viewportDimensions) {
                 return BlocBuilder<FeedbackBloc, FeedbackState>(
                     bloc: feedbackBloc,
-                    builder: (BuildContext context, FeedbackState feedbackState) {
+                    builder:
+                        (BuildContext context, FeedbackState feedbackState) {
                       if (feedbackState is FeedbackSending) {
                         return const Center(
                           child: CircularProgressIndicator(),
@@ -79,12 +81,16 @@ class FeedbackForm extends StatelessWidget {
                                             .primaryTextTheme
                                             .body1
                                             .copyWith(
-                                                color: Colors.white38,
+                                                color: theme
+                                                    .colorScheme.onBackground
+                                                    .withOpacity(0.7),
                                                 fontStyle: FontStyle.italic),
-                                        enabledBorder: const UnderlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: const UnderlineInputBorder(
-                                            borderSide: BorderSide.none),
+                                        enabledBorder:
+                                            const UnderlineInputBorder(
+                                                borderSide: BorderSide.none),
+                                        focusedBorder:
+                                            const UnderlineInputBorder(
+                                                borderSide: BorderSide.none),
                                       ),
                                       controller: textEditingController,
                                     ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grateful/src/blocs/user_preference/user_preference_bloc.dart';
 import 'package:grateful/src/screens/about_app/about_app.dart';
-import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
 import 'package:grateful/src/screens/feedback_form/feedback_form.dart';
-import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
 import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
-import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
+import 'package:grateful/src/screens/main_page_view/main_page_view.dart';
 import 'package:grateful/src/screens/loading_screen/loading_screen.dart';
 import 'package:grateful/src/screens/login/login.dart';
 import 'package:grateful/src/screens/settings/settings_screen.dart';
@@ -33,15 +33,36 @@ class Router {
   static PageRouteBuilder<dynamic> _pageRoute(Widget widget, String routeName) {
     return PageRouteBuilder<dynamic>(
         pageBuilder:
-            (BuildContext c, Animation<double> a, Animation<double> s) =>
-                Theme(data: gratefulTheme(Theme.of(c)), child: widget),
+            (BuildContext c, Animation<double> a, Animation<double> s) {
+          final UserPreferenceBloc userPreferenceBloc =
+              BlocProvider.of<UserPreferenceBloc>(c);
+          return BlocBuilder<UserPreferenceBloc, UserPreferenceState>(
+              bloc: userPreferenceBloc,
+              builder: (BuildContext context,
+                  UserPreferenceState userPreferenceState) {
+                return Theme(
+                    data: gratefulTheme(
+                      Theme.of(c),
+                      colorScheme: AppColorScheme?.availableSchemes?.firstWhere(
+                          (AppColorScheme appColorScheme) {
+                        if (userPreferenceState is UserPreferencesFetched) {
+                          return appColorScheme.identifier ==
+                              userPreferenceState?.userPreferenceSettings
+                                  ?.colorPreference?.colorIdentifier;
+                        }
+                        return false;
+                      }, orElse: () => AppColorScheme.blueScheme)?.colorScheme,
+                    ),
+                    child: widget);
+              });
+        },
         transitionsBuilder: (BuildContext c, Animation<double> a,
             Animation<double> s, Widget child) {
           return SlideTransition(
             child: child,
-            position: Tween<Offset>(
-                    begin: const Offset(1.0, 0.0), end: Offset.zero)
-                .animate(a),
+            position:
+                Tween<Offset>(begin: const Offset(1.0, 0.0), end: Offset.zero)
+                    .animate(a),
           );
         },
         settings: RouteSettings(name: routeName));
@@ -50,8 +71,8 @@ class Router {
   static Route<dynamic> generatedRoute(RouteSettings settings) {
     switch (settings.name) {
       case FlutterAppRoutes.journalPageView:
-        final JournalPageArguments args =
-            settings.arguments as JournalPageArguments;
+        final JournalPageViewArguments args =
+            settings.arguments as JournalPageViewArguments;
         return _pageRoute(
             JournalPageView(
               journalEntry: args?.entry,
@@ -62,17 +83,12 @@ class Router {
             settings.arguments as JournalEntryDetailArguments;
         return _pageRoute(JournalEntryDetails(args.journalEntry),
             FlutterAppRoutes.journalEntryDetails);
-      case FlutterAppRoutes.journalFeed:
-        return _pageRoute(JournalEntryFeed(), FlutterAppRoutes.journalFeed);
-      case FlutterAppRoutes.editJournalEntry:
-        final EditJournalEntryArgs args =
-            settings.arguments as EditJournalEntryArgs;
-        return _pageRoute(EditJournalEntry(item: args?.journalEntry),
-            FlutterAppRoutes.editJournalEntry);
       case FlutterAppRoutes.loginScreen:
-        return _pageRoute(const LoginScreen(true), FlutterAppRoutes.loginScreen);
+        return _pageRoute(
+            const LoginScreen(true), FlutterAppRoutes.loginScreen);
       case FlutterAppRoutes.signupScreen:
-        return _pageRoute(const LoginScreen(false), FlutterAppRoutes.signupScreen);
+        return _pageRoute(
+            const LoginScreen(false), FlutterAppRoutes.signupScreen);
       case FlutterAppRoutes.welcomeScreen:
         return _pageRoute(WelcomeScreen(), FlutterAppRoutes.welcomeScreen);
       case FlutterAppRoutes.aboutApp:

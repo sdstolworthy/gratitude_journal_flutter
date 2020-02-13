@@ -4,44 +4,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AvailableColorSchemes {
-  static ColorScheme blueScheme = ColorScheme.fromSwatch(
-      backgroundColor: Colors.blue[900],
-      accentColor: Colors.blue[600],
-      brightness: Brightness.light,
-      cardColor: Colors.lightBlue[900],
-      errorColor: Colors.deepOrange[800],
-      primarySwatch: Colors.blue);
+class AppColorScheme {
+  AppColorScheme(this.identifier, this.colorScheme);
 
-  static ColorScheme yellowScheme = ColorScheme.fromSwatch(
-      backgroundColor: Colors.yellow[900],
-      accentColor: Colors.yellow[600],
-      brightness: Brightness.light,
-      cardColor: Colors.amber[900],
-      errorColor: Colors.deepOrange[800],
-      primarySwatch: Colors.yellow);
+  final String identifier;
+  final ColorScheme colorScheme;
 
-  static ColorScheme greenScheme = ColorScheme.fromSwatch(
-      backgroundColor: Colors.green[900],
-      accentColor: Colors.green[600],
-      brightness: Brightness.light,
-      cardColor: Colors.lightGreen[900],
-      errorColor: Colors.deepOrange[800],
-      primarySwatch: Colors.green);
+  static AppColorScheme blueScheme = AppColorScheme(
+      'blue',
+      ColorScheme.fromSwatch(
+          backgroundColor: Colors.blue[900],
+          accentColor: Colors.blue[600],
+          brightness: Brightness.light,
+          cardColor: Colors.lightBlue[900],
+          errorColor: Colors.deepOrange[800],
+          primarySwatch: Colors.blue));
 
-  static ColorScheme brownScheme = ColorScheme.fromSwatch(
-      backgroundColor: Colors.brown[900],
-      accentColor: Colors.brown[600],
-      brightness: Brightness.light,
-      cardColor: Colors.brown[100],
-      errorColor: Colors.deepOrange[800],
-      primarySwatch: Colors.brown);
+  static AppColorScheme yellowScheme = AppColorScheme(
+      'yellow',
+      ColorScheme.fromSwatch(
+          backgroundColor: Colors.yellow[900],
+          accentColor: Colors.yellow[600],
+          brightness: Brightness.light,
+          cardColor: Colors.amber[900],
+          errorColor: Colors.deepOrange[800],
+          primarySwatch: Colors.yellow));
+
+  static AppColorScheme greenScheme = AppColorScheme(
+      'green',
+      ColorScheme.fromSwatch(
+          backgroundColor: Colors.green[900],
+          accentColor: Colors.green[600],
+          brightness: Brightness.light,
+          cardColor: Colors.lightGreen[900],
+          errorColor: Colors.deepOrange[800],
+          primarySwatch: Colors.green));
+
+  static AppColorScheme brownScheme = AppColorScheme(
+      'brown',
+      ColorScheme.fromSwatch(
+          backgroundColor: Colors.brown[900],
+          accentColor: Colors.brown[600],
+          brightness: Brightness.light,
+          cardColor: Colors.brown[100],
+          errorColor: Colors.deepOrange[800],
+          primarySwatch: Colors.brown));
+
+  static List<AppColorScheme> availableSchemes = <AppColorScheme>[
+    blueScheme,
+    yellowScheme,
+    greenScheme,
+    brownScheme
+  ];
 }
 
 ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
   final ThemeData theme = ThemeData(brightness: Brightness.light);
 
-  colorScheme ??= AvailableColorSchemes.blueScheme;
+  colorScheme ??= AppColorScheme.blueScheme.colorScheme;
 
   try {
     SystemChrome.setSystemUIOverlayStyle(
@@ -70,7 +90,7 @@ ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
             labelStyle:
                 TextStyle(color: Colors.white70, fontFamily: 'Raleway')),
         primaryColorLight: colorScheme.onBackground,
-        iconTheme: IconThemeData(color: Colors.white70),
+        iconTheme: IconThemeData(color: colorScheme.onBackground.withOpacity(0.8)),
         primaryTextTheme: TextTheme(
             button: appTheme.primaryTextTheme.button
                 .copyWith(fontFamily: 'Raleway'),
@@ -80,8 +100,10 @@ ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
                 .copyWith(color: colorScheme.onBackground, fontSize: 20),
             headline: GoogleFonts.merriweather()
                 .copyWith(color: colorScheme.onBackground, fontSize: 40),
-            subhead: GoogleFonts.merriweatherSans()
-                .copyWith(fontStyle: FontStyle.italic, fontSize: 18),
+            subhead: GoogleFonts.merriweatherSans().copyWith(
+                fontStyle: FontStyle.italic,
+                fontSize: 18,
+                color: colorScheme.onBackground),
             title: appTheme.primaryTextTheme.title
                 .apply(fontFamily: 'MontSerratRegular'),
             display1: appTheme.primaryTextTheme.display1

@@ -11,7 +11,7 @@ import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 import 'package:grateful/src/widgets/journal_feed_list_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grateful/src/widgets/layouts/full_screen_layout.dart';
+import 'package:grateful/src/widgets/full_screen_layout.dart';
 import 'package:grateful/src/widgets/year_separator.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 

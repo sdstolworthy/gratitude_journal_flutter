@@ -48,7 +48,7 @@ class _LoginScreen extends State<LoginScreen> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: theme.colorScheme.background,
             elevation: 0,
             leading: FlatButton(
               child: Icon(
@@ -104,10 +104,8 @@ class _LoginScreen extends State<LoginScreen> {
                                     Expanded(child: Container()),
                                     Form(
                                         key: _formKey,
-                                        child: _renderLoginForm(
-                                            context,
-                                            widget.isLogin,
-                                            _loginScreenBloc)),
+                                        child: _renderLoginForm(context,
+                                            widget.isLogin, _loginScreenBloc)),
                                     Row(
                                       children: <Widget>[
                                         Expanded(
@@ -115,8 +113,7 @@ class _LoginScreen extends State<LoginScreen> {
                                           buttonText: widget.isLogin
                                               ? localizations.logIn
                                               : localizations.signUp,
-                                          onPressed: loginState
-                                                  is LoginLoading
+                                          onPressed: loginState is LoginLoading
                                               ? null
                                               : widget.isLogin
                                                   ? () => _handleSignIn(
@@ -127,8 +124,7 @@ class _LoginScreen extends State<LoginScreen> {
                                       ],
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(top: 20.0),
+                                      padding: const EdgeInsets.only(top: 20.0),
                                       child: Row(
                                         children: <Widget>[
                                           Expanded(

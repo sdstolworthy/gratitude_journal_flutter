@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grateful/src/config/constants.dart';
+import 'package:grateful/src/models/preferences/color_preference.dart';
 import 'package:grateful/src/models/preferences/daily_notification.dart';
 import 'package:grateful/src/models/preferences/language_settings.dart';
 import 'package:grateful/src/models/preferences/user_preference.dart';
@@ -15,6 +16,7 @@ class UserPreferenceRepository {
   static const String _languagePreferenceDocument = 'language';
   static const String _notificationPreferenceDocument = 'notifications';
   static const String _preferenceCollectionName = 'preferences';
+  static const String _colorPreferenceDocument = 'color';
   static const String _userCollectionName = Constants.userRepositoryName;
 
   final FirebaseAuth _firebaseAuth;
@@ -28,8 +30,8 @@ class UserPreferenceRepository {
     } else if (preference.runtimeType == DailyJournalReminderSettings) {
       documentReference =
           await _getDocumentReference(_notificationPreferenceDocument);
-    } else {
-      return null;
+    } else if (preference.runtimeType == ColorPreference) {
+      documentReference = await _getDocumentReference(_colorPreferenceDocument);
     }
     if (documentReference == null) {
       return null;
@@ -60,6 +62,8 @@ class UserPreferenceRepository {
       } else if (document.documentID == _notificationPreferenceDocument) {
         userPreferenceSettings.dailyJournalReminderSettings =
             DailyJournalReminderSettings.fromMap(document.data);
+      } else if (document.documentID == _colorPreferenceDocument) {
+        userPreferenceSettings.colorPreference = ColorPreference.fromMap(document.data);
       }
     }
 

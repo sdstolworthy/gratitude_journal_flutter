@@ -37,6 +37,7 @@ class SecuritySettings extends StatelessWidget {
                           style: theme.primaryTextTheme.body1,
                         ),
                         trailing: Switch(
+                          activeColor: theme.colorScheme.primary,
                           value: (biometricState as BiometricStatusFetched)
                               .isEnabled,
                           onChanged: (bool newValue) async {

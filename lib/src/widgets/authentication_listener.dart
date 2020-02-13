@@ -47,8 +47,9 @@ class AuthenticationListener extends StatelessWidget {
                   .map<Future<dynamic>>((LoadingTask hook) => hook.execute()),
               ...preAuthenticationHookFutures
             ]).then((_) {
-              rootNavigationService
-                  .pushReplacementNamed(FlutterAppRoutes.journalPageView);
+              rootNavigationService.pushNamedAndRemoveUntil(
+                  FlutterAppRoutes.journalPageView,
+                  (Route<dynamic> route) => false);
             });
           } else {
             Future.wait<void>(preAuthenticationHookFutures).then((_) {

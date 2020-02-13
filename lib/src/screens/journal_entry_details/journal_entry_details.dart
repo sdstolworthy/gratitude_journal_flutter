@@ -254,7 +254,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20)),
-                color: theme.colorScheme.onBackground),
+                color: Colors.white),
             child: child));
   }
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/screens/compose_entry/compose_entry.dart';
+import 'package:grateful/src/screens/garden/garden_screen.dart';
 import 'package:grateful/src/screens/journal_feed/journal_feed.dart';
 import 'package:grateful/src/screens/settings/settings_screen.dart';
 import 'package:grateful/src/widgets/navigation_bar.dart';
@@ -88,6 +89,7 @@ class _JournalPageView extends State<JournalPageView> {
               });
             },
             children: <Widget>[
+              GardenScreen(),
               ComposeEntry(
                 item: widget.journalEntry,
                 onSave: () {

@@ -25,6 +25,9 @@ class NavigationBar extends StatelessWidget {
       unselectedLabelStyle: const TextStyle(color: Colors.white12),
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
+            icon: Icon(Icons.golf_course),
+            title: Text('Garden', style: theme.primaryTextTheme.body1)),
+        BottomNavigationBarItem(
             icon: Icon(Icons.edit),
             title: Text('Journal', style: theme.primaryTextTheme.body1)),
         BottomNavigationBarItem(

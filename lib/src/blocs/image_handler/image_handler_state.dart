@@ -20,7 +20,12 @@ class FileUploaded extends ImageHandlerState {
 }
 
 class UploadProgress extends ImageHandlerState {
-  const UploadProgress(FilePhoto filePhoto, this.fileProgress) : super(filePhoto);
+  const UploadProgress(FilePhoto filePhoto, this.fileProgress)
+      : super(filePhoto);
 
   final double fileProgress;
+}
+
+class ImageUploadError extends ImageHandlerState {
+  const ImageUploadError(FilePhoto filePhoto) : super(filePhoto);
 }

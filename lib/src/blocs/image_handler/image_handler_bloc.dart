@@ -27,6 +27,8 @@ class ImageHandlerBloc extends Bloc<ImageHandlerEvent, ImageHandlerState> {
       yield UploadProgress(event.photograph as FilePhoto, event.progress);
     } else if (event is UploadCompleted) {
       yield FileUploaded(event.networkPhoto, event.placeholder);
+    } else if (event is UploadHasError) {
+      yield ImageUploadError(event.filePhoto);
     }
   }
 
@@ -41,25 +43,30 @@ class ImageHandlerBloc extends Bloc<ImageHandlerEvent, ImageHandlerState> {
   }
 
   Future<void> _uploadPhoto(FilePhoto filePhoto) async {
-    final StorageUploadTask fileUploadEvent =
-        await fileRepository.uploadFile(filePhoto.file);
-    final StreamSubscription<StorageTaskEvent> fileUploadSubscription =
-        fileUploadEvent.events.listen((StorageTaskEvent eventData) {
-      final double uploadProgress = eventData.snapshot.bytesTransferred /
-          eventData.snapshot.totalByteCount;
-      add(UploadHasProgress(photograph: filePhoto, progress: uploadProgress));
-    });
+    try {
+      final StorageUploadTask fileUploadEvent =
+          await fileRepository.uploadFile(filePhoto.file);
+      final StreamSubscription<StorageTaskEvent> fileUploadSubscription =
+          fileUploadEvent.events.listen((StorageTaskEvent eventData) {
+        final double uploadProgress = eventData.snapshot.bytesTransferred /
+            eventData.snapshot.totalByteCount;
+        add(UploadHasProgress(photograph: filePhoto, progress: uploadProgress));
+      });
 
-    final StorageTaskSnapshot completedUpload =
-        await fileUploadEvent.onComplete;
-    final String networkPhotoUrl =
-        await completedUpload.ref.getDownloadURL() as String;
-    fileUploadSubscription.cancel();
+      final StorageTaskSnapshot completedUpload =
+          await fileUploadEvent.onComplete;
+      final String networkPhotoUrl =
+          await completedUpload.ref.getDownloadURL() as String;
+      fileUploadSubscription.cancel();
 
-    if (networkPhotoUrl != null) {
-      final NetworkPhoto networkPhoto = NetworkPhoto(imageUrl: networkPhotoUrl);
-      photograph = networkPhoto;
-      add(UploadCompleted(networkPhoto, filePhoto));
+      if (networkPhotoUrl != null) {
+        final NetworkPhoto networkPhoto =
+            NetworkPhoto(imageUrl: networkPhotoUrl);
+        photograph = networkPhoto;
+        add(UploadCompleted(networkPhoto, filePhoto));
+      }
+    } catch (e) {
+      add(UploadHasError(filePhoto));
     }
   }
 }

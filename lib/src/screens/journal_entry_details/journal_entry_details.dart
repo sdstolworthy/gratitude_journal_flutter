@@ -237,7 +237,6 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
       {@required Widget child,
       @required BoxConstraints constraints,
       @required BuildContext context}) {
-    final ThemeData theme = Theme.of(context);
     return FractionalTranslation(
         translation: _animation.value,
         child: Container(

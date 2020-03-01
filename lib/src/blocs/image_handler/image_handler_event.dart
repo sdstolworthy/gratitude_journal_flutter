@@ -37,3 +37,9 @@ class SetPhotographs extends ImageHandlerEvent {
 
   final List<Photograph> photographs;
 }
+
+class UploadHasError extends ImageHandlerEvent {
+  UploadHasError(this.filePhoto);
+
+  final FilePhoto filePhoto;
+}

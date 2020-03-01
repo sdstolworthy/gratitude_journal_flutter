@@ -17,32 +17,34 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
-    if (biometricBloc.state is! BiometricStatusFetched) {
-      biometricBloc.add(FetchBiometricsStatus());
-      final Completer<void> c = Completer<void>();
-      biometricBloc.listen((BiometricState data) {
-        if (data is BiometricStatusFetched && !c.isCompleted) {
-          c.complete();
-        }
-      });
-      await c.future;
-    }
-    if (event is AppStarted) {
-      if (await _userRepository.isSignedIn()) {
-        if (biometricBloc.state is BiometricStatusFetched &&
-            (biometricBloc.state as BiometricStatusFetched).isEnabled &&
-            !biometricBloc.state.isChecked) {
-          yield RequiresBiometricsForAuthentication();
-        } else {
-          yield Authenticated();
-        }
-      } else {
-        yield Unauthenticated();
-      }
-    } else if (event is Authenticate) {
+    if (event is Authenticate) {
       yield Authenticated();
     } else if (event is Unauthenticate) {
       yield* _mapLogoutEventToState();
+    } else {
+      if (biometricBloc.state is! BiometricStatusFetched) {
+        biometricBloc.add(FetchBiometricsStatus());
+        final Completer<void> c = Completer<void>();
+        biometricBloc.listen((BiometricState data) {
+          if (data is BiometricStatusFetched && !c.isCompleted) {
+            c.complete();
+          }
+        });
+        await c.future;
+      }
+      if (event is AppStarted) {
+        if (await _userRepository.isSignedIn()) {
+          if (biometricBloc.state is BiometricStatusFetched &&
+              (biometricBloc.state as BiometricStatusFetched).isEnabled &&
+              !biometricBloc.state.isChecked) {
+            yield RequiresBiometricsForAuthentication();
+          } else {
+            yield Authenticated();
+          }
+        } else {
+          yield Unauthenticated();
+        }
+      }
     }
   }
 

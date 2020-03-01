@@ -42,7 +42,8 @@ void main() {
 
     blocTest<AuthenticationBloc, AuthenticationEvent, AuthenticationState>(
         'Expect Authenticated if User is logged in and biometrics are not enabled',
-        build: () {
+        skip: 0,
+        build: () async {
           when(userRepository.isSignedIn())
               .thenAnswer((_) => Future<bool>.value(true));
           setBiometricsCapability(false);
@@ -57,7 +58,8 @@ void main() {
 
     blocTest<AuthenticationBloc, AuthenticationEvent, AuthenticationState>(
         'Expect RequiresBiometricsForAuthentication if User logged in and biometrics are enabled',
-        build: () {
+        skip: 0,
+        build: () async {
           when(userRepository.isSignedIn())
               .thenAnswer((_) => Future<bool>.value(true));
           setBiometricsCapability(true);
@@ -71,13 +73,14 @@ void main() {
 
     blocTest<AuthenticationBloc, AuthenticationEvent, AuthenticationState>(
         'Expect Unauthenticated when the user is not logged in',
-        build: () {
+        skip: 0,
+        build: () async {
           when(userRepository.isSignedIn())
               .thenAnswer((_) => Future<bool>.value(false));
           setBiometricsCapability(true);
           return authenticationBloc;
         },
-        expect: <TypeMatcher<dynamic>>[
+        expect: <TypeMatcher<AuthenticationState>>[
           isA<Uninitialized>(),
           isA<Unauthenticated>()
         ],
@@ -85,9 +88,10 @@ void main() {
 
     blocTest<AuthenticationBloc, AuthenticationEvent, AuthenticationState>(
         'Expect unauthenticated after Unauthenticate event',
-        build: () => authenticationBloc,
+        skip: 0,
+        build: () async => authenticationBloc,
         act: (AuthenticationBloc bloc) async => bloc.add(Unauthenticate()),
-        expect: <TypeMatcher<dynamic>>[
+        expect: <TypeMatcher<AuthenticationState>>[
           isA<Uninitialized>(),
           isA<Unauthenticated>()
         ]);

@@ -44,17 +44,17 @@ class ImageHandlerBloc extends Bloc<ImageHandlerEvent, ImageHandlerState> {
 
   Future<void> _uploadPhoto(FilePhoto filePhoto) async {
     try {
-      final StorageUploadTask fileUploadEvent =
+      final StorageUploadTask fileUploadTask =
           await fileRepository.uploadFile(filePhoto.file);
       final StreamSubscription<StorageTaskEvent> fileUploadSubscription =
-          fileUploadEvent.events.listen((StorageTaskEvent eventData) {
+          fileUploadTask.events.listen((StorageTaskEvent eventData) {
         final double uploadProgress = eventData.snapshot.bytesTransferred /
             eventData.snapshot.totalByteCount;
         add(UploadHasProgress(photograph: filePhoto, progress: uploadProgress));
       });
 
       final StorageTaskSnapshot completedUpload =
-          await fileUploadEvent.onComplete;
+          await fileUploadTask.onComplete;
       final String networkPhotoUrl =
           await completedUpload.ref.getDownloadURL() as String;
       fileUploadSubscription.cancel();

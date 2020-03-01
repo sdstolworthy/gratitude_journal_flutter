@@ -1,0 +1,8 @@
+Remember the good in your life with Grateful.
+
+
+In this release, we've added:
+Notification scheduling. You can now customize when you receive a reminder to journal.
+Various bugfixes and experience improvements.
+A new design that puts more focus on your memories.
+A share feature to let others know what you are grateful for.

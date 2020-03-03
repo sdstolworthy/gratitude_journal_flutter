@@ -27,8 +27,8 @@ platform :android do
     sh "./flutter_build.sh --clean"
   end
 
-  desc "Submit a new Alpha Build to Playstore Alpha Channel"
-  lane :alpha do |options|
+  desc "Submit a new Build to selected Playstore Channel"
+  lane :deploy_android do |options|
     gradle(task: "clean bundleProductionRelease", flags: "-Ptarget=lib/main_production.dart")
     upload_to_play_store(
       aab: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",

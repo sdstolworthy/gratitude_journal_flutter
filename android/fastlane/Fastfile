@@ -16,20 +16,14 @@
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test", flavor: "development", flags: "-Ptarget=lib/main_development.dart")
-  end
-
   lane :build_android do |options|
     sh "./flutter_test.sh"
 
-    sh "./flutter_build.sh --clean #{number_of_commits()}"
+    sh "./flutter_build.sh --clean #{300 + number_of_commits()}"
   end
 
   desc "Submit a new Build to selected Playstore Channel"
   lane :deploy_android do |options|
-    gradle(task: "clean bundleProductionRelease", flags: "-Ptarget=lib/main_production.dart")
     upload_to_play_store(
       aab: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",
       track:  options[:production] ? 'production' : options[:internal] ? 'internal' : options[:beta] ? 'beta' : 'alpha',

@@ -14,5 +14,5 @@ then
    flutter build apk --release
 else
    echo "Building AAB..."
-   flutter build appbundle --release --flavor=production -t lib/main_production.dart
+   flutter build appbundle --release --flavor=production -t lib/main_production.dart --build-number=$2
 fi

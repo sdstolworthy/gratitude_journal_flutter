@@ -63,6 +63,8 @@ dev_dependencies:
   screenshots: ^2.1.1
   flutter_test:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
   intl_translation: ^0.17.1
   flutter_launcher_icons:
 

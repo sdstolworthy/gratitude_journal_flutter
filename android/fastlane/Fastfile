@@ -24,7 +24,7 @@ platform :android do
   lane :build_android do |options|
     sh "./flutter_test.sh"
 
-    sh "./flutter_build.sh --clean"
+    sh "./flutter_build.sh --clean #{number_of_commits()}"
   end
 
   desc "Submit a new Build to selected Playstore Channel"

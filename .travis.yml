@@ -24,4 +24,6 @@ matrix:
       script:
         - flutter packages get
         - flutter test
-        - cd android && bundle exec fastlane build_android && bundle exec fastlane deploy_android
+        - cd android
+        - bundle exec fastlane build_android
+        - bundle exec fastlane deploy_android

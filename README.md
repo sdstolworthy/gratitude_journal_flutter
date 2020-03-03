@@ -1,3 +1,5 @@
+![Build Status](https://travis-ci.com/sdstolworthy/gratitude_journal_flutter.svg?branch=master)
+
 # Grateful: Give Thanks Daily
 
 Grateful: Give Thanks Daily is a simple application for expressing gratitude.

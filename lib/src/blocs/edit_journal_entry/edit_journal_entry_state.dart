@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class EditJournalEntryState {}
 
-class InitialEdititemState extends EditJournalEntryState {}
+class InitialEditJournalEntryState extends EditJournalEntryState {}
 
 class ItemLoaded extends EditJournalEntryState {
   ItemLoaded(this.item);

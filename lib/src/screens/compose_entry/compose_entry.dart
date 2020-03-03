@@ -64,11 +64,6 @@ class _ComposeEntryState extends State<ComposeEntry>
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      fileRepository = FileRepository(
-          storageBucketUrl: AppEnvironment.of(context).cloudStorageBucket);
-      _initializePhotographs(_journalEntry);
-    });
     setState(() {
       _journalEntry = _journalEntry;
     });
@@ -85,6 +80,16 @@ class _ComposeEntryState extends State<ComposeEntry>
       _imageHandlerBlocs.add(
           ImageHandlerBloc(fileRepository: fileRepository, photograph: photo));
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      fileRepository = FileRepository(
+          storageBucketUrl: AppEnvironment.of(context).cloudStorageBucket);
+      _initializePhotographs(_journalEntry);
+    });
   }
 
   @override

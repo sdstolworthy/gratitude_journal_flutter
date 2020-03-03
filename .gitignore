@@ -10,6 +10,10 @@
 .svn/
 **/**/google-services.json
 
+**/**/*.jks
+**/**/fastlane-key.json
+**/**/report*.xml
+**/**/secrets.tar
 .flutter-plugins-dependencies
 
 # IntelliJ related

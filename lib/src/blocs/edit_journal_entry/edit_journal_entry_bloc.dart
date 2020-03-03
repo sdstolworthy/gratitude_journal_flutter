@@ -23,7 +23,7 @@ class EditJournalEntryBloc
   final JournalFeedBloc _journalFeedBloc;
 
   @override
-  EditJournalEntryState get initialState => InitialEdititemState();
+  EditJournalEntryState get initialState => InitialEditJournalEntryState();
 
   @override
   Stream<EditJournalEntryState> mapEventToState(
@@ -42,6 +42,7 @@ class EditJournalEntryBloc
         yield JournalEntrySaveError();
       }
     } else if (event is DeleteJournalEntry) {
+      yield JournalEntryLoading();
       try {
         await _journalEntryRepository.deleteItem(event.journalEntry);
         _journalFeedBloc.add(FetchFeed());

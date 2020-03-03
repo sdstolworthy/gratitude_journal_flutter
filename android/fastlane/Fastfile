@@ -21,18 +21,20 @@ platform :android do
     gradle(task: "test", flavor: "development", flags: "-Ptarget=lib/main_development.dart")
   end
 
+  lane :build_android do |options|
+    sh "./flutter_test.sh"
+
+    sh "./flutter_build.sh --clean"
+  end
+
   desc "Submit a new Alpha Build to Playstore Alpha Channel"
-  lane :alpha do
+  lane :alpha do |options|
     gradle(task: "clean bundleProductionRelease", flags: "-Ptarget=lib/main_production.dart")
     upload_to_play_store(
       aab: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",
-      track: 'alpha',
+      track:  options[:production] ? 'production' : options[:internal] ? 'internal' : options[:beta] ? 'beta' : 'alpha',
       skip_upload_metadata: true
     )
-
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
   end
 
   desc "Deploy a new version to the Google Play"

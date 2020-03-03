@@ -5,12 +5,17 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.006868787">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.007012266">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: testdevelopment" time="0.083753668">
+      <testcase classname="fastlane.lanes" name="1: ./flutter_test.sh" time="7.475171945">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: ./flutter_build.sh --clean" time="90.282722856">
         
       </testcase>
     

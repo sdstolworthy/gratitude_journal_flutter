@@ -30,15 +30,4 @@ platform :android do
       skip_upload_metadata: true
     )
   end
-
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
-  end
-
-  desc "Build a development version"
-  lane :builddev do
-    gradle(task: "clean assembleDevelopmentRelease", flags: "-Ptarget=lib/main_development.dart")
-  end
 end

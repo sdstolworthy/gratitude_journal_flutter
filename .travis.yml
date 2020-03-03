@@ -1,6 +1,6 @@
 env:
   global:
-    secure: S/sPmc5FGP5WNQKHBFro7XFnt89yrVj0tNOf2zWm7kYeOsEFSyicTn7mYDgY34HBrTh1I0t1dQpq6mE6WFJrXHU2fwfEnBtZDcv8k4PrM6XqBKSVe7A1yRV2PFSngoEyV9IDraILaVuJFynSzn9AVi55IyWc3VULGMxU1WJGrXbEU+hEcVj7SiFMjqdlZZTToBbm8Ig4zG3OJl5LEvW7q92SBLZKJj0ctYtdegec52EOnBhALgRCvqdUhBjyOOTKMsbIGWbGOxY1/rVjsQiCBXI545UFVJ7NzlDZqF5CF5mfm6blZAaFY7Me0MKhsJpbkwW9+TBdRKQ7sfMYYwM1/MlMaRE56ceGUrJPufsqnXZK8h/tX2+Xsq42V6OWVys8607cUOCzaGOt3jfgca3RD2gyv19MSbJLxVQkDIAh+gJn9Vf55owb8tgJzGe87EULv+gvI8zC4dvuegGaIQG0e5lu6KaeFl09DcDsCajIhIc4Em7bT0lJKVZD40cadnf/2XKW/2b9wz09wJcMkrT7BmE5iQFt9GvCMtcJIgi+Om/92JdJOP9nDAR0NnTwPSMocdVxzgxxB5TXLP8CUdUlskyq2nbtxPNF5kWVa9LO1+pCPohevSk0D4loEq7RINf8L8SAd/QVL9qYEY7WqvhiI2+8KNtoOyOqY1ZGMEXAC0k=
+    secure: "va0vZPvQqfLorTY8VRa0zZKelaX8Z38gPp2CKNQ+At64b1cvoPBsQ0VoSy4kUdRBBUo8/RB9/OeiNedPTDCR51oaGfOevecdyvdEiZid+69t5KEpNT6VKMauOj2UJ28JyMATvG0HxqRDY+5r0Ia16ftO1gDIMlvwSG0KzVPJC8ol47by2uPEZAT8SE3ccHK42vLM0l8pmuK3mckzij++W+qe47rJ2r3LlWvn2xq39L4yWmOuME0roCdS6hl/5LDqug+nD5gOcuZ+v+RfirLTi2JXkYGMuZ/dsalLhxXCiQZVCJhPu6D6eI4sFQX11PwmIVJ8Lr/HLOPquKOqABmzcyWjkb5l8MTt/DtQUXNZjRepAj53gHH1BQZxNijthEuwzwik3kfBLIYrQW1gHXCaUFJSBrL7a0UapI0LMOYLXbybJllvZFn5fTSLaZqeEHxHCmwP6kXmuVHx9Hc8Iik5SphLdOXwlFzac9duHA7+G/WY9rI2eGpo2lb1zj6fshOW3jtSu2iA8nav7p1Vu75eYim5y+wNuAJPrlbHlImV7sarnleIZoEnEgAdLOgjjnYN0MaLvIFMcL6tYWnzxqsYsYxKYDBkpSH9bPvyqNd465m4LNP0/UL2nPblNa0RF6gn7BhVTYufkkc7Zq1+A1Of9uHVdHlBbEfUTvq1hsYLRRc="
 
 matrix:
   include:
@@ -12,7 +12,6 @@ matrix:
           - build-tools-28.0.3
           - android-28
       before_script:
-        - echo $decryption_password
         - echo $decryption_password | gpg --passphrase-fd 0 secrets.tar.gpg
         - tar xvf secrets.tar
         - git clone https://github.com/flutter/flutter.git -b stable

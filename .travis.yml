@@ -5,6 +5,10 @@ matrix:
   include:
     - name: Android Build
       language: android
+      licenses:
+        - "android-sdk-preview-license-.+"
+        - "android-sdk-license-.+"
+        - "google-gdk-license-.+"
       jdk: openjdk8
       android:
         components:
@@ -19,4 +23,5 @@ matrix:
       script:
         - flutter packages get
         - flutter test
+        - yes | flutter doctor --android-licenses
         - cd android && bundle exec fastlane build_android && bundle exec fastlane deploy_android

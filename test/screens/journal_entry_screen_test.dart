@@ -13,6 +13,7 @@ void main() {
   // Define a test. The TestWidgets function also provides a WidgetTester
   // to work with. The WidgetTester allows building and interacting
   // with widgets in the test environment.
+  WidgetsApp.debugAllowBannerOverride = false;
   testWidgets('Journal Entry Screen renders', (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(ScreenWrapper(

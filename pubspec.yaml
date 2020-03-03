@@ -60,6 +60,7 @@ flutter_icons:
   ios: true
 
 dev_dependencies:
+  screenshots: ^2.1.1
   flutter_test:
     sdk: flutter
   intl_translation: ^0.17.1

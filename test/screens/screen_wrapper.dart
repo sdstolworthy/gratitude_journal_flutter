@@ -9,6 +9,7 @@ class ScreenWrapper extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) {
+    WidgetsApp.debugAllowBannerOverride = false;
     return AppEnvironment(
       cloudStorageBucket: '',
       isDevelopment: true,

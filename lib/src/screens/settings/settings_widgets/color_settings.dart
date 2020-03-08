@@ -27,41 +27,78 @@ class ColorSettingsWidget extends StatelessWidget {
                   title: Text(localizations.customizeColor,
                       style: theme.primaryTextTheme.body1),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: AppColorScheme.availableSchemes
-                        .map<Widget>((AppColorScheme scheme) {
-                      return FlatButton(
-                        onPressed: () {
-                          userPreferenceBloc.add(
-                              UpdateUserPreference<ColorPreference>(
-                                  ColorPreference(
-                                      colorIdentifier: scheme.identifier)));
-                        },
-                        child: SizedBox(
-                          height: 40,
-                          width: 40,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(5)),
-                                gradient: LinearGradient(
-                                    colors: <Color>[
-                                      scheme.colorScheme.primary,
-                                      scheme.colorScheme.secondary
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter)),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                ListTile(
+                  leading: renderLeading('blue', context),
+                  title:
+                      Text('Light Theme', style: theme.primaryTextTheme.body1),
+                  onTap: () {
+                    setColorScheme(AppColorScheme.blueScheme.identifier,
+                        userPreferenceBloc);
+                  },
+                ),
+                ListTile(
+                  leading: renderLeading('black', context),
+                  title:
+                      Text('Dark Theme', style: theme.primaryTextTheme.body1),
+                  onTap: () {
+                    setColorScheme(AppColorScheme.blackScheme.identifier,
+                        userPreferenceBloc);
+                  },
+                ),
+                ListTile(
+                  leading: renderLeading(null, context),
+                  title:
+                      Text('System Theme', style: theme.primaryTextTheme.body1),
+                  onTap: () {
+                    setColorScheme(null, userPreferenceBloc);
+                  },
                 )
               ],
             );
           }
         });
+  }
+
+  Widget renderLeading(String scheme, BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return BlocBuilder<UserPreferenceBloc, UserPreferenceState>(
+      bloc: BlocProvider.of<UserPreferenceBloc>(context),
+      builder: (BuildContext context, UserPreferenceState state) {
+        if (state is UserPreferencesFetched &&
+            state.userPreferenceSettings?.colorPreference?.colorIdentifier ==
+                scheme) {
+          return Icon(Icons.check, color: theme.iconTheme.color);
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
+  }
+
+  void setColorScheme(
+      String identifier, UserPreferenceBloc userPreferenceBloc) {
+    userPreferenceBloc.add(UpdateUserPreference<ColorPreference>(
+        ColorPreference(colorIdentifier: identifier)));
+  }
+
+  Widget renderColorSchemeOption(
+      AppColorScheme appColorScheme, Function(AppColorScheme) onPressed) {
+    return FlatButton(
+      onPressed: () {
+        onPressed(appColorScheme);
+      },
+      child: SizedBox(
+        height: 40,
+        width: 40,
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              gradient: LinearGradient(colors: <Color>[
+                appColorScheme.colorScheme.primary,
+                appColorScheme.colorScheme.secondary
+              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        ),
+      ),
+    );
   }
 }

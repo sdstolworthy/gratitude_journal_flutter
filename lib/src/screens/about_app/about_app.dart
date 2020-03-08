@@ -80,6 +80,7 @@ class AboutApp extends StatelessWidget {
       RichText(
         text: TextSpan(
             text: 'Show Licenses',
+            style: theme.primaryTextTheme.body1,
             recognizer: TapGestureRecognizer()
               ..onTap = () => showLicensePage(context: context)),
       ),

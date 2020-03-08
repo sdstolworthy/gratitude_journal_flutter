@@ -23,7 +23,7 @@ class FlutterApp extends StatelessWidget {
             .firstWhere((AppColorScheme scheme) =>
                 scheme.identifier ==
                 userPreferenceState
-                    .userPreferenceSettings.colorPreference.colorIdentifier)
+                    .userPreferenceSettings.colorPreference.colorIdentifier, orElse: () => null)
             ?.colorScheme
         : null;
   }

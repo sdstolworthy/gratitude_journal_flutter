@@ -77,6 +77,12 @@ class AboutApp extends StatelessWidget {
             recognizer: TapGestureRecognizer()
               ..onTap = _launchUrl(Constants.termsOfServiceUrl))
       ])),
+      RichText(
+        text: TextSpan(
+            text: 'Show Licenses',
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => showLicensePage(context: context)),
+      ),
       FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
         builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {

@@ -40,20 +40,7 @@ class Router {
               bloc: userPreferenceBloc,
               builder: (BuildContext context,
                   UserPreferenceState userPreferenceState) {
-                return Theme(
-                    data: gratefulTheme(
-                      Theme.of(c),
-                      colorScheme: AppColorScheme?.availableSchemes?.firstWhere(
-                          (AppColorScheme appColorScheme) {
-                        if (userPreferenceState is UserPreferencesFetched) {
-                          return appColorScheme.identifier ==
-                              userPreferenceState?.userPreferenceSettings
-                                  ?.colorPreference?.colorIdentifier;
-                        }
-                        return false;
-                      }, orElse: () => AppColorScheme.blueScheme)?.colorScheme,
-                    ),
-                    child: widget);
+                return widget;
               });
         },
         transitionsBuilder: (BuildContext c, Animation<double> a,

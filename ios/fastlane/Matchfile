@@ -1,5 +1,5 @@
-# git_url("https://github.com/sdstolworthy/grateful_ios_secrets.git")
-git_url("git@github.com:sdstolworthy/grateful_ios_secrets.git")
+git_url("https://github.com/sdstolworthy/grateful_ios_secrets.git")
+# git_url("git@github.com:sdstolworthy/grateful_ios_secrets.git")
 username("sdstolworthy@gmail.com")
 storage_mode("git")
 

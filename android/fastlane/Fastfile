@@ -8,18 +8,23 @@
 # For a list of all available plugins, check out
 #
 #     https://docs.fastlane.tools/plugins/available-plugins
-#
+#TRAVIS_BUILD_NUMBER
 
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
 default_platform(:android)
 
+before_all do
+  ENV["VERSION_CODE"] = (ENV["TRAVIS_BUILD_NUMBER"].to_i).to_s
+end
+
+
 platform :android do
   lane :build_android do |options|
     sh "./flutter_test.sh"
 
-    sh "./flutter_build.sh --clean #{300 + number_of_commits()}"
+    sh "./flutter_build.sh --clean #{350 + ENV["TRAVIS_BUILD_NUMBER"].to_i}"
   end
 
   desc "Submit a new Build to selected Playstore Channel"

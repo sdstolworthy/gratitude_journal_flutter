@@ -5,7 +5,7 @@ platform :ios do
   lane :internal do
     # build the binary
     gym(
-      scheme: 'Release-production',
+      scheme: 'production',
       export_method: 'app-store',
       export_options: { compileBitcode: false},
       output_directory: './build',

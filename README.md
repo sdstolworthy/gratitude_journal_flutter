@@ -1,5 +1,8 @@
 ![Build Status](https://travis-ci.com/sdstolworthy/gratitude_journal_flutter.svg?branch=master)
 
+### [Google Play Store](https://play.google.com/store/apps/details?id=com.spencerstolworthy.gratitude&ah=OdwxTzvt8pKbRkC3U0DKxAMuBQo)
+### [Apple App Store](https://apps.apple.com/us/app/grateful-give-thanks-daily/id1300261897)
+
 # Grateful: Give Thanks Daily
 
 Grateful: Give Thanks Daily is a simple application for expressing gratitude.

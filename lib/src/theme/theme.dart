@@ -82,25 +82,23 @@ class AppColorScheme {
       ColorScheme.fromSwatch(
           backgroundColor: Colors.black,
           accentColor: Colors.black87,
-          brightness: Brightness.light,
+          brightness: Brightness.dark,
           cardColor: Colors.black12,
           errorColor: Colors.deepOrange[800],
           primarySwatch: primaryBlack));
 
   static List<AppColorScheme> availableSchemes = <AppColorScheme>[
     blueScheme,
-    yellowScheme,
-    greenScheme,
-    purpleScheme,
-    blackScheme,
-    brownScheme,
+    blackScheme
   ];
 }
 
-ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
+ThemeData gratefulTheme({ColorScheme colorScheme, bool isDark = false}) {
   final ThemeData theme = ThemeData(brightness: Brightness.light);
 
-  colorScheme ??= AppColorScheme.blueScheme.colorScheme;
+  colorScheme ??= isDark
+      ? AppColorScheme.blackScheme.colorScheme
+      : AppColorScheme.blueScheme.colorScheme;
 
   try {
     SystemChrome.setSystemUIOverlayStyle(
@@ -125,18 +123,22 @@ ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
         ),
         colorScheme: colorScheme,
         canvasColor: colorScheme.secondary,
-        inputDecorationTheme: appTheme.inputDecorationTheme.copyWith(
+        inputDecorationTheme: ThemeData().inputDecorationTheme.copyWith(
             labelStyle:
                 TextStyle(color: Colors.white70, fontFamily: 'Raleway')),
         primaryColorLight: colorScheme.onBackground,
         iconTheme:
             IconThemeData(color: colorScheme.onBackground.withOpacity(0.8)),
         primaryTextTheme: TextTheme(
-            button: appTheme.primaryTextTheme.button
+            button: ThemeData()
+                .primaryTextTheme
+                .button
                 .copyWith(fontFamily: 'Raleway'),
             body1: GoogleFonts.montserrat()
                 .copyWith(color: colorScheme.onBackground, fontSize: 16),
-            body2: appTheme.primaryTextTheme.body1
+            body2: ThemeData()
+                .primaryTextTheme
+                .body1
                 .copyWith(color: colorScheme.onBackground, fontSize: 20),
             headline: GoogleFonts.merriweather()
                 .copyWith(color: colorScheme.onBackground, fontSize: 40),
@@ -144,13 +146,17 @@ ThemeData gratefulTheme(ThemeData appTheme, {ColorScheme colorScheme}) {
                 fontStyle: FontStyle.italic,
                 fontSize: 18,
                 color: colorScheme.onBackground),
-            title: appTheme.primaryTextTheme.title
+            title: ThemeData()
+                .primaryTextTheme
+                .title
                 .apply(fontFamily: 'MontSerratRegular'),
-            display1: appTheme.primaryTextTheme.display1
+            display1: ThemeData()
+                .primaryTextTheme
+                .display1
                 .copyWith(fontFamily: 'MontserratRegular')),
       )
       .copyWith(
-        accentTextTheme: appTheme.accentTextTheme.copyWith(
+        accentTextTheme: ThemeData().accentTextTheme.copyWith(
             headline: GoogleFonts.merriweatherSans().copyWith(
               color: Colors.black,
             ),

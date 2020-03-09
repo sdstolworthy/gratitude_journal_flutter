@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import 'package:grateful/src/models/preferences/user_preference.dart';
-import 'package:grateful/src/theme/theme.dart';
 
 class ColorPreference extends UserPreference {
   ColorPreference({
-    String colorIdentifier,
-  }) : colorIdentifier =
-            colorIdentifier ?? AppColorScheme.blueScheme.identifier;
+    this.colorIdentifier,
+  });
 
   final String colorIdentifier;
 

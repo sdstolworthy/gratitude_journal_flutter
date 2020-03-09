@@ -1,0 +1,23 @@
+default_platform(:ios)
+platform :ios do 
+
+  desc "Submit an internal beta to TestFlight"
+  lane :internal do
+    # build the binary
+    gym(
+      scheme: 'Release',
+      export_method: 'app-store',
+      export_options: { compileBitcode: false},
+      output_directory: './build',
+      output_name: 'app-beta'
+    )
+    # submit to TestFlight
+    pilot(
+      ipa: './build/app-beta.ipa',
+      app_identifier: 'com.spencerds.gratitude',
+      distribute_external: false,
+      skip_submission: true,
+      apple_id: 'sdstolworthy@gmail.com'
+    )
+  end
+end

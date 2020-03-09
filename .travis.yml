@@ -27,3 +27,15 @@ matrix:
         - cd android
         - bundle exec fastlane build_android
         - bundle exec fastlane deploy_android
+    - name: iOS Build
+      os: osx
+      language: generic
+      osx_image: xcode10.2
+      before_script:
+      - git clone https://github.com/flutter/flutter.git -b stable
+      - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+      - cd ios && bundle install && cd ..
+      script:
+      - flutter packages get
+      - flutter test
+      - gem install bundler && cd ios && bundle exec fastlane internal

@@ -3,27 +3,41 @@ env:
     secure: "MSTU1gL8IbYo6rhjNRxOWvU1yiFI1ujXsBNyuBCP1SJAwSEBhYm4YOHj8yYCMonlhqb/SRQtn6D2DFM3+Yho0cwqtQhajdP2xl31YmpQ3yD1WYbM6XDrnjXkY8wZ0XMshIMroDyJVJ+e2tHgqjIyQOsPL/qPji0pPGw6p0u+WJq5qhHlM2PU+8Y4NxWCbnElZ8RJgM50xafu/XwreiB4ZStRm9qLhZsOe4/Uj4RYcTiuWmU+rgJF7WvAFAuQ35ltWrU7TrE8v6/NeQ3uh78p9FjE+9/fw1e0SAt3Wx0qLySGVK+OlxLo9aCrJQAB1rzRn5x0Fni6Zs7BQDMIUy9M+hBf8Pi739iCIFgOQjHQtuDvA7xJeaka2IvB5vdavxn85Oyu4WK47mtpJS2l9Uj3vKh8DOYNi/ceRIgcH6ONBdRkn7MR2+WRIys0zoS9VfTvZDvPf7ORc2K6OL2wXT/IMN5r5wOrrDmGNHCcZ+Dxqy8wT0Zl1WH80XRyGYLTLgvDMF1ge4kd8Au3OQRdW+4uj+6cyHvvzYESopUdFttU4JO0aZz7n+UCD1AifzYPLJ5z6GKvmvtjTKNDH39u9vJj9ZnoJMKj6y2yF5jZ7KC+y4FhIBQNdnxKjvIEVnJpQIR+YD9SuKsx4u39bfKFnGwiWuQ3WktV6PQvo5HV/Hc0pkw="
 matrix:
   include:
-    - name: Android Build
-      language: android
-      licenses:
-        - "android-sdk-preview-license-.+"
-        - "android-sdk-license-.+"
-        - "google-gdk-license-.+"
-      jdk: openjdk8
-      android:
-        components:
-          - build-tools-28.0.3
-          - android-28
-          - android-29
+    # - name: Android Build
+    #   language: android
+    #   licenses:
+    #     - "android-sdk-preview-license-.+"
+    #     - "android-sdk-license-.+"
+    #     - "google-gdk-license-.+"
+    #   jdk: openjdk8
+    #   android:
+    #     components:
+    #       - build-tools-28.0.3
+    #       - android-28
+    #       - android-29
+    #   before_script:
+    #     - openssl aes-256-cbc -K $encrypted_3b9f0b9d36d1_key -iv $encrypted_3b9f0b9d36d1_iv  -in secrets.tar.enc -out secrets.tar -d
+    #     - tar xvf secrets.tar
+    #     - git clone https://github.com/flutter/flutter.git -b stable
+    #     - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+    #     - gem install bundler && cd android && bundle install && cd ..
+    #   script:
+    #     - flutter packages get
+    #     - flutter test
+    #     - cd android
+    #     - bundle exec fastlane build_android
+    #     - bundle exec fastlane deploy_android
+    - name: iOS Build
+      os: osx
+      language: generic
+      osx_image: xcode11.3
       before_script:
-        - openssl aes-256-cbc -K $encrypted_3b9f0b9d36d1_key -iv $encrypted_3b9f0b9d36d1_iv  -in secrets.tar.enc -out secrets.tar -d
-        - tar xvf secrets.tar
-        - git clone https://github.com/flutter/flutter.git -b stable
-        - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
-        - gem install bundler && cd android && bundle install && cd ..
+      - openssl aes-256-cbc -K $encrypted_4e1d91abdbbc_key -iv $encrypted_4e1d91abdbbc_iv -in ios_secrets.tar.enc -out ios_secrets.tar -d
+      - tar xvf ios_secrets.tar
+      - git clone https://github.com/flutter/flutter.git -b stable
+      - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+      - cd ios && bundle install && cd ..
       script:
-        - flutter packages get
-        - flutter test
-        - cd android
-        - bundle exec fastlane build_android
-        - bundle exec fastlane deploy_android
+      - flutter packages get
+      - flutter test
+      - gem install bundler && cd ios && bundle exec fastlane internal
